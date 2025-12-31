@@ -18,11 +18,11 @@ export const MenuController = class {
         this.panelInfo = panelInfo;
         this.panel = panelInfo.panel;
         this.monitorIndex = monitorIndex;
-        this.isPrimaryPanel = panelInfo.isPrimaryPanel;
+        this.isFirstPanel = panelInfo.isFirstPanel;
         this._debouncer = new Utils.Debouncer();
 
         // Allow other extensions and DBus command to open/close ArcMenu and Standalone Runner
-        if (!global.toggleArcMenu && this.isPrimaryPanel) {
+        if (!global.toggleArcMenu && this.isFirstPanel) {
             global.toggleArcMenu = () => this._toggleArcMenu();
             this._service = new Utils.DBusService();
             this._service.ToggleArcMenu = () => {
@@ -36,7 +36,7 @@ export const MenuController = class {
 
         this._menuButton = new MenuButton(panelInfo, this.monitorIndex);
 
-        if (this.isPrimaryPanel) {
+        if (this.isFirstPanel) {
             this._keybinder = new Keybinder(ArcMenuManager.settings);
             this._keybinder.toggleArcMenu = () => this._toggleArcMenu();
             this._keybinder.toggleRunnerMenu = () => this._toggleRunnerMenu();
@@ -155,7 +155,7 @@ export const MenuController = class {
     }
 
     _recreateMenuLayout() {
-        if (!this.isPrimaryPanel)
+        if (!this.isFirstPanel)
             return;
 
         this._debouncer.debounce('createMenuLayout', () => {
@@ -482,7 +482,7 @@ export const MenuController = class {
         else
             this._menuButton.destroy();
 
-        if (this.isPrimaryPanel) {
+        if (this.isFirstPanel) {
             this._keybinder.disconnectObject(this);
             this._keybinder.destroy();
             this._keybinder = null;
@@ -491,6 +491,6 @@ export const MenuController = class {
         this._menuButton = null;
         this.panelInfo = null;
         this.panel = null;
-        this.isPrimaryPanel = null;
+        this.isFirstPanel = null;
     }
 };
