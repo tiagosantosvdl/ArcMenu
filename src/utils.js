@@ -432,7 +432,7 @@ export function getCategories(info) {
  * Returns the display name for an application.
  * If 'apps-show-generic-names' is enabled, returns GenericName (falls back to Name).
  *
- * @param app
+ * @param {Shell.App} app
  * @returns {*|string}
  */
 export function getAppDisplayName(app) {
