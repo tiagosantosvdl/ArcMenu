@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ArcMenu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-15 07:27-0500\n"
+"POT-Creation-Date: 2026-01-13 01:26+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgid "Favorites"
 msgstr ""
 
 #: src/constants.js:99 src/menulayouts/runner.js:158
-#: src/menulayouts/windows.js:340
+#: src/menulayouts/windows.js:341
 #: src/settings/menuSettings/layoutTweaksPage.js:336
 #: src/settings/menuSettings/layoutTweaksPage.js:908
 msgid "Frequent Apps"
@@ -310,7 +310,7 @@ msgstr ""
 #: src/menulayouts/redmond.js:76 src/menulayouts/redmond.js:79
 #: src/menulayouts/redmond.js:82 src/menulayouts/sleek.js:76
 #: src/menulayouts/unity.js:41 src/menulayouts/unity.js:272
-#: src/menulayouts/unity.js:342 src/menulayouts/windows.js:418
+#: src/menulayouts/unity.js:342 src/menulayouts/windows.js:419
 msgid "Pinned"
 msgstr ""
 
@@ -347,26 +347,26 @@ msgstr ""
 msgid "Leave"
 msgstr ""
 
-#: src/menulayouts/plasma.js:276 src/menulayouts/windows.js:275
+#: src/menulayouts/plasma.js:276 src/menulayouts/windows.js:276
 #: src/settings/menuPage.js:123
 msgid "Application Shortcuts"
 msgstr ""
 
-#: src/menulayouts/plasma.js:281 src/menulayouts/windows.js:279
+#: src/menulayouts/plasma.js:281 src/menulayouts/windows.js:280
 msgid "Places"
 msgstr ""
 
-#: src/menulayouts/plasma.js:296 src/menulayouts/windows.js:208
+#: src/menulayouts/plasma.js:296 src/menulayouts/windows.js:209
 #: src/settings/menuSettings/layoutTweaksPage.js:842
 #: src/settings/menuSettings/layoutTweaksPage.js:994
 msgid "Bookmarks"
 msgstr ""
 
-#: src/menulayouts/plasma.js:298 src/menulayouts/windows.js:210
+#: src/menulayouts/plasma.js:298 src/menulayouts/windows.js:211
 msgid "Devices"
 msgstr ""
 
-#: src/menulayouts/plasma.js:300 src/menulayouts/windows.js:212
+#: src/menulayouts/plasma.js:300 src/menulayouts/windows.js:213
 #: src/settings/menuSettings/listPinnedPage.js:423
 msgid "Network"
 msgstr ""
@@ -443,7 +443,7 @@ msgstr ""
 msgid "Categories"
 msgstr ""
 
-#: src/menulayouts/windows.js:443
+#: src/menulayouts/windows.js:444
 msgid "Extras"
 msgstr ""
 
@@ -828,12 +828,12 @@ msgid "All"
 msgstr ""
 
 #: src/settings/iconChooserDialog.js:184
-#: src/settings/menuSettings/fineTunePage.js:84
+#: src/settings/menuSettings/fineTunePage.js:87
 msgid "Symbolic"
 msgstr ""
 
 #: src/settings/iconChooserDialog.js:185
-#: src/settings/menuSettings/fineTunePage.js:83
+#: src/settings/menuSettings/fineTunePage.js:86
 msgid "Full Color"
 msgstr ""
 
@@ -1099,87 +1099,91 @@ msgid "Show Application Descriptions"
 msgstr ""
 
 #: src/settings/menuSettings/fineTunePage.js:35
+msgid "Show Generic Application Names"
+msgstr ""
+
+#: src/settings/menuSettings/fineTunePage.js:38
 msgid "Show Hidden Recent Files"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:39
+#: src/settings/menuSettings/fineTunePage.js:42
 msgid "Allow application labels to span multiple lines on grid style layouts"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:39
+#: src/settings/menuSettings/fineTunePage.js:42
 msgid "Show Multi Lined Labels"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:42
+#: src/settings/menuSettings/fineTunePage.js:45
 msgid "Show Tooltips"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:46
-#: src/settings/menuSettings/fineTunePage.js:50
+#: src/settings/menuSettings/fineTunePage.js:49
+#: src/settings/menuSettings/fineTunePage.js:53
 msgid "For All Apps sections"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:46
+#: src/settings/menuSettings/fineTunePage.js:49
 msgid "Group Apps Alphabetically on List Views"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:50
+#: src/settings/menuSettings/fineTunePage.js:53
 msgid "Group Apps Alphabetically on Grid Views"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:53
+#: src/settings/menuSettings/fineTunePage.js:56
 msgid "Activate App Window on Launch"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:54
+#: src/settings/menuSettings/fineTunePage.js:57
 msgid ""
 "Launching an app activates its existing window if one is open; otherwise, it "
 "launches a new instance. Hold Ctrl while launching or middle-click to open a "
 "new window."
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:58
+#: src/settings/menuSettings/fineTunePage.js:61
 msgid "Scrollview Options"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:62
+#: src/settings/menuSettings/fineTunePage.js:65
 msgid "Scrollview Fade Effects"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:67
+#: src/settings/menuSettings/fineTunePage.js:70
 msgid "Show Scrollbars"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:74
+#: src/settings/menuSettings/fineTunePage.js:77
 msgid "Overlay Scrollbars"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:78
+#: src/settings/menuSettings/fineTunePage.js:81
 msgid "Icon Style"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:86
+#: src/settings/menuSettings/fineTunePage.js:89
 msgid "Category Icon Type"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:87
-#: src/settings/menuSettings/fineTunePage.js:103
+#: src/settings/menuSettings/fineTunePage.js:90
+#: src/settings/menuSettings/fineTunePage.js:106
 msgid "Some icon themes may not include selected icon type"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:102
+#: src/settings/menuSettings/fineTunePage.js:105
 msgid "Shortcuts Icon Type"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:118
+#: src/settings/menuSettings/fineTunePage.js:121
 msgid "New Apps Tracker"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:122
+#: src/settings/menuSettings/fineTunePage.js:125
 msgid "Enable"
 msgstr ""
 
-#: src/settings/menuSettings/fineTunePage.js:127
+#: src/settings/menuSettings/fineTunePage.js:130
 msgid "Clear All"
 msgstr ""
 

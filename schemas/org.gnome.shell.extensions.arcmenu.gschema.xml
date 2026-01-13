@@ -314,6 +314,11 @@
       <default>false</default>
       <summary>Show a larger icon and extra app details</summary>
     </key>
+    <key type="b" name="apps-show-generic-names">
+      <default>false</default>
+      <summary>Show generic application names</summary>
+      <description>Show GenericName instead of Name. Falls back to Name if GenericName is unavailable.</description>
+    </key>
     <key type="b" name="search-hidden">
       <default>false</default>
       <summary>Hide search entry in ArcMenu. Search entry will be hidden when empty.</summary>
