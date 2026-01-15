@@ -121,7 +121,7 @@ export const MenuController = class {
                 'power-options', 'show-external-devices', 'show-bookmarks', 'show-user-avatar', 'runner-search-display-style',
                 'avatar-style', 'enable-activities-shortcut', 'enable-horizontal-flip', 'power-display-style',
                 'searchbar-default-bottom-location', 'searchbar-default-top-location', 'multi-lined-labels',
-                'apps-show-extra-details', 'show-search-result-details', 'search-provider-open-windows',
+                'apps-show-extra-details', 'apps-show-generic-names', 'show-search-result-details', 'search-provider-open-windows',
                 'search-provider-recent-files', 'misc-item-icon-size', 'windows-show-pinned-apps',
                 'scrollview-fade-effect', 'windows-show-frequent-apps', 'default-menu-view',
                 'default-menu-view-tognee', 'group-apps-alphabetically-list-layouts', 'group-apps-alphabetically-grid-layouts',

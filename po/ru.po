@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-15 07:27-0500\n"
+"POT-Creation-Date: 2026-01-13 01:26+0600\n"
 "PO-Revision-Date: 2025-12-26 22:58+1000\n"
 "Last-Translator: Ser82-png <asvmail.as@gmail.com>\n"
 "Language-Team: \n"
@@ -17,8 +17,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 3.0.1\n"
 
 #: src/appMenu.js:63 src/appMenu.js:285
@@ -46,7 +46,7 @@ msgid "Favorites"
 msgstr "Избранное"
 
 #: src/constants.js:99 src/menulayouts/runner.js:158
-#: src/menulayouts/windows.js:340
+#: src/menulayouts/windows.js:341
 #: src/settings/menuSettings/layoutTweaksPage.js:336
 #: src/settings/menuSettings/layoutTweaksPage.js:908
 msgid "Frequent Apps"
@@ -314,7 +314,7 @@ msgstr "Новое"
 #: src/menulayouts/redmond.js:76 src/menulayouts/redmond.js:79
 #: src/menulayouts/redmond.js:82 src/menulayouts/sleek.js:76
 #: src/menulayouts/unity.js:41 src/menulayouts/unity.js:272
-#: src/menulayouts/unity.js:342 src/menulayouts/windows.js:418
+#: src/menulayouts/unity.js:342 src/menulayouts/windows.js:419
 msgid "Pinned"
 msgstr "Закреплённые"
 
@@ -351,26 +351,26 @@ msgstr "Компьютер"
 msgid "Leave"
 msgstr "Выключение"
 
-#: src/menulayouts/plasma.js:276 src/menulayouts/windows.js:275
+#: src/menulayouts/plasma.js:276 src/menulayouts/windows.js:276
 #: src/settings/menuPage.js:123
 msgid "Application Shortcuts"
 msgstr "Ярлыки приложений"
 
-#: src/menulayouts/plasma.js:281 src/menulayouts/windows.js:279
+#: src/menulayouts/plasma.js:281 src/menulayouts/windows.js:280
 msgid "Places"
 msgstr "Точки входа"
 
-#: src/menulayouts/plasma.js:296 src/menulayouts/windows.js:208
+#: src/menulayouts/plasma.js:296 src/menulayouts/windows.js:209
 #: src/settings/menuSettings/layoutTweaksPage.js:842
 #: src/settings/menuSettings/layoutTweaksPage.js:994
 msgid "Bookmarks"
 msgstr "Закладки"
 
-#: src/menulayouts/plasma.js:298 src/menulayouts/windows.js:210
+#: src/menulayouts/plasma.js:298 src/menulayouts/windows.js:211
 msgid "Devices"
 msgstr "Внешние устройства"
 
-#: src/menulayouts/plasma.js:300 src/menulayouts/windows.js:212
+#: src/menulayouts/plasma.js:300 src/menulayouts/windows.js:213
 #: src/settings/menuSettings/listPinnedPage.js:423
 msgid "Network"
 msgstr "Сеть"
@@ -447,7 +447,7 @@ msgstr "Конфигурация Runner"
 msgid "Categories"
 msgstr "Категории"
 
-#: src/menulayouts/windows.js:443
+#: src/menulayouts/windows.js:444
 msgid "Extras"
 msgstr "Дополнительно"
 
@@ -837,12 +837,12 @@ msgid "All"
 msgstr "Все"
 
 #: src/settings/iconChooserDialog.js:184
-#: src/settings/menuSettings/fineTunePage.js:84
+#: src/settings/menuSettings/fineTunePage.js:87
 msgid "Symbolic"
 msgstr "Символьные"
 
 #: src/settings/iconChooserDialog.js:185
-#: src/settings/menuSettings/fineTunePage.js:83
+#: src/settings/menuSettings/fineTunePage.js:86
 msgid "Full Color"
 msgstr "Полноцветные"
 
@@ -1109,41 +1109,45 @@ msgid "Show Application Descriptions"
 msgstr "Показывать описание приложений"
 
 #: src/settings/menuSettings/fineTunePage.js:35
+msgid "Show Generic Application Names"
+msgstr "Показывать общие имена приложений"
+
+#: src/settings/menuSettings/fineTunePage.js:38
 msgid "Show Hidden Recent Files"
 msgstr "Показывать скрытые недавние файлы"
 
-#: src/settings/menuSettings/fineTunePage.js:39
+#: src/settings/menuSettings/fineTunePage.js:42
 msgid "Allow application labels to span multiple lines on grid style layouts"
 msgstr ""
 "Разрешить описанию приложений занимать несколько строк в макетах в стиле "
 "сетки"
 
-#: src/settings/menuSettings/fineTunePage.js:39
+#: src/settings/menuSettings/fineTunePage.js:42
 msgid "Show Multi Lined Labels"
 msgstr "Показывать подписи в несколько строк"
 
-#: src/settings/menuSettings/fineTunePage.js:42
+#: src/settings/menuSettings/fineTunePage.js:45
 msgid "Show Tooltips"
 msgstr "Показывать подсказки"
 
-#: src/settings/menuSettings/fineTunePage.js:46
-#: src/settings/menuSettings/fineTunePage.js:50
+#: src/settings/menuSettings/fineTunePage.js:49
+#: src/settings/menuSettings/fineTunePage.js:53
 msgid "For All Apps sections"
 msgstr "Для раздела «Все приложения»"
 
-#: src/settings/menuSettings/fineTunePage.js:46
+#: src/settings/menuSettings/fineTunePage.js:49
 msgid "Group Apps Alphabetically on List Views"
 msgstr "Группировать приложения по алфавиту при отображении списком"
 
-#: src/settings/menuSettings/fineTunePage.js:50
+#: src/settings/menuSettings/fineTunePage.js:53
 msgid "Group Apps Alphabetically on Grid Views"
 msgstr "Группировать приложения по алфавиту при отображении сеткой"
 
-#: src/settings/menuSettings/fineTunePage.js:53
+#: src/settings/menuSettings/fineTunePage.js:56
 msgid "Activate App Window on Launch"
 msgstr "Активировать окно приложения при его запуске"
 
-#: src/settings/menuSettings/fineTunePage.js:54
+#: src/settings/menuSettings/fineTunePage.js:57
 msgid ""
 "Launching an app activates its existing window if one is open; otherwise, it "
 "launches a new instance. Hold Ctrl while launching or middle-click to open a "
@@ -1154,48 +1158,48 @@ msgstr ""
 "нажатой клавиши Ctrl во время запуска приложения или щелчок средней кнопкой "
 "мыши откроет новое окно приложения."
 
-#: src/settings/menuSettings/fineTunePage.js:58
+#: src/settings/menuSettings/fineTunePage.js:61
 msgid "Scrollview Options"
 msgstr "Настройки Scrollview"
 
-#: src/settings/menuSettings/fineTunePage.js:62
+#: src/settings/menuSettings/fineTunePage.js:65
 msgid "Scrollview Fade Effects"
 msgstr "Эффекты затухания в ScrollView"
 
-#: src/settings/menuSettings/fineTunePage.js:67
+#: src/settings/menuSettings/fineTunePage.js:70
 msgid "Show Scrollbars"
 msgstr "Показывать полосы прокрутки"
 
-#: src/settings/menuSettings/fineTunePage.js:74
+#: src/settings/menuSettings/fineTunePage.js:77
 msgid "Overlay Scrollbars"
 msgstr "Наложение полос прокрутки"
 
-#: src/settings/menuSettings/fineTunePage.js:78
+#: src/settings/menuSettings/fineTunePage.js:81
 msgid "Icon Style"
 msgstr "Стиль значков"
 
-#: src/settings/menuSettings/fineTunePage.js:86
+#: src/settings/menuSettings/fineTunePage.js:89
 msgid "Category Icon Type"
 msgstr "Тип значков категорий"
 
-#: src/settings/menuSettings/fineTunePage.js:87
-#: src/settings/menuSettings/fineTunePage.js:103
+#: src/settings/menuSettings/fineTunePage.js:90
+#: src/settings/menuSettings/fineTunePage.js:106
 msgid "Some icon themes may not include selected icon type"
 msgstr "Некоторые темы значков могут не включать выбранный тип значков"
 
-#: src/settings/menuSettings/fineTunePage.js:102
+#: src/settings/menuSettings/fineTunePage.js:105
 msgid "Shortcuts Icon Type"
 msgstr "Тип значков ярлыков"
 
-#: src/settings/menuSettings/fineTunePage.js:118
+#: src/settings/menuSettings/fineTunePage.js:121
 msgid "New Apps Tracker"
 msgstr "Отслеживать новые приложения"
 
-#: src/settings/menuSettings/fineTunePage.js:122
+#: src/settings/menuSettings/fineTunePage.js:125
 msgid "Enable"
 msgstr "Включить"
 
-#: src/settings/menuSettings/fineTunePage.js:127
+#: src/settings/menuSettings/fineTunePage.js:130
 msgid "Clear All"
 msgstr "Очистить всё"
 
@@ -2544,9 +2548,6 @@ msgstr "Отклонить"
 
 #~ msgid "Users"
 #~ msgstr "Пользователи"
-
-#~ msgid "Show Applications"
-#~ msgstr "Показать приложения"
 
 #~ msgid "Panel and Dock Options"
 #~ msgstr "Настройки Panel и Dock"

@@ -1268,7 +1268,7 @@ export class ShortcutMenuItem extends BaseMenuItem {
         }
 
         if (!name && this._app)
-            name = this._app.get_name();
+            name = Utils.getAppDisplayName(this._app);
         // -------------------------------------
 
         this.hasContextMenu = !!this._app;
@@ -2292,7 +2292,7 @@ export class PinnedAppsMenuItem extends DraggableMenuItem {
         }
 
         if (this._app && !this._name)
-            this._name = this._app.get_name();
+            this._name = Utils.getAppDisplayName(this._app);
 
         this.label.text = _(this._name);
         this._updateIcon();
@@ -2452,7 +2452,7 @@ export class ApplicationMenuItem extends BaseMenuItem {
         this._updateIcon();
 
         this.label = new St.Label({
-            text: this._app ? this._app.get_name() : this.metaInfo['name'],
+            text: this._app ? Utils.getAppDisplayName(this._app) : this.metaInfo['name'],
             x_expand: true,
             y_expand: true,
             x_align: Clutter.ActorAlign.FILL,
@@ -2912,8 +2912,8 @@ export class SubCategoryMenuItem extends BaseMenuItem {
 
     populateMenu() {
         this.appList.sort((a, b) => {
-            const nameA = a._app.get_name();
-            const nameB = b._app.get_name();
+            const nameA = Utils.getAppDisplayName(a._app);
+            const nameB = Utils.getAppDisplayName(b._app);
             return nameA.localeCompare(nameB);
         });
         this._subMenuPopup.populateMenu(this.appList);
