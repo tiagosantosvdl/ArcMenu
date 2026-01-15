@@ -74,6 +74,8 @@ In 2017, ArcMenu _started_ as a fork of the Zorin menu extension by Zorin OS. As
 
 **@[RunasSudo](https://gitlab.com/RunasSudo) !271**
 
+**@[innovisus](https://gitlab.com/innovisus) !273**
+
 -----
 
 ### Translators
@@ -99,7 +101,7 @@ In 2017, ArcMenu _started_ as a fork of the Zorin menu extension by Zorin OS. As
 | **Norwegian** | **@[sigbjokj](https://gitlab.com/sigbjokj), @[sssandum](https://gitlab.com/sssandum)** |
 | **Occitan** | **@[Mejans](https://gitlab.com/Mejans), @[Quentin](https://gitlab.com/quenty_occitania)** |
 | **Polish** | **@[alex4401](https://gitlab.com/alex4401), @[Karpfly](https://gitlab.com/MacKarp), @[Piotr Strebski](https://gitlab.com/strebski), @[Adam Lewicki](https://gitlab.com/a.lewicki95)** |
-| **Russian** | **@[Ivan](https://gitlab.com/vantu5z), @[Ser82-png](https://gitlab.com/Ser82-png)** |
+| **Russian** | **@[Ivan](https://gitlab.com/vantu5z), @[Ser82-png](https://gitlab.com/Ser82-png), @[innovisus](https://gitlab.com/innovisus)** |
 | **Silesian** | **@[gkkulik](https://gitlab.com/gkkulik)** |
 | **Simplified Chinese** | **@[skygmin](https://gitlab.com/skygmin), @[doufu3344](https://gitlab.com/doufu3344), @[wxtewx](https://gitlab.com/wxtewx), @[Anduin2017](https://gitlab.com/Anduin2017)** |
 | **Sinhalese** | **@[sayuri](https://gitlab.com/sayuri-), @[helabasa](https://gitlab.com/helabasa)** |
