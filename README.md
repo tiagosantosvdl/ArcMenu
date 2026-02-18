@@ -48,7 +48,9 @@ Thank you for using ArcMenu! If you enjoy it and would like to help support its 
 * The 'ArcMenu' layout design is insipired by the Zorin OS menu extension.
 * ArcMenu utilizes various code from GNOME Shell and the GNOME Shell extensions package.
 * ArcMenu Logo and other ArcMenu icon assets created by [AndyC](https://gitlab.com/LinxGem33). Licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-* Fallback category icons included in ArcMenu are copied from [Ubuntu Yaru Icons](https://github.com/ubuntu/yaru) and licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+* Fallback Category Icons
+    * [Ubuntu Yaru Icons](https://github.com/ubuntu/yaru) licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+    * [MoreWaita](https://github.com/somepaulo/MoreWaita) [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 -----
 
