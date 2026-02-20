@@ -33,7 +33,7 @@ const GDateMenu = Main.panel.statusArea.dateMenu;
 const GWeatherWidget = GDateMenu._weatherItem.constructor;
 const GWorldClocksWidget = GDateMenu._clocksItem.constructor;
 
-const INDICATOR_ICON_SIZE = 18;
+const INDICATOR_ICON_SIZE = 12;
 const USER_AVATAR_SIZE = 28;
 
 const TOOLTIP_SHOW_TIME = 150;
