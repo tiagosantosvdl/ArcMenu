@@ -632,19 +632,19 @@ class ArcMenuLayoutTweaksPage extends SubPage {
         const miscGroup = new Adw.PreferencesGroup();
         this.add(miscGroup);
 
-        const frequentAppsSwitch = new Gtk.Switch({
-            valign: Gtk.Align.CENTER,
+        const defaulViews = new Gtk.StringList();
+        defaulViews.append(_('Default'));
+        defaulViews.append(_('Pinned Apps'));
+        defaulViews.append(_('Frequent Apps'));
+        const defaultViewRow = new Adw.ComboRow({
+            title: _('Default View'),
+            model: defaulViews,
+            selected: this._settings.get_enum('default-menu-view-runner'),
         });
-        frequentAppsSwitch.set_active(this._settings.get_boolean('runner-show-frequent-apps'));
-        frequentAppsSwitch.connect('notify::active', widget => {
-            this._settings.set_boolean('runner-show-frequent-apps', widget.get_active());
+        defaultViewRow.connect('notify::selected', widget => {
+            this._settings.set_enum('default-menu-view-runner', widget.selected);
         });
-        const frequentAppsRow = new Adw.ActionRow({
-            title: _('Show Frequent Apps'),
-            activatable_widget: frequentAppsSwitch,
-        });
-        frequentAppsRow.add_suffix(frequentAppsSwitch);
-        miscGroup.add(frequentAppsRow);
+        miscGroup.add(defaultViewRow);
 
         const showSettingsSwitch = new PW.SwitchRow(this._settings, {
             setting_name: 'runner-show-settings-button',

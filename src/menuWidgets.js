@@ -2431,7 +2431,6 @@ export class ApplicationMenuItem extends BaseMenuItem {
         this.metaInfo = metaInfo || {};
         this.isContainedInCategory = isContainedInCategory;
 
-        this.searchType = this._menuLayout.search_display_type;
         this.hasContextMenu = !!this._app;
         this.isSearchResult = !!Object.keys(this.metaInfo).length;
 

@@ -37,7 +37,6 @@ class ListSearchResult extends ApplicationMenuItem {
 
         super(menuLayout, null, Constants.DisplayType.LIST, metaInfo);
 
-        this.searchType = this._menuLayout.search_display_type;
         this.metaInfo = metaInfo;
         this.provider = provider;
         this.resultsView = resultsView;
@@ -248,7 +247,6 @@ class ListSearchResults extends SearchResultsBase {
     constructor(provider, resultsView) {
         super(provider, resultsView);
         this._menuLayout = resultsView._menuLayout;
-        this.searchType = this._menuLayout.search_display_type;
 
         this.layout = ArcMenuManager.settings.get_enum('menu-layout');
 
@@ -323,7 +321,6 @@ class AppSearchResults extends SearchResultsBase {
         super(provider, resultsView);
         this._parentContainer = resultsView;
         this._menuLayout = resultsView._menuLayout;
-        this.searchType = this._menuLayout.search_display_type;
 
         this.layout = ArcMenuManager.settings.get_enum('menu-layout');
 
@@ -333,32 +330,48 @@ class AppSearchResults extends SearchResultsBase {
 
         this.rtl = this._menuLayout.get_text_direction() === Clutter.TextDirection.RTL;
 
+        const searchDisplayType = this._menuLayout.search_display_type;
+        this._isGridLayout = searchDisplayType === Constants.DisplayType.GRID;
+
         const layout = new Clutter.GridLayout({
             orientation: Clutter.Orientation.VERTICAL,
-            column_spacing: this.searchType === Constants.DisplayType.GRID ? this._menuLayout.column_spacing : this._menuLayout.search_results_spacing,
-            row_spacing: this.searchType === Constants.DisplayType.GRID ? this._menuLayout.row_spacing : this._menuLayout.search_results_spacing,
         });
         this._grid = new St.Widget({
             x_expand: true,
-            x_align: this.searchType === Constants.DisplayType.LIST ? Clutter.ActorAlign.FILL
-                : Clutter.ActorAlign.CENTER,
             layout_manager: layout,
         });
         layout.hookup_style(this._grid);
 
-        if (this.searchType === Constants.DisplayType.GRID) {
-            const spacing = this._menuLayout.column_spacing;
-
-            this._grid.style = `spacing: ${spacing}px;`;
-            this._resultDisplayBin.x_align = Clutter.ActorAlign.CENTER;
-        }
-
         this._resultDisplayBin.set_child(this._grid);
+
+        this._menuLayout.connectObject('notify::search-display-type', () => this._setResutlsDisplayType());
+        this._setResutlsDisplayType();
+    }
+
+    _setResutlsDisplayType() {
+        const searchDisplayType = this._menuLayout.search_display_type;
+        this._isGridLayout = searchDisplayType === Constants.DisplayType.GRID;
+
+        const columnSpacing = this._menuLayout.column_spacing;
+        const rowSpacing = this._menuLayout.row_spacing;
+        const searchResultsSpacing = this._menuLayout.search_results_spacing;
+
+        this._grid.set({
+            x_align: this._isGridLayout ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.FILL,
+            style: this._isGridLayout ? `spacing: ${columnSpacing}px;` : null,
+        });
+
+        this._grid.layout_manager.set({
+            column_spacing: this._isGridLayout ? columnSpacing : searchResultsSpacing,
+            row_spacing: this._isGridLayout ? rowSpacing : searchResultsSpacing,
+        });
+
+        this._resultDisplayBin.x_align = this._isGridLayout ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.FILL;
     }
 
     _getMaxDisplayedResults() {
         let maxDisplayedResults;
-        if (this.searchType === Constants.DisplayType.GRID) {
+        if (this._isGridLayout) {
             const iconWidth = this._menuLayout.getIconWidthFromSetting();
             maxDisplayedResults = this._menuLayout.getBestFitColumnsForGrid(iconWidth, this._grid);
         } else {
@@ -380,11 +393,11 @@ class AppSearchResults extends SearchResultsBase {
 
     _addItem(display) {
         let colums;
-        if (this.searchType === Constants.DisplayType.LIST) {
-            colums = 1;
-        } else {
+        if (this._isGridLayout) {
             const iconWidth = this._menuLayout.getIconWidthFromSetting();
             colums = this._menuLayout.getBestFitColumnsForGrid(iconWidth, this._grid);
+        } else {
+            colums = 1;
         }
 
         if (!this.rtl && (this.itemCount % colums === 0)) {
@@ -434,7 +447,6 @@ export class SearchResults extends St.BoxLayout {
         const {searchProviderDisplayId} = menuLayout.menuButton;
         this._displayId = `display_${searchProviderDisplayId}`;
 
-        this.searchType = this._menuLayout.search_display_type;
         this.layout = ArcMenuManager.settings.get_enum('menu-layout');
 
         this._content = new St.BoxLayout({
