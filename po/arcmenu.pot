@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ArcMenu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-01 08:30-0500\n"
+"POT-Creation-Date: 2026-03-08 12:28-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -487,17 +487,17 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: src/search.js:754
-msgid "Searching..."
+#: src/search.js:775
+msgid "Searching"
 msgstr ""
 
-#: src/search.js:756
-msgid "No results."
+#: src/search.js:779
+msgid "No results"
 msgstr ""
 
-#: src/search.js:839
+#: src/search.js:863
 #, javascript-format
-msgid "+ %d more"
+msgid "+%d more"
 msgstr ""
 
 #: src/searchProviders/openWindows.js:31
