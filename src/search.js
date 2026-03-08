@@ -11,6 +11,7 @@ import St from 'gi://St';
 
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
+import {Spinner} from 'resource:///org/gnome/shell/ui/animation.js';
 import {Highlighter} from 'resource:///org/gnome/shell/misc/util.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as RemoteSearch from 'resource:///org/gnome/shell/ui/remoteSearch.js';
@@ -23,6 +24,7 @@ import {OpenWindowSearchProvider} from './searchProviders/openWindows.js';
 import {RecentFilesSearchProvider} from './searchProviders/recentFiles.js';
 import {getOrientationProp} from './utils.js';
 
+const SEARCH_SPINNER_SIZE = 48;
 const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 const FILE_PROVIDERS = ['org.gnome.Nautilus.desktop', 'arcmenu.recent-files', 'nemo.desktop'];
 
@@ -181,18 +183,18 @@ class SearchResultsBase extends St.BoxLayout {
             return;
 
         this._cancellable.cancel();
-        this._cancellable.reset();
+        const cancellable = new Gio.Cancellable();
+        this._cancellable = cancellable;
 
-        const metas = await this.provider.getResultMetas(metasNeeded, this._cancellable);
+        const metas = await this.provider.getResultMetas(metasNeeded, cancellable);
 
-        if (this._cancellable.is_cancelled()) {
+        if (cancellable.is_cancelled()) {
             if (metas.length > 0)
                 throw new Error(`Search provider ${this.provider.id} returned results after the request was canceled`);
         }
 
         if (metas.length !== metasNeeded.length)
             throw new Error(`Wrong number of result metas returned by search provider ${this.provider.id}: expected ${metasNeeded.length} but got ${metas.length}`);
-
 
         if (metas.some(meta => !meta.name || !meta.id))
             throw new Error(`Invalid result meta returned from search provider ${this.provider.id}`);
@@ -204,12 +206,11 @@ class SearchResultsBase extends St.BoxLayout {
         });
     }
 
-    async updateSearch(providerResults, terms, callback) {
+    async updateSearch(providerResults, terms) {
         this._terms = terms;
         if (providerResults.length === 0) {
             this._clearResultDisplay();
             this.hide();
-            callback();
         } else {
             const maxResults = this._getMaxDisplayedResults();
             const results = maxResults > -1
@@ -230,10 +231,9 @@ class SearchResultsBase extends St.BoxLayout {
                     resultId => this._addItem(this._resultDisplays[resultId]));
                 this._setMoreCount(this.provider.canLaunchSearch ? moreCount : 0);
                 this.show();
-                callback();
-            } catch {
+            } catch (e) {
                 this._clearResultDisplay();
-                callback();
+                console.log(e);
             }
         }
     }
@@ -438,9 +438,10 @@ export class SearchResults extends St.BoxLayout {
     constructor(menuLayout) {
         super({
             ...getOrientationProp(true),
-            y_expand: true,
             x_expand: true,
+            y_expand: true,
             x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.FILL,
         });
         this._menuLayout = menuLayout;
 
@@ -456,20 +457,28 @@ export class SearchResults extends St.BoxLayout {
 
         this.add_child(this._content);
 
-        this._statusText = new St.Label();
-        this._statusBin = new St.Bin({
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER,
+        this._statusContainer = new St.BoxLayout({
+            style_class: 'search-statusbox',
+            ...getOrientationProp(true),
             x_expand: true,
             y_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        this._statusSpinner = new Spinner(SEARCH_SPINNER_SIZE);
+        this._statusText = new St.Label({
+            style: 'font-size: 16pt; font-weight: 800;',
         });
 
-        this.add_child(this._statusBin);
-        this._statusBin.set_child(this._statusText);
+        this._statusContainer.add_child(this._statusSpinner);
+        this._statusContainer.add_child(this._statusText);
+
+        this.add_child(this._statusContainer);
 
         this._highlightDefault = true;
         this._defaultResult = null;
         this._startingSearch = false;
+        this._statusSpinnerPlaying = false;
 
         this._terms = [];
         this._results = {};
@@ -600,20 +609,23 @@ export class SearchResults extends St.BoxLayout {
     async _doProviderSearch(provider, previousResults) {
         provider.searchInProgress = true;
 
-        let results;
-        if (this._isSubSearch && previousResults) {
-            results = await provider.getSubsearchResultSet(
-                previousResults,
-                this._terms,
-                this._cancellable);
-        } else {
-            results = await provider.getInitialResultSet(
-                this._terms,
-                this._cancellable);
+        let results = [];
+        const terms = this._terms;
+        try {
+            if (this._isSubSearch && previousResults) {
+                results = await provider.getSubsearchResultSet(
+                    previousResults,
+                    terms,
+                    this._cancellable);
+            } else {
+                results = await provider.getInitialResultSet(
+                    terms,
+                    this._cancellable);
+            }
+        } finally {
+            this._results[provider.id] = results;
+            await this._updateResults(provider, terms, results);
         }
-
-        this._results[provider.id] = results;
-        this._updateResults(provider, results);
     }
 
     _reset() {
@@ -635,7 +647,9 @@ export class SearchResults extends St.BoxLayout {
 
         this._providers.forEach(provider => {
             const previousProviderResults = previousResults[provider.id];
-            this._doProviderSearch(provider, previousProviderResults);
+            this._doProviderSearch(provider, previousProviderResults).catch(e => {
+                console.log(e);
+            });
         });
 
         this._updateSearchProgress();
@@ -664,7 +678,7 @@ export class SearchResults extends St.BoxLayout {
         this.recentFilesManager.cancelCurrentQueries();
 
         this._cancellable.cancel();
-        this._cancellable.reset();
+        this._cancellable = new Gio.Cancellable();
 
         if (terms.length === 0) {
             this._reset();
@@ -746,28 +760,38 @@ export class SearchResults extends St.BoxLayout {
             return display.getFirstResult() !== null;
         });
 
-        this._statusBin.visible = !haveResults;
+        this._content.visible = haveResults;
+        this._statusContainer.visible = !haveResults;
+
         if (haveResults) {
             this.emit('have-results');
         } else if (!haveResults) {
-            if (this.searchInProgress)
-                this._statusText.set_text(_('Searching...'));
-            else
-                this._statusText.set_text(_('No results.'));
+            if (this.searchInProgress) {
+                if (!this._statusSpinnerPlaying) {
+                    this._statusSpinner.play();
+                    this._statusSpinnerPlaying = true;
+                }
 
+                this._statusText.set_text(_('Searching'));
+            } else {
+                this._statusSpinner.stop();
+                this._statusSpinnerPlaying = false;
+                this._statusText.set_text(_('No results'));
+            }
             this.emit('no-results');
         }
     }
 
-    _updateResults(provider, results) {
-        const terms = this._terms;
+    async _updateResults(provider, terms, results) {
         const display = provider[this._displayId];
-        display.updateSearch(results, terms, () => {
+        try {
+            await display.updateSearch(results, terms);
+        } finally {
             provider.searchInProgress = false;
 
             this._maybeSetInitialSelection();
             this._updateSearchProgress();
-        });
+        }
     }
 
     highlightDefault(highlight) {
@@ -836,7 +860,7 @@ export class ArcSearchProviderInfo extends BaseMenuItem {
     }
 
     setMoreCount(count) {
-        this._moreLabel.text = _('+ %d more').format(count);
+        this._moreLabel.text = _('+%d more').format(count);
         this._moreLabel.visible = count > 0;
     }
 }
