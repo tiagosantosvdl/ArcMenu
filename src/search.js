@@ -11,6 +11,7 @@ import St from 'gi://St';
 
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 import {Spinner} from 'resource:///org/gnome/shell/ui/animation.js';
 import {Highlighter} from 'resource:///org/gnome/shell/misc/util.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -24,6 +25,7 @@ import {OpenWindowSearchProvider} from './searchProviders/openWindows.js';
 import {RecentFilesSearchProvider} from './searchProviders/recentFiles.js';
 import {getOrientationProp} from './utils.js';
 
+const [ShellVersion] = Config.PACKAGE_VERSION.split('.').map(s => Number(s));
 const SEARCH_SPINNER_SIZE = 48;
 const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 const FILE_PROVIDERS = ['org.gnome.Nautilus.desktop', 'arcmenu.recent-files', 'nemo.desktop'];
@@ -465,12 +467,13 @@ export class SearchResults extends St.BoxLayout {
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
         });
-        this._statusSpinner = new Spinner(SEARCH_SPINNER_SIZE);
+        this._statusSpinner = ShellVersion >= 49 ? new Spinner(SEARCH_SPINNER_SIZE) : null;
         this._statusText = new St.Label({
-            style: 'font-size: 16pt; font-weight: 800;',
+            style: 'font-size: 14pt; font-weight: 800;',
         });
 
-        this._statusContainer.add_child(this._statusSpinner);
+        if (this._statusSpinner)
+            this._statusContainer.add_child(this._statusSpinner);
         this._statusContainer.add_child(this._statusText);
 
         this.add_child(this._statusContainer);
@@ -768,13 +771,13 @@ export class SearchResults extends St.BoxLayout {
         } else if (!haveResults) {
             if (this.searchInProgress) {
                 if (!this._statusSpinnerPlaying) {
-                    this._statusSpinner.play();
+                    this._statusSpinner?.play();
                     this._statusSpinnerPlaying = true;
                 }
 
                 this._statusText.set_text(_('Searching'));
             } else {
-                this._statusSpinner.stop();
+                this._statusSpinner?.stop();
                 this._statusSpinnerPlaying = false;
                 this._statusText.set_text(_('No results'));
             }
