@@ -26,6 +26,7 @@ import {RecentFilesSearchProvider} from './searchProviders/recentFiles.js';
 import {getOrientationProp} from './utils.js';
 
 const [ShellVersion] = Config.PACKAGE_VERSION.split('.').map(s => Number(s));
+const HAS_SPINNER = ShellVersion >= 48;
 const SEARCH_SPINNER_SIZE = 48;
 const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 const FILE_PROVIDERS = ['org.gnome.Nautilus.desktop', 'arcmenu.recent-files', 'nemo.desktop'];
@@ -460,28 +461,42 @@ export class SearchResults extends St.BoxLayout {
         this.add_child(this._content);
 
         this._statusContainer = new St.BoxLayout({
-            style_class: 'search-statusbox',
             ...getOrientationProp(true),
             x_expand: true,
             y_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
-        });
-        this._statusSpinner = ShellVersion >= 49 ? new Spinner(SEARCH_SPINNER_SIZE) : null;
-        this._statusText = new St.Label({
-            style: 'font-size: 14pt; font-weight: 800;',
+            style: 'padding: 12px 0px; spacing: 12px;',
         });
 
-        if (this._statusSpinner)
-            this._statusContainer.add_child(this._statusSpinner);
+        this._spinner = HAS_SPINNER ? new Spinner(SEARCH_SPINNER_SIZE, {hideOnStop: true}) : null;
+        this._searchIcon = new St.Icon({
+            icon_name: 'edit-find-symbolic',
+            icon_size: SEARCH_SPINNER_SIZE,
+            visible: !HAS_SPINNER,
+        });
+        this._statusText = new St.Label({
+            x_align: Clutter.ActorAlign.CENTER,
+            style: 'font-size: 14pt; font-weight: 800;',
+        });
+        this._noResultsText = new St.Label({
+            x_align: Clutter.ActorAlign.CENTER,
+            text: _('Try a different search'),
+            visible: false,
+        });
+
+        if (this._spinner)
+            this._statusContainer.add_child(this._spinner);
+        this._statusContainer.add_child(this._searchIcon);
         this._statusContainer.add_child(this._statusText);
+        this._statusContainer.add_child(this._noResultsText);
 
         this.add_child(this._statusContainer);
 
         this._highlightDefault = true;
         this._defaultResult = null;
         this._startingSearch = false;
-        this._statusSpinnerPlaying = false;
+        this._spinnerPlaying = false;
 
         this._terms = [];
         this._results = {};
@@ -767,20 +782,20 @@ export class SearchResults extends St.BoxLayout {
         this._statusContainer.visible = !haveResults;
 
         if (haveResults) {
+            this._spinnerPlaying = false;
             this.emit('have-results');
         } else if (!haveResults) {
-            if (this.searchInProgress) {
-                if (!this._statusSpinnerPlaying) {
-                    this._statusSpinner?.play();
-                    this._statusSpinnerPlaying = true;
-                }
+            if (this.searchInProgress && !this._spinnerPlaying)
+                this._spinner?.play();
+            else if (!this.searchInProgress)
+                this._spinner?.stop();
 
-                this._statusText.set_text(_('Searching'));
-            } else {
-                this._statusSpinner?.stop();
-                this._statusSpinnerPlaying = false;
-                this._statusText.set_text(_('No results'));
-            }
+            this._statusText.set_text(
+                this.searchInProgress ? _('Searching') : _('No Results Found')
+            );
+            this._spinnerPlaying = this.searchInProgress;
+            this._searchIcon.visible = HAS_SPINNER ? !this.searchInProgress : true;
+            this._noResultsText.visible = !this.searchInProgress;
             this.emit('no-results');
         }
     }
