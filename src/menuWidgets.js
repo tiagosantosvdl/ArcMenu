@@ -18,6 +18,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as Params from 'resource:///org/gnome/shell/misc/params.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import {showScreenshotUI} from 'resource:///org/gnome/shell/ui/screenshot.js';
+import * as ShellEntry from 'resource:///org/gnome/shell/ui/shellEntry.js';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
 import * as Util from 'resource:///org/gnome/shell/misc/util.js';
 
@@ -3347,6 +3348,7 @@ export class SearchEntry extends St.Entry {
             style_class: 'arcmenu-search-entry',
         });
 
+        ShellEntry.addContextMenu(this);
         this.searchResults = menuLayout.searchResults;
         this._menuLayout = menuLayout;
 
