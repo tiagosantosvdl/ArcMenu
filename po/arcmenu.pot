@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ArcMenu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-08 12:28-0400\n"
+"POT-Creation-Date: 2026-03-11 08:27-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "Frequent Apps"
 msgstr ""
 
-#: src/constants.js:85 src/menuWidgets.js:1194 src/menulayouts/az.js:69
+#: src/constants.js:85 src/menuWidgets.js:1195 src/menulayouts/az.js:69
 #: src/menulayouts/az.js:78 src/menulayouts/eleven.js:55
 #: src/menulayouts/eleven.js:64 src/menulayouts/redmond.js:79
 #: src/menulayouts/redmond.js:82 src/menulayouts/redmond.js:86
@@ -240,7 +240,7 @@ msgstr ""
 msgid "Tweaks"
 msgstr ""
 
-#: src/constants.js:558 src/menuButton.js:788 src/menuWidgets.js:576
+#: src/constants.js:558 src/menuButton.js:788 src/menuWidgets.js:577
 #: src/settings/menuSettings/listPinnedPage.js:366
 #: src/settings/menuSettings/listPinnedPage.js:388
 msgid "Activities Overview"
@@ -270,7 +270,7 @@ msgstr ""
 msgid "Show Desktop"
 msgstr ""
 
-#: src/menuButton.js:833 src/menuWidgets.js:873 src/menuWidgets.js:890
+#: src/menuButton.js:833 src/menuWidgets.js:874 src/menuWidgets.js:891
 msgid "Power Off"
 msgstr ""
 
@@ -282,30 +282,30 @@ msgstr ""
 msgid "App Icons Taskbar Settings"
 msgstr ""
 
-#: src/menuWidgets.js:927 src/menulayouts/plasma.js:328
+#: src/menuWidgets.js:928 src/menulayouts/plasma.js:328
 msgid "Session"
 msgstr ""
 
-#: src/menuWidgets.js:931 src/menulayouts/plasma.js:332
+#: src/menuWidgets.js:932 src/menulayouts/plasma.js:332
 #: src/settings/iconChooserDialog.js:192
 msgid "System"
 msgstr ""
 
-#: src/menuWidgets.js:1118 src/menuWidgets.js:1139 src/menulayouts/az.js:70
+#: src/menuWidgets.js:1119 src/menuWidgets.js:1140 src/menulayouts/az.js:70
 #: src/menulayouts/eleven.js:56 src/menulayouts/redmond.js:80
 #: src/menulayouts/redmond.js:85 src/menulayouts/sleek.js:75
 msgid "Back"
 msgstr ""
 
-#: src/menuWidgets.js:2392 src/menulayouts/pop.js:364
+#: src/menuWidgets.js:2393 src/menulayouts/pop.js:364
 msgid "Unnamed Folder"
 msgstr ""
 
-#: src/menuWidgets.js:2491 src/menulayouts/pop.js:1084
+#: src/menuWidgets.js:2492 src/menulayouts/pop.js:1084
 msgid "New"
 msgstr ""
 
-#: src/menuWidgets.js:3044 src/menulayouts/az.js:77 src/menulayouts/az.js:231
+#: src/menuWidgets.js:3045 src/menulayouts/az.js:77 src/menulayouts/az.js:231
 #: src/menulayouts/eleven.js:63 src/menulayouts/insider.js:188
 #: src/menulayouts/plasma.js:123 src/menulayouts/raven.js:62
 #: src/menulayouts/raven.js:233 src/menulayouts/raven.js:274
@@ -316,19 +316,19 @@ msgstr ""
 msgid "Pinned"
 msgstr ""
 
-#: src/menuWidgets.js:3214
+#: src/menuWidgets.js:3215
 msgid "Unmount Drive"
 msgstr ""
 
-#: src/menuWidgets.js:3216
+#: src/menuWidgets.js:3217
 msgid "Eject Drive"
 msgstr ""
 
-#: src/menuWidgets.js:3260
+#: src/menuWidgets.js:3261
 msgid "Remove from Recent"
 msgstr ""
 
-#: src/menuWidgets.js:3340
+#: src/menuWidgets.js:3341
 msgid "Search…"
 msgstr ""
 
@@ -487,15 +487,19 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: src/search.js:775
+#: src/search.js:484
+msgid "Try a different search"
+msgstr ""
+
+#: src/search.js:794
+msgid "No Results Found"
+msgstr ""
+
+#: src/search.js:794
 msgid "Searching"
 msgstr ""
 
-#: src/search.js:779
-msgid "No results"
-msgstr ""
-
-#: src/search.js:863
+#: src/search.js:881
 #, javascript-format
 msgid "+%d more"
 msgstr ""
