@@ -4,34 +4,28 @@
 export default [
     {
         rules: {
-            camelcase: [
-                'error',
-                {
-                    properties: 'never',
-                    allow: ['^vfunc_', '^on_'],
-                },
-            ],
+            camelcase: ['error', {
+                properties: 'never',
+                allow: ['^vfunc_', '^on_'],
+            }],
             'consistent-return': 'error',
             eqeqeq: ['error', 'smart'],
-            'key-spacing': [
-                'error',
-                {
-                    mode: 'minimum',
-                    beforeColon: false,
-                    afterColon: true,
-                },
-            ],
+            'key-spacing': ['error', {
+                mode: 'minimum',
+                beforeColon: false,
+                afterColon: true,
+            }],
             'prefer-arrow-callback': 'error',
+            'prefer-const': ['error', {
+                destructuring: 'all',
+            }],
             'jsdoc/require-param-description': 'off',
-            'jsdoc/require-jsdoc': [
-                'error',
-                {
-                    exemptEmptyFunctions: true,
-                    publicOnly: {
-                        esm: true,
-                    },
+            'jsdoc/require-jsdoc': ['error', {
+                exemptEmptyFunctions: true,
+                publicOnly: {
+                    esm: true,
                 },
-            ],
+            }],
         },
     },
     {
