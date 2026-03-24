@@ -240,6 +240,7 @@ export default [
             'no-useless-constructor': 'error',
             'no-useless-rename': 'error',
             'no-useless-return': 'error',
+            'no-var': 'error',
             'no-whitespace-before-property': 'error',
             'no-with': 'error',
             'nonblock-statement-body-position': ['error', 'below'],
