@@ -258,7 +258,7 @@ class ArcMenuGeneralPage extends Adw.PreferencesPage {
     }
 });
 
-var HotkeyDialog = GObject.registerClass({
+const HotkeyDialog = GObject.registerClass({
     Signals: {
         'response': {param_types: [GObject.TYPE_INT]},
     },

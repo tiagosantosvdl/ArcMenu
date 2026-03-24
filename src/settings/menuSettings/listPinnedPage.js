@@ -326,7 +326,7 @@ class ArcMenuListPinnedPage extends SubPage {
     }
 });
 
-var AddAppsToPinnedListWindow = GObject.registerClass(
+const AddAppsToPinnedListWindow = GObject.registerClass(
 class ArcMenuAddAppsToPinnedListWindow extends PW.DialogWindow {
     _init(settings, parent, dialogType, settingString) {
         this._settings = settings;
@@ -561,7 +561,7 @@ class ArcMenuAddAppsToPinnedListWindow extends PW.DialogWindow {
     }
 });
 
-var AddCustomLinkDialogWindow = GObject.registerClass(
+const AddCustomLinkDialogWindow = GObject.registerClass(
 class ArcMenuAddCustomLinkDialogWindow extends PW.HeaderBarDialog {
     _init(settings, parent, dialogType, shortcutData = null) {
         let title = _('Add a Custom Shortcut');

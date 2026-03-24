@@ -734,7 +734,7 @@ export const ArcMenu = class ArcMenuArcMenu extends PopupMenu.PopupMenu {
     }
 };
 
-var ArcMenuContextMenu = class ArcMenuArcMenuContextMenu extends PopupMenu.PopupMenu {
+const ArcMenuContextMenu = class ArcMenuArcMenuContextMenu extends PopupMenu.PopupMenu {
     constructor(sourceActor, arrowAlignment, arrowSide) {
         super(sourceActor, arrowAlignment, arrowSide);
         this._systemActions = SystemActions.getDefault();

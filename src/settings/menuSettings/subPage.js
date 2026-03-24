@@ -84,7 +84,7 @@ class ArcMenuSubPage extends Adw.NavigationPage {
     }
 });
 
-var PrefsPage = GObject.registerClass(
+const PrefsPage = GObject.registerClass(
 class ArcMenuPrefsPage extends Adw.PreferencesPage {
     _init(params) {
         super._init(params);

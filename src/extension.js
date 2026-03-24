@@ -228,7 +228,7 @@ export default class ArcMenu extends Extension {
         let isFirstPanel = true;
 
         const panelsCount = multiMonitor ? panels.length : Math.min(panels.length, 1);
-        for (var i = 0; i < panelsCount; i++) {
+        for (let i = 0; i < panelsCount; i++) {
             if (!panels[i]) {
                 console.log(`ArcMenu Error: panel ${i} not found. Skipping...`);
                 continue;

@@ -299,7 +299,7 @@ class ArcMenuVisualSettingsPage extends SubPage {
     }
 });
 
-var CustomGridIconDialogWindow = GObject.registerClass(
+const CustomGridIconDialogWindow = GObject.registerClass(
 class ArcMenuCustomGridIconDialogWindow extends PW.DialogWindow {
     _init(settings, parent) {
         super._init(_('Custom Grid Icon Size'), parent);
