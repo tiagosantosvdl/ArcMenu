@@ -616,6 +616,10 @@
       <default>false</default>
       <summary>Activate existing window instead of opening new one on application launch.</summary>
     </key>
+    <key type="b" name="keep-open-on-ctrl-click">
+      <default>true</default>
+      <summary>Keep ArcMenu open when activating an item with Ctrl pressed.</summary>
+    </key>
 
     <!--Deprecated-->
     <!--Use new settings 'menu-button-text', 'menu-button-icon', 'menu-button-icon-size', 'menu-button-padding'-->

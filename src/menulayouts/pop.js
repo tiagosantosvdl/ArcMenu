@@ -1215,7 +1215,7 @@ export class ApplicationMenuItem extends MW.DraggableMenuItem {
 
         MW.launchApp(this._app, event);
 
-        this._menuLayout.arcMenu.toggle();
+        this._menuLayout.closeArcMenu();
         super.activate(event);
     }
 }

@@ -268,7 +268,7 @@ class ListSearchResults extends SearchResultsBase {
         this.providerInfo.connect('activate', () => {
             if (provider.canLaunchSearch) {
                 provider.launchSearch(this._terms);
-                this._menuLayout.arcMenu.toggle();
+                this._menuLayout.closeArcMenu();
             }
         });
         this._container.add_child(this.providerInfo);

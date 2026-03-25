@@ -160,6 +160,19 @@ export class BaseMenuLayout extends St.BoxLayout {
         return this._menuButton;
     }
 
+    closeArcMenu() {
+        const event = Clutter.get_current_event();
+        const state = event ? event.get_state() : 0;
+        const isCtrlPressed = (state & Clutter.ModifierType.CONTROL_MASK) !== 0;
+        const keepOpen = ArcMenuManager.settings.get_boolean('keep-open-on-ctrl-click');
+
+        if (isCtrlPressed && keepOpen)
+            return;
+
+        if (this.arcMenu.isOpen)
+            this.arcMenu.toggle();
+    }
+
     setDefaultMenuView() {
         this.searchEntry.clearWithoutSearchChangeEvent();
         if (this._shouldHideSearchEntry())

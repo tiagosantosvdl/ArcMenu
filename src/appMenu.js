@@ -156,7 +156,7 @@ export const AppContextMenu = class ArcMenuAppContextMenu extends AppMenu {
 
     closeMenus() {
         this.close();
-        this._menuLayout.arcMenu.toggle();
+        this._menuLayout.closeArcMenu();
     }
 
     _createMenuItem(labelText, position, callback) {

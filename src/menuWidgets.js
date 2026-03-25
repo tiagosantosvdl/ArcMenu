@@ -262,11 +262,16 @@ export class BaseMenuItem extends St.BoxLayout {
     _onClicked(action) {
         const isPrimaryOrTouch = action.get_button() === Clutter.BUTTON_PRIMARY || action.get_button() === 0;
         const isMiddleButton = action.get_button() === Clutter.BUTTON_MIDDLE || action.get_button() === 2;
+
+        const event = Clutter.get_current_event();
+        const isCtrlPressed = (event.get_state() & Clutter.ModifierType.CONTROL_MASK) !== 0;
+        const keepOpen = ArcMenuManager.settings.get_boolean('keep-open-on-ctrl-click');
+
         if (isPrimaryOrTouch || isMiddleButton) {
-            this.active = false;
-            this._menuLayout.grab_key_focus();
-            this.remove_style_pseudo_class('active');
-            this.activate(Clutter.get_current_event());
+            if (!keepOpen || !isCtrlPressed)
+                this.active = false;
+
+            this.activate(event);
         } else if (action.get_button() === Clutter.BUTTON_SECONDARY && ShellVersion < 49) {
             this.popupMenu();
         } else if (action.get_button() === 8) {
@@ -274,8 +279,7 @@ export class BaseMenuItem extends St.BoxLayout {
             if (backButton && backButton.visible) {
                 this.active = false;
                 this._menuLayout.grab_key_focus();
-                this.remove_style_pseudo_class('active');
-                backButton.activate(Clutter.get_current_event());
+                backButton.activate(event);
             }
         }
     }
@@ -434,6 +438,8 @@ export class BaseMenuItem extends St.BoxLayout {
             return super.vfunc_key_press_event(event);
 
         let state = event.get_state();
+        const isCtrlPressed = (state & Clutter.ModifierType.CONTROL_MASK) !== 0;
+        const keepOpen = ArcMenuManager.settings.get_boolean('keep-open-on-ctrl-click');
 
         // if user has a modifier down (except control, capslock and numlock)
         // then don't handle the key press here
@@ -447,8 +453,9 @@ export class BaseMenuItem extends St.BoxLayout {
 
         const symbol = event.get_key_symbol();
         if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter) {
-            this.active = false;
-            this._menuLayout.grab_key_focus();
+            if (!keepOpen || !isCtrlPressed)
+                this.active = false;
+
             this.activate(Clutter.get_current_event());
             return Clutter.EVENT_STOP;
         } else if (symbol === Clutter.KEY_Menu && this.hasContextMenu) {
@@ -595,7 +602,7 @@ export class ActivitiesMenuItem extends BaseMenuItem {
     activate(event) {
         Main.overview.show();
         super.activate(event);
-        this._menuLayout.arcMenu.toggle();
+        this._menuLayout.closeArcMenu();
     }
 }
 
@@ -805,7 +812,7 @@ export class ArcMenuButtonItem extends BaseMenuItem {
 
     activate(event) {
         if (this._closeMenuOnActivate)
-            this._menuLayout.arcMenu.toggle();
+            this._menuLayout.closeArcMenu();
         super.activate(event);
     }
 
@@ -1046,7 +1053,7 @@ export class PowerMenuItem extends BaseMenuItem {
 
     activate(event) {
         super.activate(event);
-        this._menuLayout.arcMenu.toggle();
+        this._menuLayout.closeArcMenu();
         activatePowerOption(this.powerType);
     }
 }
@@ -1390,7 +1397,7 @@ export class ShortcutMenuItem extends BaseMenuItem {
                 Util.spawnCommandLine(this._command);
         }
         }
-        this._menuLayout.arcMenu.toggle();
+        this._menuLayout.closeArcMenu();
     }
 }
 
@@ -1423,7 +1430,7 @@ export class AvatarMenuItem extends BaseMenuItem {
     activate(event) {
         const userSettingsCommand = ShellVersion >= 46 ? 'system users' : 'user-accounts';
         Util.spawnCommandLine(`gnome-control-center ${userSettingsCommand}`);
-        this._menuLayout.arcMenu.toggle();
+        this._menuLayout.closeArcMenu();
         super.activate(event);
     }
 }
@@ -2408,7 +2415,7 @@ export class PinnedAppsMenuItem extends DraggableMenuItem {
         else
             Util.spawnCommandLine(this._command);
 
-        this._menuLayout.arcMenu.toggle();
+        this._menuLayout.closeArcMenu();
         super.activate(event);
     }
 
@@ -2607,7 +2614,7 @@ export class ApplicationMenuItem extends BaseMenuItem {
             launchApp(this._app, event);
             super.activate(event);
         }
-        this._menuLayout.arcMenu.toggle();
+        this._menuLayout.closeArcMenu();
     }
 }
 
@@ -3313,7 +3320,7 @@ export class PlaceMenuItem extends BaseMenuItem {
 
     activate(event) {
         this._info.launch(event.get_time());
-        this._menuLayout.arcMenu.toggle();
+        this._menuLayout.closeArcMenu();
         super.activate(event);
     }
 
@@ -3515,7 +3522,7 @@ class ArcMenuWorldClocksWidget extends GWorldClocksWidget {
     }
 
     vfunc_clicked() {
-        this._menuLayout.arcMenu.toggle();
+        this._menuLayout.closeArcMenu();
         if (this._clocksApp)
             this._clocksApp.activate();
     }
@@ -3549,7 +3556,7 @@ class ArcMenuWeatherWidget extends GWeatherWidget {
     }
 
     vfunc_clicked() {
-        this._menuLayout.arcMenu.toggle();
+        this._menuLayout.closeArcMenu();
         this._weatherClient.activateApp();
     }
 });
