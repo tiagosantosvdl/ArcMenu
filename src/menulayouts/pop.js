@@ -118,6 +118,7 @@ export class Layout extends BaseMenuLayout {
             column_spacing: 6,
             row_spacing: 6,
             halign: Clutter.ActorAlign.CENTER,
+            first_row_align: Clutter.ActorAlign.CENTER,
         });
         this._setFolderGridColumns();
         this.foldersContainer.add_child(this.foldersGrid);
