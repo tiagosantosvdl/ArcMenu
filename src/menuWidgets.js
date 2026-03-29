@@ -1165,8 +1165,8 @@ export class BackButton extends BaseMenuItem {
     }
 
     activate(event) {
-        const layout = ArcMenuManager.settings.get_enum('menu-layout');
-        if (layout === Constants.MenuLayout.ARCMENU) {
+        const layout = ArcMenuManager.settings.get_string('menu-layout');
+        if (layout === 'arcmenu') {
             // If the current page is inside a category and
             // previous page was the categories page,
             // go back to categories page
@@ -1176,7 +1176,7 @@ export class BackButton extends BaseMenuItem {
                 this._menuLayout.displayCategories();
             else
                 this._menuLayout.setDefaultMenuView();
-        } else if (layout === Constants.MenuLayout.TOGNEE) {
+        } else if (layout === 'tognee') {
             this._menuLayout.setDefaultMenuView();
         }
         super.activate(event);
@@ -1291,9 +1291,9 @@ export class ShortcutMenuItem extends BaseMenuItem {
             y_align: Clutter.ActorAlign.CENTER,
         });
 
-        const layout = ArcMenuManager.settings.get_enum('menu-layout');
-        if (layout === Constants.MenuLayout.PLASMA &&
-            ArcMenuManager.settings.get_boolean('apps-show-extra-details') && this._app) {
+        const showAppDetails = ArcMenuManager.settings.get_boolean('apps-show-extra-details');
+        const layout = ArcMenuManager.settings.get_string('menu-layout');
+        if (layout === 'plasma' && showAppDetails && this._app) {
             const labelBox = new St.BoxLayout({
                 ...Utils.getOrientationProp(true),
             });

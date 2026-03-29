@@ -233,7 +233,7 @@ class ArcMenuGeneralPage extends Adw.PreferencesPage {
                     title: _('%s Layout Tweaks').format(_('Runner')),
                 });
                 this._window.push_subpage(runnerTweaksPage);
-                runnerTweaksPage.setActiveLayout(Constants.MenuLayout.RUNNER);
+                runnerTweaksPage.setActiveLayout('runner');
                 runnerTweaksPage.resetScrollAdjustment();
             });
             customHotkeyRow.add_prefix(configureButton);

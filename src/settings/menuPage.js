@@ -45,8 +45,9 @@ class ArcMenuMenuPage extends Adw.PreferencesPage {
         });
         this.layoutRow.settingPage.connect('response', (_w, response) => {
             if (response === Gtk.ResponseType.APPLY) {
-                const layoutName = SettingsUtils.getMenuLayoutName(this._settings.get_enum('menu-layout'));
-                this.tweaksRow.title = _('%s Layout Tweaks').format(_(layoutName));
+                const layoutId = this._settings.get_string('menu-layout');
+                const layoutInfo = SettingsUtils.getMenuLayoutInfo(layoutId);
+                this.tweaksRow.title = _('%s Layout Tweaks').format(_(layoutInfo.title));
             }
         });
         menuLooksGroup.add(this.layoutRow);
@@ -86,9 +87,10 @@ class ArcMenuMenuPage extends Adw.PreferencesPage {
         });
         this.add(whatToShowGroup);
 
-        const layoutName = SettingsUtils.getMenuLayoutName(this._settings.get_enum('menu-layout'));
+        const layoutId = this._settings.get_string('menu-layout');
+        const layoutInfo = SettingsUtils.getMenuLayoutInfo(layoutId);
         this.tweaksRow = new PW.SettingRow({
-            title: _('%s Layout Tweaks').format(_(layoutName)),
+            title: _('%s Layout Tweaks').format(_(layoutInfo.title)),
             subtitle: _('Settings specific to the current menu layout'),
             icon_name: 'applications-system-symbolic',
         });
@@ -179,9 +181,9 @@ class ArcMenuMenuPage extends Adw.PreferencesPage {
         });
         contextMenuGroup.add(contextMenuRow);
 
-        SettingsUtils.setVisibleRows(visibleRow, this._settings.get_enum('menu-layout'));
+        SettingsUtils.setVisibleRows(visibleRow, this._settings.get_string('menu-layout'));
         this._settings.connect('changed::menu-layout', () =>
-            SettingsUtils.setVisibleRows(visibleRow, this._settings.get_enum('menu-layout')));
+            SettingsUtils.setVisibleRows(visibleRow, this._settings.get_string('menu-layout')));
     }
 
     _addSubPageToRow(row, pageParams) {
@@ -198,7 +200,7 @@ class ArcMenuMenuPage extends Adw.PreferencesPage {
             this._window.push_subpage(settingPage);
 
             if (settingPage.setActiveLayout)
-                settingPage.setActiveLayout(this._settings.get_enum('menu-layout'));
+                settingPage.setActiveLayout(this._settings.get_string('menu-layout'));
 
             settingPage.resetScrollAdjustment();
         });
@@ -215,7 +217,7 @@ class ArcMenuMenuPage extends Adw.PreferencesPage {
         } else if (subpage === Constants.SettingsPage.RUNNER_TWEAKS) {
             const row = this.tweaksRow;
             this._window.push_subpage(row.settingPage);
-            row.settingPage.setActiveLayout(Constants.MenuLayout.RUNNER);
+            row.settingPage.setActiveLayout('runner');
         }
     }
 });

@@ -265,188 +265,38 @@ export const PowerOptions = [
     {TYPE: PowerType.SWITCH_USER, IMAGE: 'system-switch-user-symbolic', NAME: _('Switch User')},
 ];
 
-export const MenuLayout = {
-    ARCMENU: 0,
-    BRISK: 1,
-    WHISKER: 2,
-    GNOME_MENU: 3,
-    MINT: 4,
-    ELEMENTARY: 5,
-    GNOME_OVERVIEW: 6,
-    REDMOND: 7,
-    UNITY: 8,
-    BUDGIE: 9,
-    INSIDER: 10,
-    RUNNER: 11,
-    CHROMEBOOK: 12,
-    RAVEN: 13,
-    TOGNEE: 14,
-    PLASMA: 15,
-    WINDOWS: 16,
-    ELEVEN: 17,
-    AZ: 18,
-    ENTERPRISE: 19,
-    POP: 20,
-    SLEEK: 21,
-    ZEST: 22,
-};
-
-export const TraditionalMenus = [
-    {
-        LAYOUT: MenuLayout.ARCMENU,
-        TITLE: _('ArcMenu'),
-        IMAGE: 'menu-arcmenu-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.BRISK,
-        TITLE: _('Brisk'),
-        IMAGE: 'menu-brisk-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.WHISKER,
-        TITLE: _('Whisker'),
-        IMAGE: 'menu-whisker-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.GNOME_MENU,
-        TITLE: _('GNOME Menu'),
-        IMAGE: 'menu-gnomemenu-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.MINT,
-        TITLE: _('Mint'),
-        IMAGE: 'menu-mint-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.BUDGIE,
-        TITLE: _('Budgie'),
-        IMAGE: 'menu-budgie-symbolic',
-    },
+export const LayoutCategoriesInfo = [
+    {id: 'traditional', title: _('Traditional'), image: 'menustyle-traditional-symbolic'},
+    {id: 'modern',      title: _('Modern'),      image: 'menustyle-modern-symbolic'},
+    {id: 'touch',       title: _('Touch'),       image: 'menustyle-touch-symbolic'},
+    {id: 'launcher',    title: _('Launcher'),    image: 'menustyle-launcher-symbolic'},
+    {id: 'alternative', title: _('Alternative'), image: 'menustyle-alternative-symbolic'},
 ];
 
-export const ModernMenus = [
-    {
-        LAYOUT: MenuLayout.UNITY,
-        TITLE: _('Unity'),
-        IMAGE: 'menu-unity-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.PLASMA,
-        TITLE: _('Plasma'),
-        IMAGE: 'menu-plasma-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.TOGNEE,
-        TITLE: _('tognee'),
-        IMAGE: 'menu-tognee-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.INSIDER,
-        TITLE: _('Insider'),
-        IMAGE: 'menu-insider-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.REDMOND,
-        TITLE: _('Redmond'),
-        IMAGE: 'menu-redmond-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.WINDOWS,
-        TITLE: _('Windows'),
-        IMAGE: 'menu-windows-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.ELEVEN,
-        TITLE: _('11'),
-        IMAGE: 'menu-eleven-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.AZ,
-        TITLE: _('a.z.'),
-        IMAGE: 'menu-az-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.ENTERPRISE,
-        TITLE: _('Enterprise'),
-        IMAGE: 'menu-enterprise-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.POP,
-        TITLE: _('Pop'),
-        IMAGE: 'menu-pop-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.SLEEK,
-        TITLE: _('Sleek'),
-        IMAGE: 'menu-sleek-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.ZEST,
-        TITLE: _('Zest'),
-        IMAGE: 'menu-zest-symbolic',
-    },
-];
-
-export const TouchMenus = [
-    {
-        LAYOUT: MenuLayout.ELEMENTARY,
-        TITLE: _('Elementary'),
-        IMAGE: 'menu-elementary-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.CHROMEBOOK,
-        TITLE: _('Chromebook'),
-        IMAGE: 'menu-chromebook-symbolic',
-    },
-];
-
-export const LauncherMenus = [
-    {
-        LAYOUT: MenuLayout.RUNNER,
-        TITLE: _('Runner'),
-        IMAGE: 'menu-runner-symbolic',
-    },
-    {
-        LAYOUT: MenuLayout.GNOME_OVERVIEW,
-        TITLE: _('GNOME Overview'),
-        IMAGE: 'menu-gnomeoverview-symbolic',
-    },
-];
-
-export const AlternativeMenus = [
-    {
-        LAYOUT: MenuLayout.RAVEN,
-        TITLE: _('Raven'),
-        IMAGE: 'menu-raven-symbolic',
-    },
-];
-
-export const MenuStyles = [
-    {
-        MENU_TYPE: TraditionalMenus,
-        TITLE: _('Traditional'),
-        IMAGE: 'menustyle-traditional-symbolic',
-    },
-    {
-        MENU_TYPE: ModernMenus,
-        TITLE: _('Modern'),
-        IMAGE: 'menustyle-modern-symbolic',
-    },
-    {
-        MENU_TYPE: TouchMenus,
-        TITLE: _('Touch'),
-        IMAGE: 'menustyle-touch-symbolic',
-    },
-    {
-        MENU_TYPE: LauncherMenus,
-        TITLE: _('Launcher'),
-        IMAGE: 'menustyle-launcher-symbolic',
-    },
-    {
-        MENU_TYPE: AlternativeMenus,
-        TITLE: _('Alternative'),
-        IMAGE: 'menustyle-alternative-symbolic',
-    },
+export const MenuLayoutsInfo = [
+    {id: 'arcmenu',        title: _('ArcMenu'),        category: 'traditional'},
+    {id: 'brisk',          title: _('Brisk'),          category: 'traditional'},
+    {id: 'budgie',         title: _('Budgie'),         category: 'traditional'},
+    {id: 'gnome-menu',     title: _('GNOME Menu'),     category: 'traditional'},
+    {id: 'mint',           title: _('Mint'),           category: 'traditional'},
+    {id: 'whisker',        title: _('Whisker'),        category: 'traditional'},
+    {id: '11',             title: _('11'),             category: 'modern'},
+    {id: 'az',             title: _('a.z.'),           category: 'modern'},
+    {id: 'enterprise',     title: _('Enterprise'),     category: 'modern'},
+    {id: 'insider',        title: _('Insider'),        category: 'modern'},
+    {id: 'plasma',         title: _('Plasma'),         category: 'modern'},
+    {id: 'pop',            title: _('Pop'),            category: 'modern'},
+    {id: 'redmond',        title: _('Redmond'),        category: 'modern'},
+    {id: 'sleek',          title: _('Sleek'),          category: 'modern'},
+    {id: 'tognee',         title: _('tognee'),         category: 'modern'},
+    {id: 'unity',          title: _('Unity'),          category: 'modern'},
+    {id: 'windows',        title: _('Windows'),        category: 'modern'},
+    {id: 'zest',           title: _('Zest'),           category: 'modern'},
+    {id: 'chromebook',     title: _('Chromebook'),     category: 'touch'},
+    {id: 'elementary',     title: _('Elementary'),     category: 'touch'},
+    {id: 'gnome-overview', title: _('GNOME Overview'), category: 'launcher'},
+    {id: 'runner',         title: _('Runner'),         category: 'launcher'},
+    {id: 'raven',          title: _('Raven'),          category: 'alternative'},
 ];
 
 export const ArcMenuLogoSymbolic = 'arcmenu-logo-symbolic';

@@ -141,16 +141,16 @@
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menustyle-modern-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menustyle-touch-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menustyle-traditional-symbolic.svg</file>
+    <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-11-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-arcmenu-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-az-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-brisk-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-budgie-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-chromebook-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-elementary-symbolic.svg</file>
-    <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-eleven-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-enterprise-symbolic.svg</file>
-    <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-gnomemenu-symbolic.svg</file>
-    <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-gnomeoverview-symbolic.svg</file>
+    <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-gnome-menu-symbolic.svg</file>
+    <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-gnome-overview-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-insider-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-mint-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/emblems/menu-plasma-symbolic.svg</file>
