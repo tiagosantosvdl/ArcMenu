@@ -3451,6 +3451,11 @@ export class SearchEntry extends St.Entry {
         const symbol = event.get_key_symbol();
         const searchResult = this.searchResults.getTopResult();
 
+        if (symbol === Clutter.KEY_Down) {
+            const navigateActor = searchResult ?? this._menuLayout.activeMenuItem;
+            navigateActor.navigate_focus(global.stage.key_focus, St.DirectionType.DOWN, false);
+            return Clutter.EVENT_STOP;
+        }
         if (!this.isEmpty() && searchResult) {
             if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter) {
                 searchResult.activate();
