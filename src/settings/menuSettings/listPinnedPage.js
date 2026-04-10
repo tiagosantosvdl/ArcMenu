@@ -46,10 +46,7 @@ function getSettings(schema, path) {
 
     const schemaObj = schemaSource.lookup(schema, true);
     if (!schemaObj) {
-        log(
-            `Schema ${schema} could not be found for extension ${
-                extension.metadata.uuid}. Please check your installation.`
-        );
+        console.warn(`Schema ${schema} could not be found for ArcMenu. Please check your installation.`);
         return null;
     }
 

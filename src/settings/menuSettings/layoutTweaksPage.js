@@ -937,8 +937,7 @@ class ArcMenuLayoutTweaksPage extends SubPage {
 
         const extraCategoriesGroup = new Adw.PreferencesGroup({
             title: _('Category Quick Links'),
-            description: _('Display quick links of extra categories on the home page\n' +
-                "Must also be enabled in 'Menu -> Extra Categories' section"),
+            description: _('Display a category on the default menu view. Category must be enabled in ArcMenu Settings -> Menu -> Extra Categories section.'),
         });
         const extraCategoriesLinksBox = new ListOtherPage(this._settings, {
             preferences_page: false,

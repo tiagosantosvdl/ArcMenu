@@ -166,21 +166,21 @@ export class Debouncer {
     _cancel(id) {
         if (this._timers.has(id)) {
             const timeoutId = this._timers.get(id);
-            GLib.source_remove(timeoutId);
+            GLib.Source.remove(timeoutId);
             this._timers.delete(id);
         }
         if (this._idles.has(id)) {
             const timeoutId = this._idles.get(id);
-            GLib.source_remove(timeoutId);
+            GLib.Source.remove(timeoutId);
             this._idles.delete(id);
         }
     }
 
     destroy() {
         for (const id of this._timers.values())
-            GLib.source_remove(id);
+            GLib.Source.remove(id);
         for (const id of this._idles.values())
-            GLib.source_remove(id);
+            GLib.Source.remove(id);
 
         this._idles.clear();
         this._idles = null;
