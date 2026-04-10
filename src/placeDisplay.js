@@ -325,7 +325,7 @@ export const PlacesManager = class ArcMenuPlacesManager extends EventEmitter {
             this._monitor.cancel();
         this._monitor = null;
         if (this._bookmarkTimeoutId)
-            GLib.source_remove(this._bookmarkTimeoutId);
+            GLib.Source.remove(this._bookmarkTimeoutId);
     }
 
     _updateSpecials() {

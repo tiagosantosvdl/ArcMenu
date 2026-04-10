@@ -1641,7 +1641,7 @@ export class DraggableMenuItem extends BaseMenuItem {
         const {source, destroyId, timeoutId} = this._delayedMoveData;
 
         if (timeoutId > 0)
-            GLib.source_remove(timeoutId);
+            GLib.Source.remove(timeoutId);
 
         if (destroyId > 0)
             source.disconnect(destroyId);
@@ -1760,7 +1760,7 @@ export class DraggableMenuItem extends BaseMenuItem {
         } else {
             DND.removeDragMonitor(this._hoveringDragMonitor);
             if (this._folderPreviewId > 0) {
-                GLib.source_remove(this._folderPreviewId);
+                GLib.Source.remove(this._folderPreviewId);
                 this._folderPreviewId = 0;
             }
             this._hideFolderPreview();
@@ -1860,7 +1860,7 @@ export class DraggableMenuItem extends BaseMenuItem {
         super._onDestroy();
 
         if (this._folderPreviewId > 0) {
-            GLib.source_remove(this._folderPreviewId);
+            GLib.Source.remove(this._folderPreviewId);
             this._folderPreviewId = 0;
         }
     }
@@ -3081,7 +3081,7 @@ export class CategoryMenuItem extends BaseMenuItem {
 
     _clearLeaveEventTimeout() {
         if (this._menuLayout.leaveEventTimeoutId) {
-            GLib.source_remove(this._menuLayout.leaveEventTimeoutId);
+            GLib.Source.remove(this._menuLayout.leaveEventTimeoutId);
             this._menuLayout.leaveEventTimeoutId = null;
         }
     }

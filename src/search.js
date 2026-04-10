@@ -619,7 +619,7 @@ export class SearchResults extends St.BoxLayout {
 
     _clearSearchTimeout() {
         if (this._searchTimeoutId) {
-            GLib.source_remove(this._searchTimeoutId);
+            GLib.Source.remove(this._searchTimeoutId);
             this._searchTimeoutId = null;
         }
     }
@@ -878,7 +878,7 @@ export class ArcSearchProviderInfo extends BaseMenuItem {
     }
 
     setMoreCount(count) {
-        this._moreLabel.text = _('+%d more').format(count);
+        this._moreLabel.text = _('%d more').format(count);
         this._moreLabel.visible = count > 0;
     }
 }

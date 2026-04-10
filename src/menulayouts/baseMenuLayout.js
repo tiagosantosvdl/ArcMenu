@@ -536,7 +536,7 @@ export class BaseMenuLayout extends St.BoxLayout {
                     try {
                         this.recentFilesManager.removeItem(placeMenuItem.fileUri);
                     } catch (err) {
-                        log(err);
+                        console.warn(err);
                     }
                     box.remove_child(placeMenuItem);
                     box.queue_relayout();
@@ -688,10 +688,7 @@ export class BaseMenuLayout extends St.BoxLayout {
 
         const schemaObj = schemaSource.lookup(schema, true);
         if (!schemaObj) {
-            log(
-                `Schema ${schema} could not be found for extension ${
-                    ArcMenuManager.extension.metadata.uuid}. Please check your installation.`
-            );
+            console.warn(`Schema ${schema} could not be found for ArcMenu. Please check your installation.`);
             return null;
         }
 

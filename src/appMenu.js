@@ -64,12 +64,7 @@ export const AppContextMenu = class ArcMenuAppContextMenu extends AppMenu {
             this.close();
 
             if (this._pinnedAppData) {
-                let sourceSettings;
-                const isFolder = this.sourceActor.folderSettings;
-                if (isFolder)
-                    sourceSettings = this.sourceActor.folderSettings;
-                else
-                    sourceSettings = ArcMenuManager.settings;
+                const sourceSettings = this.sourceActor.folderSettings ?? ArcMenuManager.settings;
 
                 const pinnedAppsList = sourceSettings.get_value('pinned-apps').deepUnpack();
                 for (let i = 0; i < pinnedAppsList.length; i++) {

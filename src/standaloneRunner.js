@@ -92,7 +92,7 @@ export const StandaloneRunner = class ArcMenuStandaloneRunner {
 
     clearTooltipShowingId() {
         if (this._tooltipShowingID) {
-            GLib.source_remove(this._tooltipShowingID);
+            GLib.Source.remove(this._tooltipShowingID);
             this._tooltipShowingID = null;
         }
     }
