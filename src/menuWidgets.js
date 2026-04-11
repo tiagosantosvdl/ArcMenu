@@ -268,6 +268,7 @@ export class BaseMenuItem extends St.BoxLayout {
         const keepOpen = ArcMenuManager.settings.get_boolean('keep-open-on-ctrl-click');
 
         if (isPrimaryOrTouch || isMiddleButton) {
+            this._menuLayout.grab_key_focus();
             if (!keepOpen || !isCtrlPressed)
                 this.active = false;
 
@@ -453,6 +454,7 @@ export class BaseMenuItem extends St.BoxLayout {
 
         const symbol = event.get_key_symbol();
         if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter) {
+            this._menuLayout.grab_key_focus();
             if (!keepOpen || !isCtrlPressed)
                 this.active = false;
 
@@ -1639,7 +1641,7 @@ export class DraggableMenuItem extends BaseMenuItem {
         const {source, destroyId, timeoutId} = this._delayedMoveData;
 
         if (timeoutId > 0)
-            GLib.source_remove(timeoutId);
+            GLib.Source.remove(timeoutId);
 
         if (destroyId > 0)
             source.disconnect(destroyId);
@@ -1758,7 +1760,7 @@ export class DraggableMenuItem extends BaseMenuItem {
         } else {
             DND.removeDragMonitor(this._hoveringDragMonitor);
             if (this._folderPreviewId > 0) {
-                GLib.source_remove(this._folderPreviewId);
+                GLib.Source.remove(this._folderPreviewId);
                 this._folderPreviewId = 0;
             }
             this._hideFolderPreview();
@@ -1858,7 +1860,7 @@ export class DraggableMenuItem extends BaseMenuItem {
         super._onDestroy();
 
         if (this._folderPreviewId > 0) {
-            GLib.source_remove(this._folderPreviewId);
+            GLib.Source.remove(this._folderPreviewId);
             this._folderPreviewId = 0;
         }
     }
@@ -3079,7 +3081,7 @@ export class CategoryMenuItem extends BaseMenuItem {
 
     _clearLeaveEventTimeout() {
         if (this._menuLayout.leaveEventTimeoutId) {
-            GLib.source_remove(this._menuLayout.leaveEventTimeoutId);
+            GLib.Source.remove(this._menuLayout.leaveEventTimeoutId);
             this._menuLayout.leaveEventTimeoutId = null;
         }
     }
@@ -3452,8 +3454,11 @@ export class SearchEntry extends St.Entry {
         const searchResult = this.searchResults.getTopResult();
 
         if (symbol === Clutter.KEY_Down) {
+            if (searchResult?.has_style_pseudo_class('active'))
+                searchResult.remove_style_pseudo_class('active');
+
             const navigateActor = searchResult ?? this._menuLayout.activeMenuItem;
-            navigateActor.navigate_focus(global.stage.key_focus, St.DirectionType.DOWN, false);
+            this._menuLayout.navigate_focus(navigateActor, St.DirectionType.DOWN, false);
             return Clutter.EVENT_STOP;
         }
         if (!this.isEmpty() && searchResult) {

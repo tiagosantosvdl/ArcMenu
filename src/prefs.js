@@ -80,7 +80,7 @@ export default class ArcMenuPrefs extends ExtensionPreferences {
             }
 
             if (this._idleAddId) {
-                GLib.source_remove(this._idleAddId);
+                GLib.Source.remove(this._idleAddId);
                 this._idleAddId = null;
             }
 

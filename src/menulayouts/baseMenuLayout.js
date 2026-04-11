@@ -452,7 +452,7 @@ export class BaseMenuLayout extends St.BoxLayout {
 
         this._clearActorsFromBox(categoriesBox);
 
-        this._futureActiveItem = false;
+        this.activeMenuItem = null;
         let hasExtraCategory = false;
         let separatorAdded = false;
 
@@ -471,11 +471,9 @@ export class BaseMenuLayout extends St.BoxLayout {
             }
 
             categoriesBox.add_child(categoryMenuItem);
-            if (!this._futureActiveItem)
-                this._futureActiveItem = categoryMenuItem;
+            if (!this.activeMenuItem)
+                this.activeMenuItem = categoryMenuItem;
         }
-
-        this.activeMenuItem = this._futureActiveItem;
     }
 
     _loadGnomeFavorites(categoryMenuItem) {
@@ -500,7 +498,7 @@ export class BaseMenuLayout extends St.BoxLayout {
 
     displayRecentFiles(box = this.applicationsBox) {
         this._clearActorsFromBox(box);
-        this._futureActiveItem = false;
+        this.activeMenuItem = null;
 
         const recentFiles = this.recentFilesManager.getRecentFiles();
 
@@ -538,7 +536,7 @@ export class BaseMenuLayout extends St.BoxLayout {
                     try {
                         this.recentFilesManager.removeItem(placeMenuItem.fileUri);
                     } catch (err) {
-                        log(err);
+                        console.warn(err);
                     }
                     box.remove_child(placeMenuItem);
                     box.queue_relayout();
@@ -548,11 +546,9 @@ export class BaseMenuLayout extends St.BoxLayout {
                 else
                     box.add_child(placeMenuItem);
 
-                if (!this._futureActiveItem) {
-                    this._futureActiveItem = placeMenuItem;
-                    this.activeMenuItem = this._futureActiveItem;
-                }
-            }).catch(error => log(error));
+                if (!this.activeMenuItem)
+                    this.activeMenuItem = placeMenuItem;
+            }).catch(error =>  console.warn(error));
         }
     }
 
@@ -692,10 +688,7 @@ export class BaseMenuLayout extends St.BoxLayout {
 
         const schemaObj = schemaSource.lookup(schema, true);
         if (!schemaObj) {
-            log(
-                `Schema ${schema} could not be found for extension ${
-                    ArcMenuManager.extension.metadata.uuid}. Please check your installation.`
-            );
+            console.warn(`Schema ${schema} could not be found for ArcMenu. Please check your installation.`);
             return null;
         }
 
@@ -914,7 +907,7 @@ export class BaseMenuLayout extends St.BoxLayout {
         else
             grid.remove_all_children();
 
-        this._futureActiveItem = false;
+        this.activeMenuItem = null;
         let currentCharacter;
 
         const groupAllAppsListView = ArcMenuManager.settings.get_boolean('group-apps-alphabetically-list-layouts');
@@ -958,14 +951,12 @@ export class BaseMenuLayout extends St.BoxLayout {
 
             grid.appendItem(item);
 
-            if (!this._futureActiveItem && grid === this.applicationsGrid)
-                this._futureActiveItem = item;
+            if (!this.activeMenuItem && grid === this.applicationsGrid)
+                this.activeMenuItem = item;
         }
 
         if (this.applicationsBox && grid === this.applicationsGrid && !this.applicationsBox.contains(this.applicationsGrid))
             this.applicationsBox.add_child(this.applicationsGrid);
-        if (this._futureActiveItem)
-            this.activeMenuItem = this._futureActiveItem;
     }
 
     displayAllApps() {
@@ -1224,7 +1215,6 @@ export class BaseMenuLayout extends St.BoxLayout {
         this.appSys = null;
         this.activeCategoryItem = null;
         this.activeMenuItem = null;
-        this._futureActiveItem = null;
     }
 
     _destroyMenuItems() {
