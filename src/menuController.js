@@ -240,11 +240,19 @@ export const MenuController = class {
         if (this._runnerMenu?.isOpen)
             this._runnerMenu.toggleMenu();
 
+        const openOnPrimaryMonitor = ArcMenuManager.settings.get_boolean('hotkey-open-primary-monitor');
+        const monitor = openOnPrimaryMonitor ? Main.layoutManager.primaryMonitor : Main.layoutManager.currentMonitor;
+
         const multipleArcMenus = ArcMenuManager.menuControllers.length > 1;
         if (multipleArcMenus) {
-            const openOnPrimaryMonitor = ArcMenuManager.settings.get_boolean('hotkey-open-primary-monitor');
-            const monitor = openOnPrimaryMonitor ? Main.layoutManager.primaryMonitor : Main.layoutManager.currentMonitor;
             this._toggleMenuOnMonitor(monitor);
+            return;
+        }
+
+        const menuLocation = ArcMenuManager.settings.get_enum('force-menu-location');
+        const openOnCurrentMonitor = ArcMenuManager.settings.get_boolean('hotkey-open-current-monitor');
+        if (menuLocation !== Constants.MenuLocation.OFF && openOnCurrentMonitor && !openOnPrimaryMonitor) {
+            this._menuButton.toggleMenuOnMonitor(monitor);
             return;
         }
 

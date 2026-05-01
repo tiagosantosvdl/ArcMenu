@@ -550,6 +550,10 @@
       <default>false</default>
       <summary>Show ArcMenu on primary monitor when using hotkey</summary>
     </key>
+    <key type="b" name="hotkey-open-current-monitor">
+      <default>false</default>
+      <summary>Show ArcMenu on current monitor when using hotkey and menu location override is enabled</summary>
+    </key>
     <key type="b" name="runner-hotkey-open-primary-monitor">
       <default>false</default>
       <summary>Show standalone Runner menu on primary monitor when using hotkey</summary>

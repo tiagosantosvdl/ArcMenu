@@ -278,6 +278,7 @@ class ArcMenuHotkeyDialog extends Adw.Window {
         this.set_default_size(560, 585);
 
         const primaryMonitorSetting = isMenuHotkey ? 'hotkey-open-primary-monitor' : 'runner-hotkey-open-primary-monitor';
+        const currentMonitorSetting = 'hotkey-open-current-monitor';
         const hotkeySetting = isMenuHotkey ? 'arcmenu-hotkey' : 'runner-hotkey';
         this.hotkeys = this._settings.get_strv(hotkeySetting);
 
@@ -312,6 +313,8 @@ class ArcMenuHotkeyDialog extends Adw.Window {
         this._applyButton.connect('clicked', () => {
             this._settings.set_boolean(`${hotkeySetting}-overlay-key-enabled`, useAsOverlayKeySwitch.get_active());
             this._settings.set_boolean(primaryMonitorSetting, primaryMonitorSwitch.get_active());
+            if (isMenuHotkey)
+                this._settings.set_boolean(currentMonitorSetting, currentMonitorSwitch.get_active());
             this.emit('response', Gtk.ResponseType.APPLY);
         });
         this._headerBar.pack_end(this._applyButton);
@@ -376,6 +379,22 @@ class ArcMenuHotkeyDialog extends Adw.Window {
         });
         primaryMonitorRow.add_suffix(primaryMonitorSwitch);
         hotkeyOptionsGroup.add(primaryMonitorRow);
+
+        const currentMonitorSwitch = new Gtk.Switch({
+            valign: Gtk.Align.CENTER,
+            active: isMenuHotkey ? settings.get_boolean(currentMonitorSetting) : false,
+        });
+        currentMonitorSwitch.connect('notify::active', () => {
+            this._toggleHeaderBarButtons(true);
+        });
+        const currentMonitorRow = new Adw.ActionRow({
+            title: _('Open on Current Monitor with Forced Menu Location'),
+            subtitle: _('Applies when ArcMenu is only available on one panel'),
+            activatable_widget: currentMonitorSwitch,
+            visible: isMenuHotkey,
+        });
+        currentMonitorRow.add_suffix(currentMonitorSwitch);
+        hotkeyOptionsGroup.add(currentMonitorRow);
 
         this.hotkeys.forEach(hotkey => {
             this._addHotkeyRow(hotkey);
