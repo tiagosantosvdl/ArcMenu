@@ -226,12 +226,11 @@ export class BaseMenuItem extends St.BoxLayout {
     }
 
     popupMenu() {
-        if (this.hasContextMenu) {
-            this.popupContextMenu();
-            this.add_style_pseudo_class('active');
-        } else {
-            this.remove_style_pseudo_class('active');
-        }
+        if (!this.hasContextMenu)
+            return;
+
+        this.add_style_pseudo_class('active');
+        this.popupContextMenu();
     }
 
     _onPan(action) {
@@ -432,13 +431,24 @@ export class BaseMenuItem extends St.BoxLayout {
 
     vfunc_key_press_event(event) {
         this._menuLayout.blockHoverState = true;
+
+        const symbol = event.get_key_symbol();
+        let state = event.get_state();
+
+        const isShiftPressed = state & Clutter.ModifierType.SHIFT_MASK;
+        if (symbol === Clutter.KEY_Menu || (symbol === Clutter.KEY_F10 && isShiftPressed)) {
+            if (this.hasContextMenu) {
+                this.popupMenu();
+                return Clutter.EVENT_STOP;
+            }
+        }
+
         if (global.focus_manager.navigate_from_event(Clutter.get_current_event()))
             return Clutter.EVENT_STOP;
 
         if (!this._activatable)
             return super.vfunc_key_press_event(event);
 
-        let state = event.get_state();
         const isCtrlPressed = (state & Clutter.ModifierType.CONTROL_MASK) !== 0;
         const keepOpen = ArcMenuManager.settings.get_boolean('keep-open-on-ctrl-click');
 
@@ -452,7 +462,6 @@ export class BaseMenuItem extends St.BoxLayout {
         if (state)
             return Clutter.EVENT_PROPAGATE;
 
-        const symbol = event.get_key_symbol();
         if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter) {
             this._menuLayout.grab_key_focus();
             if (!keepOpen || !isCtrlPressed)
@@ -460,8 +469,6 @@ export class BaseMenuItem extends St.BoxLayout {
 
             this.activate(Clutter.get_current_event());
             return Clutter.EVENT_STOP;
-        } else if (symbol === Clutter.KEY_Menu && this.hasContextMenu) {
-            this.popupContextMenu();
         }
 
         return Clutter.EVENT_PROPAGATE;
@@ -3385,6 +3392,17 @@ export class SearchEntry extends St.Entry {
         this._text.connectObject('key-press-event', this._onKeyPress.bind(this), this);
         this._text.connectObject('key-focus-in', this._onKeyFocusIn.bind(this), this);
         this._text.connectObject('key-focus-out', this._onKeyFocusOut.bind(this), this);
+
+        this.connect('popup-menu', () => {
+            const searchResult = this.searchResults.getTopResult();
+            const hasSearchResult = !this.isEmpty() && searchResult;
+            if (!hasSearchResult)
+                return;
+
+            this.menu.close();
+            searchResult.popupMenu();
+        });
+
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
@@ -3464,9 +3482,6 @@ export class SearchEntry extends St.Entry {
         if (!this.isEmpty() && searchResult) {
             if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter) {
                 searchResult.activate();
-                return Clutter.EVENT_STOP;
-            } else if (symbol === Clutter.KEY_Menu && searchResult.hasContextMenu) {
-                searchResult.popupContextMenu();
                 return Clutter.EVENT_STOP;
             }
         }
