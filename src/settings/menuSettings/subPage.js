@@ -22,10 +22,11 @@ export const SubPage = GObject.registerClass({
     },
 },
 class ArcMenuSubPage extends Adw.NavigationPage {
-    _init(settings, params) {
+    _init(extension, settings, params) {
         super._init({
             ...params,
         });
+        this._extension = extension;
         this._settings = settings;
 
         this.headerBar = new Adw.HeaderBar();

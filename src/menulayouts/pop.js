@@ -1053,6 +1053,12 @@ class GroupFolderItem extends BaseFolderItem {
         });
         this._menuLayout._folderSettings.set_strv('folder-children', orderedFolders);
     }
+
+    _onDestroy() {
+        this._folder = null;
+
+        super._onDestroy();
+    }
 }
 
 export class ApplicationMenuItem extends MW.DraggableMenuItem {

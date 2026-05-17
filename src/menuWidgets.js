@@ -1113,6 +1113,7 @@ export class NavigationButton extends ArcMenuButtonItem {
     activate(event) {
         super.activate(event);
         this.activateAction();
+        this._menuLayout.grab_key_focus();
     }
 }
 
@@ -1648,7 +1649,7 @@ export class DraggableMenuItem extends BaseMenuItem {
         const {source, destroyId, timeoutId} = this._delayedMoveData;
 
         if (timeoutId > 0)
-            GLib.Source.remove(timeoutId);
+            GLib.source_remove(timeoutId);
 
         if (destroyId > 0)
             source.disconnect(destroyId);
@@ -1767,7 +1768,7 @@ export class DraggableMenuItem extends BaseMenuItem {
         } else {
             DND.removeDragMonitor(this._hoveringDragMonitor);
             if (this._folderPreviewId > 0) {
-                GLib.Source.remove(this._folderPreviewId);
+                GLib.source_remove(this._folderPreviewId);
                 this._folderPreviewId = 0;
             }
             this._hideFolderPreview();
@@ -1867,7 +1868,7 @@ export class DraggableMenuItem extends BaseMenuItem {
         super._onDestroy();
 
         if (this._folderPreviewId > 0) {
-            GLib.Source.remove(this._folderPreviewId);
+            GLib.source_remove(this._folderPreviewId);
             this._folderPreviewId = 0;
         }
     }
@@ -2662,14 +2663,14 @@ export class FolderDialog extends PopupMenu.PopupMenu {
         });
 
         this._scrollView = Utils.createPanActionScrollView(this._menuButton, {
+            style: 'padding-bottom: 18px;',
             x_expand: true,
             y_expand: true,
-            x_align: Clutter.ActorAlign.FILL,
+            x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.START,
             style_class: this._menuLayout._disableFadeEffect ? '' : 'small-vfade',
         });
         this._box = new St.BoxLayout({
-            style: 'padding: 0px 18px;',
             y_align: Clutter.ActorAlign.START,
         });
         this._box.add_child(this._grid);
@@ -2790,10 +2791,10 @@ export class FolderDialog extends PopupMenu.PopupMenu {
         const childWidth = child.get_width();
         const columnSpacing = this._grid.layoutManager.column_spacing;
         const rowSpacing = this._grid.layoutManager.row_spacing;
-        const padding = 36;
+        const hPadding = 48;
 
         // Calculate a size to accommodate a 3x3 grid
-        const width = (childWidth * 3) + (columnSpacing * 2) + padding;
+        const width = (childWidth * 3) + (columnSpacing * 2) + hPadding;
         const height = (childHeight * 3) + (rowSpacing * 2);
 
         this._scrollView.style = `width: ${width}px; height: ${height}px; padding-bottom: 18px;`;
@@ -3088,7 +3089,7 @@ export class CategoryMenuItem extends BaseMenuItem {
 
     _clearLeaveEventTimeout() {
         if (this._menuLayout.leaveEventTimeoutId) {
-            GLib.Source.remove(this._menuLayout.leaveEventTimeoutId);
+            GLib.source_remove(this._menuLayout.leaveEventTimeoutId);
             this._menuLayout.leaveEventTimeoutId = null;
         }
     }

@@ -19,12 +19,13 @@ import {gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions
 
 export const MenuPage = GObject.registerClass(
 class ArcMenuMenuPage extends Adw.PreferencesPage {
-    _init(settings, window) {
+    _init(extension, settings, window) {
         super._init({
             title: _('Menu'),
             icon_name: 'settings-settings-symbolic',
             name: 'MenuPage',
         });
+        this._extension = extension;
         this._settings = settings;
         this._window = window;
 
@@ -190,7 +191,7 @@ class ArcMenuMenuPage extends Adw.PreferencesPage {
         const PageClass = pageParams.pageClass;
         const pageClassParams = pageParams.pageClassParams ?? 0;
 
-        const settingPage = new PageClass(this._settings, {
+        const settingPage = new PageClass(this._extension, this._settings, {
             title: _(row.title),
             list_type: pageClassParams,
         });

@@ -265,12 +265,12 @@ class ListSearchResults extends SearchResultsBase {
         });
 
         this.providerInfo = new ArcSearchProviderInfo(provider, this._menuLayout);
-        this.providerInfo.connect('activate', () => {
+        this.providerInfo.connectObject('activate', () => {
             if (provider.canLaunchSearch) {
                 provider.launchSearch(this._terms);
                 this._menuLayout.closeArcMenu();
             }
-        });
+        }, this);
         this._container.add_child(this.providerInfo);
 
         this._content = new St.BoxLayout({
@@ -619,7 +619,7 @@ export class SearchResults extends St.BoxLayout {
 
     _clearSearchTimeout() {
         if (this._searchTimeoutId) {
-            GLib.Source.remove(this._searchTimeoutId);
+            GLib.source_remove(this._searchTimeoutId);
             this._searchTimeoutId = null;
         }
     }

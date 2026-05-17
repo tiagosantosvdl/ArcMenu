@@ -11,8 +11,8 @@ import {gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions
 
 export const FineTunePage = GObject.registerClass(
 class ArcMenuFineTunePage extends SubPage {
-    _init(settings, params) {
-        super._init(settings, params);
+    _init(extension, settings, params) {
+        super._init(extension, settings, params);
 
         // Store settings used on this page to reset to default values.
         const settingsData = [];

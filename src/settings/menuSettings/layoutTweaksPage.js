@@ -14,8 +14,8 @@ import {gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions
 
 export const LayoutTweaksPage = GObject.registerClass(
 class ArcMenuLayoutTweaksPage extends SubPage {
-    _init(settings, params) {
-        super._init(settings, params);
+    _init(extension, settings, params) {
+        super._init(extension, settings, params);
 
         this.restoreDefaultsButton.visible = false;
         const layoutId = this._settings.get_string('menu-layout');
@@ -50,7 +50,7 @@ class ArcMenuLayoutTweaksPage extends SubPage {
     }
 
     _createExtraShortcutsRow(setting) {
-        const extraShortcutsPage = new ListPinnedPage(this._settings, {
+        const extraShortcutsPage = new ListPinnedPage(this._extension, this._settings, {
             title: _('Extra Shortcuts'),
             setting_string: setting,
             list_type: Constants.MenuSettingsListType.EXTRA_SHORTCUTS,
