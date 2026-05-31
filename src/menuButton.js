@@ -114,6 +114,7 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         this._panelBox = panelInfo.panelBox;
         this._panelParent = panelInfo.panelParent;
         this._monitorIndex = monitorIndex;
+        this._forcedMonitorIndex = null;
 
         this.menu.destroy();
         this.menu = null;
@@ -336,8 +337,9 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         if (newMenuLocation === Constants.MenuLocation.OFF)
             return;
 
-        const monitor = Main.layoutManager.findMonitorForActor(this);
-        const workArea = Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
+        const monitorIndex = this._forcedMonitorIndex ?? this._monitorIndex;
+        const monitor = Main.layoutManager.monitors[monitorIndex] ?? Main.layoutManager.findMonitorForActor(this);
+        const workArea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
         const menuHeight = ArcMenuManager.settings.get_int('menu-height');
 
         // Offset width and height of DtP when intellihide is enabled.
@@ -451,6 +453,7 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         if (!this.arcMenu.isOpen) {
             this._menuLayout.updateLocation?.();
             this._menuLayout.updateStyle?.();
+            this.forceMenuLocation();
             this._maybeShowPanel();
         }
 
@@ -459,7 +462,14 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         if (this.arcMenu.isOpen) {
             this._menuLayout?.grab_key_focus();
             this.forceMenuLocation();
+        } else {
+            this._forcedMonitorIndex = null;
         }
+    }
+
+    toggleMenuOnMonitor(monitor) {
+        this._forcedMonitorIndex = monitor?.index ?? null;
+        this.toggleMenu();
     }
 
     updateHeight() {
