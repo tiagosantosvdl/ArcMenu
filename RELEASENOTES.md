@@ -1,3 +1,7 @@
+<b><span size="large">v69.2</span></b>
+
+- Fix bug causing issues opening ArcMenu Settings.
+
 <b><span size="large">v69.1</span></b>
 
 - Add option to keep ArcMenu open when activating an item with Ctrl pressed.
