@@ -633,6 +633,7 @@ export class Tooltip extends St.Label {
         });
 
         this._menuButton = menuButton;
+        this._monitor = menuButton.monitor;
 
         global.stage.add_child(this);
         this.hide();
@@ -730,15 +731,14 @@ export class Tooltip extends St.Label {
         }
 
         // keep the label inside the screen
-        const monitor = Main.layoutManager.findMonitorForActor(this.sourceActor);
-        if (x - monitor.x < gap)
-            x += monitor.x - x + gap;
-        else if (x + labelWidth > monitor.x + monitor.width - gap)
-            x -= x + labelWidth - (monitor.x + monitor.width) + gap;
-        else if (y - monitor.y < gap)
-            y += monitor.y - y + gap;
-        else if (y + labelHeight > monitor.y + monitor.height - gap)
-            y -= y + labelHeight - (monitor.y + monitor.height) + gap;
+        if (x - this._monitor.x < gap)
+            x += this._monitor.x - x + gap;
+        else if (x + labelWidth > this._monitor.x + this._monitor.width - gap)
+            x -= x + labelWidth - (this._monitor.x + this._monitor.width) + gap;
+        else if (y - this._monitor.y < gap)
+            y += this._monitor.y - y + gap;
+        else if (y + labelHeight > this._monitor.y + this._monitor.height - gap)
+            y -= y + labelHeight - (this._monitor.y + this._monitor.height) + gap;
 
         this.set_position(x, y);
         this.ease({
@@ -3515,21 +3515,41 @@ export class SearchEntry extends St.Entry {
 export const WorldClocksWidget = GObject.registerClass(
 class ArcMenuWorldClocksWidget extends GWorldClocksWidget {
     _init(menuLayout) {
+        const appSystem = Shell.AppSystem.get_default();
+
+        // Override appSystem.connect temporarily so we can capture the signal handler ID
+        // that the parent class (GWorldClocksWidget (WorldClocksSection)) creates inside super._init().
+        // This is necessary because the parent doesn't store the handler ID,
+        // and we need to disconnect to prevent signal leaks.
+        const originalConnect = appSystem.connect;
+        appSystem.connect = (signalName, callback) => {
+            const id = originalConnect.call(appSystem, signalName, callback);
+            if (signalName === 'installed-changed')
+                this._gsWorldClockSyncID = id;
+            return id;
+        };
+
         super._init();
+
+        appSystem.connect = originalConnect;
+
         this._menuLayout = menuLayout;
         this.connect('destroy', () => this._onDestroy());
 
-        this._syncID = GObject.signal_handler_find(this._appSystem, {signalId: 'installed-changed'});
         this._clockChangedID = GObject.signal_handler_find(this._settings, {signalId: 'changed'});
     }
 
     _onDestroy() {
         this._menuLayout = null;
-        if (this._syncID) {
-            this._appSystem.disconnect(this._syncID);
-            this._syncID = null;
+        console.log(`syncID - ${this._gsWorldClockSyncID}`);
+        if (this._gsWorldClockSyncID) {
+            console.log('syncID - disconnected');
+            this._appSystem.disconnect(this._gsWorldClockSyncID);
+            this._gsWorldClockSyncID = null;
         }
+        console.log(`clockChangedID - ${this._clockChangedID}`);
         if (this._clockChangedID) {
+            console.log('clockChangedID - disconnected');
             this._settings.disconnect(this._clockChangedID);
             this._clockChangedID = null;
         }

@@ -14,10 +14,10 @@ import {StandaloneRunner} from './standaloneRunner.js';
 import * as Utils from './utils.js';
 
 export const MenuController = class {
-    constructor(panelInfo, monitorIndex) {
+    constructor(monitor, panelInfo) {
+        this._monitor = monitor;
         this.panelInfo = panelInfo;
         this.panel = panelInfo.panel;
-        this.monitorIndex = monitorIndex;
         this.isFirstPanel = panelInfo.isFirstPanel;
         this._debouncer = new Utils.Debouncer();
 
@@ -34,7 +34,7 @@ export const MenuController = class {
             };
         }
 
-        this._menuButton = new MenuButton(panelInfo, this.monitorIndex);
+        this._menuButton = new MenuButton(monitor, panelInfo);
 
         if (this.isFirstPanel) {
             this._keybinder = new Keybinder(ArcMenuManager.settings);
@@ -56,6 +56,10 @@ export const MenuController = class {
 
     get menuButton() {
         return this._menuButton;
+    }
+
+    get monitor() {
+        return this._monitor;
     }
 
     _inputSourceManagerOverride() {
@@ -252,22 +256,22 @@ export const MenuController = class {
     }
 
     _toggleMenuOnMonitor(monitor) {
-        let menuButtonOnMonitor = null;
+        let menuButtonTarget = null;
         const {menuControllers} = ArcMenuManager;
         for (let i = 0; i < menuControllers.length; i++) {
-            const {menuButton, monitorIndex} = menuControllers[i];
+            const {menuButton: mcMenuButton, monitor: mcMonitor} = menuControllers[i];
 
-            if (monitor.index === monitorIndex) {
-                menuButtonOnMonitor = menuButton;
+            if (monitor === mcMonitor) {
+                menuButtonTarget = mcMenuButton;
             } else {
-                if (menuButton.isOpen)
-                    menuButton.toggleMenu();
-                menuButton.closeContextMenu();
+                if (mcMenuButton.isOpen)
+                    mcMenuButton.toggleMenu();
+                mcMenuButton.closeContextMenu();
             }
         }
 
-        if (menuButtonOnMonitor)
-            menuButtonOnMonitor.toggleMenu();
+        if (menuButtonTarget)
+            menuButtonTarget.toggleMenu();
         else
             this._menuButton.toggleMenu();
     }
