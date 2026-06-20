@@ -6,12 +6,15 @@ import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
+import {ArcMenuManager} from './arcmenuManager.js';
 import {ArcMenu} from './menuButton.js';
 import * as LayoutHandler from './menulayouts/layoutHandler.js';
 import * as MW from './menuWidgets.js';
 
 export const StandaloneRunner = class ArcMenuStandaloneRunner {
-    constructor() {
+    constructor(monitor) {
+        this._monitor = monitor;
+
         // Link search providers to this menu
         this.searchProviderDisplayId = 'StandaloneRunner';
 
@@ -39,6 +42,10 @@ export const StandaloneRunner = class ArcMenuStandaloneRunner {
 
     get isOpen() {
         return this.arcMenu?.isOpen;
+    }
+
+    get monitor() {
+        return this._monitor;
     }
 
     createMenuLayout() {
@@ -74,8 +81,11 @@ export const StandaloneRunner = class ArcMenuStandaloneRunner {
     toggleMenu() {
         this._closeOtherMenus();
 
-        if (!this.arcMenu.isOpen)
+        if (!this.arcMenu.isOpen) {
             this._menuLayout.updateLocation();
+            this._monitor = ArcMenuManager.settings.get_boolean('runner-hotkey-open-primary-monitor')
+                ? Main.layoutManager.primaryMonitor : Main.layoutManager.currentMonitor;
+        }
 
         this.arcMenu.toggle();
 

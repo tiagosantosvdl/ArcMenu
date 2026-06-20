@@ -25,12 +25,11 @@ export class Layout extends BaseMenuLayout {
             column_spacing: 0,
             row_spacing: 0,
             ...getOrientationProp(true),
-            category_icon_size: Constants.MEDIUM_ICON_SIZE,
-            apps_icon_size: Constants.EXTRA_SMALL_ICON_SIZE,
-            quicklinks_icon_size: Constants.EXTRA_SMALL_ICON_SIZE,
-            buttons_icon_size: Constants.EXTRA_SMALL_ICON_SIZE,
-            pinned_apps_icon_size: Constants.MEDIUM_ICON_SIZE,
         });
+
+        this.iconSizeApps = Constants.IconSizes.SMALL;
+        this.iconSizeShortcuts = Constants.IconSizes.SMALL;
+        this.iconSizeButtons = Constants.IconSizes.SMALL;
 
         this.connect('button-press-event', (actor, event) => {
             if (this.backButton.visible && event.get_button() === 8)

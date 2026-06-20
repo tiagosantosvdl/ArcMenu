@@ -72,13 +72,11 @@ export class Layout extends BaseMenuLayout {
             row_spacing: 12,
             default_menu_width: 1050,
             ...Utils.getOrientationProp(true),
-            icon_grid_size: Constants.GridIconSize.EXTRA_LARGE,
-            category_icon_size: Constants.MEDIUM_ICON_SIZE,
-            apps_icon_size: Constants.EXTRA_LARGE_ICON_SIZE,
-            quicklinks_icon_size: Constants.MEDIUM_ICON_SIZE,
-            buttons_icon_size: Constants.LARGE_ICON_SIZE,
-            pinned_apps_icon_size: Constants.MEDIUM_ICON_SIZE,
         });
+
+        this.iconSizeGrid = Constants.GridIconSizes.XL;
+        this.iconSizeApps = Constants.IconSizes.LARGE;
+        this.iconSizeButtons = Constants.IconSizes.LARGE;
 
         this._folders = new Map();
         this._orderedItems = [];
@@ -1099,6 +1097,7 @@ export class ApplicationMenuItem extends MW.DraggableMenuItem {
 
         this.connect('notify::hover', () => this.removeIndicator());
         this.connect('key-focus-in', () => this.removeIndicator());
+        ArcMenuManager.settings.connectObject('changed::icon-size-grid', () => this._updateIcon(), this);
     }
 
     _onDestroy() {
@@ -1173,9 +1172,9 @@ export class ApplicationMenuItem extends MW.DraggableMenuItem {
     createIcon() {
         this._iconBin.x_align = Clutter.ActorAlign.CENTER;
 
-        const iconSizeEnum = ArcMenuManager.settings.get_enum('menu-item-grid-icon-size');
-        const defaultIconSize = this._menuLayout.icon_grid_size;
-        const {iconSize} = Utils.getGridIconSize(iconSizeEnum, defaultIconSize);
+        const iconSizeSetting = ArcMenuManager.settings.get_value('icon-size-grid').deepUnpack().size;
+        const defaultIconSize = this._menuLayout.iconSizeGrid.size;
+        const iconSize = Utils.getIconSize(iconSizeSetting, defaultIconSize);
 
         const icon = this._app.create_icon_texture(iconSize);
 
