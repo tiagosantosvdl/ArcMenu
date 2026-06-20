@@ -851,7 +851,7 @@ class ArcMenuLayoutTweaksPage extends SubPage {
             selected: this._settings.get_enum('default-menu-view'),
         });
         defaultViewRow.connect('notify::selected', widget => {
-            maxFrequentAppsRow.visible = widget.selected === 4;
+            maxFrequentAppsRow.visible = widget.selected === 4 || widget.selected === 2;
             this._settings.set_enum('default-menu-view', widget.selected);
         });
         tweaksGroup.add(defaultViewRow);
@@ -859,7 +859,7 @@ class ArcMenuLayoutTweaksPage extends SubPage {
         const maxFrequentAppsSpinButton = new Gtk.SpinButton({
             orientation: Gtk.Orientation.HORIZONTAL,
             adjustment: new Gtk.Adjustment({
-                lower: 1,
+                lower: 0,
                 upper: 50,
                 step_increment: 1,
                 page_increment: 1,
@@ -874,12 +874,13 @@ class ArcMenuLayoutTweaksPage extends SubPage {
         });
         const maxFrequentAppsRow = new Adw.ActionRow({
             title: _('Max Frequent Apps'),
+            subtitle: _('0 = unlimited'),
             activatable_widget: maxFrequentAppsSpinButton,
         });
         maxFrequentAppsRow.add_suffix(maxFrequentAppsSpinButton);
         tweaksGroup.add(maxFrequentAppsRow);
 
-        maxFrequentAppsRow.visible = defaultViewRow.selected === 4;
+        maxFrequentAppsRow.visible = defaultViewRow.selected === 4 || defaultViewRow.selected === 2;
 
         const allAppsButtonActionsList = new Gtk.StringList();
         allAppsButtonActionsList.append(_('Categories List'));
