@@ -61,24 +61,6 @@ export class BaseMenuLayout extends St.BoxLayout {
         'default-menu-width': GObject.ParamSpec.uint(
             'default-menu-width', 'default-menu-width', 'default-menu-width',
             GObject.ParamFlags.READWRITE, 0, GLib.MAXINT32, 0),
-        'icon-grid-size': GObject.ParamSpec.uint(
-            'icon-grid-size', 'icon-grid-size', 'icon-grid-size',
-            GObject.ParamFlags.READWRITE, 0, GLib.MAXINT32, 5),
-        'category-icon-size': GObject.ParamSpec.uint(
-            'category-icon-size', 'category-icon-size', 'category-icon-size',
-            GObject.ParamFlags.READWRITE, 0, GLib.MAXINT32, 0),
-        'apps-icon-size': GObject.ParamSpec.uint(
-            'apps-icon-size', 'apps-icon-size', 'apps-icon-size',
-            GObject.ParamFlags.READWRITE, 0, GLib.MAXINT32, 0),
-        'quicklinks-icon-size': GObject.ParamSpec.uint(
-            'quicklinks-icon-size', 'quicklinks-icon-size', 'quicklinks-icon-size',
-            GObject.ParamFlags.READWRITE, 0, GLib.MAXINT32, 0),
-        'buttons-icon-size': GObject.ParamSpec.uint(
-            'buttons-icon-size', 'buttons-icon-size', 'buttons-icon-size',
-            GObject.ParamFlags.READWRITE, 0, GLib.MAXINT32, 0),
-        'pinned-apps-icon-size': GObject.ParamSpec.uint(
-            'pinned-apps-icon-size', 'pinned-apps-icon-size', 'pinned-apps-icon-size',
-            GObject.ParamFlags.READWRITE, 0, GLib.MAXINT32, 0),
         'can_hide_search': GObject.ParamSpec.boolean(
             'can_hide_search', 'can_hide_search', 'can_hide_search',
             GObject.ParamFlags.READWRITE, true),
@@ -106,6 +88,13 @@ export class BaseMenuLayout extends St.BoxLayout {
 
         if (this.arcMenu === null)
             throw new Error('ArcMenu null');
+
+        this.iconSizeGrid = Constants.GridIconSizes.MEDIUM_RECT;
+        this.iconSizeCategories = Constants.IconSizes.MEDIUM;
+        this.iconSizeApps = Constants.IconSizes.MEDIUM;
+        this.iconSizeShortcuts = Constants.IconSizes.MEDIUM;
+        this.iconSizeButtons = Constants.IconSizes.MEDIUM;
+        this.iconSizePinnedApps = Constants.IconSizes.MEDIUM;
 
         this.hasPinnedApps = false;
         this.activeCategoryType = -1;
@@ -219,9 +208,14 @@ export class BaseMenuLayout extends St.BoxLayout {
 
     getIconWidthFromSetting() {
         const gridIconPadding = 10;
-        const iconSizeEnum = ArcMenuManager.settings.get_enum('menu-item-grid-icon-size');
+        let width;
+        const iconSizeSetting = ArcMenuManager.settings.get_value('icon-size-grid').deepUnpack();
+        const defaultIconSize = this.iconSizeGrid;
+        if (iconSizeSetting.size === Constants.IconSizes.DEFAULT)
+            width = defaultIconSize.width;
+        else
+            width = iconSizeSetting.width;
 
-        const {width, height_, iconSize_} = Utils.getGridIconSize(iconSizeEnum, this.icon_grid_size);
         return width + gridIconPadding;
     }
 
@@ -525,7 +519,7 @@ export class BaseMenuLayout extends St.BoxLayout {
                 const filePath = recentFile.get_path();
                 const name = recentFile.get_basename();
                 const mimeType = this.recentFilesManager.getMimeType(fileUri);
-                const icon = Gio.content_type_get_symbolic_icon(mimeType)?.to_string();
+                const icon = mimeType ? Gio.content_type_get_symbolic_icon(mimeType)?.to_string() : null;
                 const isContainedInCategory = true;
 
                 const placeMenuItem = this.createMenuItem({name, icon, 'id': filePath},

@@ -126,10 +126,7 @@ export default class ArcMenu extends Extension {
             return false;
 
         const isPrimaryStandalone = panel.isPrimary && panel.isStandalone;
-        if (isPrimaryStandalone)
-            return true;
-
-        return false;
+        return isPrimaryStandalone;
     }
 
     _connectExtensionSignals() {
@@ -155,21 +152,19 @@ export default class ArcMenu extends Extension {
 
     _enableButtons() {
         const multiMonitor = this.settings.get_boolean('multi-monitor');
+        const panelExtensionEnabled = this._dtpActive || this._azTaskbarActive;
 
-        let panelExtensionEnabled = false;
-        let panels;
+        // Finds available panels from Dash to Panel or App Icons Taskbar extension.
+        // If none found, use Main.panel.
 
-        if (this._dtpActive && global.dashToPanel?.panels) {
-            panels = global.dashToPanel.panels.filter(p => p);
-            panelExtensionEnabled = true;
-        } else if (this._azTaskbarActive && global.azTaskbar?.panels) {
-            panels = global.azTaskbar.panels.filter(p => p);
-            panelExtensionEnabled = true;
-        } else {
-            panels = [Main.panel];
-        }
-
-        const primaryPanelIndex = Main.layoutManager.primaryMonitor?.index;
+        const getExtensionPanels = () => {
+            if (this._dtpActive)
+                return global.dashToPanel?.panels;
+            if (this._azTaskbarActive)
+                return global.azTaskbar?.panels;
+            return null;
+        };
+        const panels = getExtensionPanels()?.filter(p => p) ?? [Main.panel];
 
         // Register hotkeys, DBus methods, and certain settings changed events only once,
         // on the first panel processed in the loop (independent of primary monitor status).
@@ -182,33 +177,27 @@ export default class ArcMenu extends Extension {
                 continue;
             }
 
+            const isPrimaryStandalone = this._isPrimaryStandalonePanel(panels[i], panelExtensionEnabled);
+
             let panel, panelBox, panelParent;
-            if (panelExtensionEnabled) {
+            if (panelExtensionEnabled && !isPrimaryStandalone) {
                 panel = panels[i].panel;
                 panelBox = this._dtpActive ? panels[i].panelBox : panels[i];
                 panelParent = panels[i];
             } else {
-                panel = panels[i];
+                panel = Main.panel;
                 panelBox = Main.layoutManager.panelBox;
                 panelParent = Main.panel;
             }
 
-            const isPrimaryStandalone = this._isPrimaryStandalonePanel(panelParent, panelExtensionEnabled);
-            if (isPrimaryStandalone)
-                panel = Main.panel;
-
-            let monitorIndex = 0;
-            if (panelParent.monitor) // App Icons Taskbar 'panelParent' may be Main.panel, which doesnt have a 'monitor' property.
-                monitorIndex = panelParent.monitor.index;
-            else if (panel === Main.panel)
-                monitorIndex = primaryPanelIndex ?? 0;
-
-            const panelInfo = {panel, panelBox, panelParent, isFirstPanel};
+            // 'panelParent' may be 'Main.panel' doesn't have a 'monitor' property.
+            const monitor = panelParent.monitor ?? Main.layoutManager.primaryMonitor;
+            const panelInfo = {panel, panelBox, panelParent, isFirstPanel, isPrimaryStandalone, index: i};
 
             if (isFirstPanel)
                 isFirstPanel = false;
 
-            const menuController = new MenuController(panelInfo, monitorIndex);
+            const menuController = new MenuController(monitor, panelInfo);
 
             panel.connectObject('destroy', () => this._disableButton(menuController, panel), this);
 

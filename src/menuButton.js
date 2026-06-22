@@ -98,7 +98,7 @@ class MenuButtonWidget extends St.BoxLayout {
 
 export const MenuButton = GObject.registerClass(
 class ArcMenuMenuButton extends PanelMenu.Button {
-    _init(panelInfo, monitorIndex) {
+    _init(monitor, panelInfo) {
         super._init(0.5, null, true);
 
         this.set({
@@ -108,12 +108,13 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         this.add_style_class_name('arcmenu-panel-menu');
 
         // Link search providers to this menu
-        this.searchProviderDisplayId = `ArcMenu_${monitorIndex}`;
+        this.searchProviderDisplayId = `ArcMenu_${panelInfo.index}`;
 
+        this._monitor = monitor;
         this._panel = panelInfo.panel;
         this._panelBox = panelInfo.panelBox;
         this._panelParent = panelInfo.panelParent;
-        this._monitorIndex = monitorIndex;
+        this._isPrimaryStandalone = panelInfo.isPrimaryStandalone;
 
         this.menu.destroy();
         this.menu = null;
@@ -147,6 +148,10 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         this.add_child(this.menuButtonWidget);
     }
 
+    get monitor() {
+        return this._monitor;
+    }
+
     get isOpen() {
         return this.arcMenu?.isOpen;
     }
@@ -165,6 +170,10 @@ class ArcMenuMenuButton extends PanelMenu.Button {
     }
 
     syncWithDashToPanel() {
+        // The menuButton is placed in the main panel - skip
+        if (this._isPrimaryStandalone)
+            return;
+
         const dtp = Extension.lookupByUUID(Constants.DASH_TO_PANEL_UUID);
         this._dtpSettings = dtp.getSettings('org.gnome.shell.extensions.dash-to-panel');
         this._dtpActive = true;
@@ -336,8 +345,7 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         if (newMenuLocation === Constants.MenuLocation.OFF)
             return;
 
-        const monitor = Main.layoutManager.findMonitorForActor(this);
-        const workArea = Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
+        const workArea = Main.layoutManager.getWorkAreaForMonitor(this._monitor.index);
         const menuHeight = ArcMenuManager.settings.get_int('menu-height');
 
         // Offset width and height of DtP when intellihide is enabled.
@@ -347,8 +355,8 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         const xRight = workArea.x + workArea.width - 1 - dtpWidth;
         const yTop = workArea.y + dtpHeight;
         const yBottom = workArea.y + workArea.height - 1 - dtpHeight;
-        const xCentered = Math.round(monitor.x + (monitor.width / 2));
-        const yCentered = Math.round(monitor.y + (monitor.height / 2) - (menuHeight / 2));
+        const xCentered = Math.round(this._monitor.x + (this._monitor.width / 2));
+        const yCentered = Math.round(this._monitor.y + (this._monitor.height / 2) - (menuHeight / 2));
         let x, y;
         let side = St.Side.TOP;
 
@@ -485,7 +493,7 @@ class ArcMenuMenuButton extends PanelMenu.Button {
 
     clearTooltipShowingId() {
         if (this._tooltipShowingID) {
-            GLib.Source.remove(this._tooltipShowingID);
+            GLib.source_remove(this._tooltipShowingID);
             this._tooltipShowingID = null;
         }
     }
@@ -611,8 +619,7 @@ class ArcMenuMenuButton extends PanelMenu.Button {
                 this._panelNeedsHiding = false;
                 // Hide panel if monitor inFullscreen, else show it
                 const hidePanel = () => {
-                    const monitor = Main.layoutManager.findMonitorForActor(this);
-                    this._panelBox.visible = !(global.window_group.visible && monitor?.inFullscreen);
+                    this._panelBox.visible = !(global.window_group.visible && this._monitor?.inFullscreen);
                 };
                 this._maybeHidePanel(hidePanel);
             }

@@ -28,14 +28,12 @@ export class Layout extends BaseMenuLayout {
             column_spacing: 15,
             row_spacing: 15,
             ...getOrientationProp(true),
-            default_menu_width: 750,
-            icon_grid_size: Constants.GridIconSize.LARGE,
-            category_icon_size: Constants.MEDIUM_ICON_SIZE,
-            apps_icon_size: Constants.EXTRA_LARGE_ICON_SIZE,
-            quicklinks_icon_size: Constants.EXTRA_SMALL_ICON_SIZE,
-            buttons_icon_size: Constants.SMALL_ICON_SIZE,
-            pinned_apps_icon_size: Constants.MEDIUM_ICON_SIZE,
+            default_menu_width: 770,
         });
+
+        this.iconSizeGrid = Constants.GridIconSizes.LARGE;
+        this.iconSizeApps = Constants.IconSizes.LARGE;
+        this.iconSizeShortcuts = Constants.IconSizes.SMALL;
 
         const homeScreen = ArcMenuManager.settings.get_boolean('enable-unity-homescreen');
         this.activeCategoryName = homeScreen ? _('Pinned') : _('All Programs');
@@ -210,8 +208,10 @@ export class Layout extends BaseMenuLayout {
             return;
 
         const width = this.menu_width - 80;
-        this._weatherItem.style = `width: ${Math.round(5 * width / 8)}px;`;
-        this._clocksItem.style = `width: ${Math.round(3 * width / 8)}px;`;
+        if (this._weatherItem)
+            this._weatherItem.style = `width: ${Math.round(5 * width / 8)}px;`;
+        if (this._clocksItem)
+            this._clocksItem.style = `width: ${Math.round(3 * width / 8)}px;`;
     }
 
     _createCategoriesMenu() {
@@ -391,10 +391,15 @@ export class Layout extends BaseMenuLayout {
     }
 
     _onDestroy() {
-        if (this._clocksItem)
+        if (this._clocksItem) {
             this._clocksItem.destroy();
-        if (this._weatherItem)
+            this._clocksItem = null;
+        }
+
+        if (this._weatherItem) {
             this._weatherItem.destroy();
+            this._weatherItem = null;
+        }
 
         if (this.arcMenu)
             this.arcMenu.box.style = null;

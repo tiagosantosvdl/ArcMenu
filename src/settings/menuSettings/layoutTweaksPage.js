@@ -14,8 +14,8 @@ import {gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions
 
 export const LayoutTweaksPage = GObject.registerClass(
 class ArcMenuLayoutTweaksPage extends SubPage {
-    _init(settings, params) {
-        super._init(settings, params);
+    _init(extension, settings, params) {
+        super._init(extension, settings, params);
 
         this.restoreDefaultsButton.visible = false;
         const layoutId = this._settings.get_string('menu-layout');
@@ -50,7 +50,7 @@ class ArcMenuLayoutTweaksPage extends SubPage {
     }
 
     _createExtraShortcutsRow(setting) {
-        const extraShortcutsPage = new ListPinnedPage(this._settings, {
+        const extraShortcutsPage = new ListPinnedPage(this._extension, this._settings, {
             title: _('Extra Shortcuts'),
             setting_string: setting,
             list_type: Constants.MenuSettingsListType.EXTRA_SHORTCUTS,
@@ -851,7 +851,7 @@ class ArcMenuLayoutTweaksPage extends SubPage {
             selected: this._settings.get_enum('default-menu-view'),
         });
         defaultViewRow.connect('notify::selected', widget => {
-            maxFrequentAppsRow.visible = widget.selected === 4;
+            maxFrequentAppsRow.visible = widget.selected === 4 || widget.selected === 2;
             this._settings.set_enum('default-menu-view', widget.selected);
         });
         tweaksGroup.add(defaultViewRow);
@@ -859,7 +859,7 @@ class ArcMenuLayoutTweaksPage extends SubPage {
         const maxFrequentAppsSpinButton = new Gtk.SpinButton({
             orientation: Gtk.Orientation.HORIZONTAL,
             adjustment: new Gtk.Adjustment({
-                lower: 1,
+                lower: 0,
                 upper: 50,
                 step_increment: 1,
                 page_increment: 1,
@@ -874,12 +874,13 @@ class ArcMenuLayoutTweaksPage extends SubPage {
         });
         const maxFrequentAppsRow = new Adw.ActionRow({
             title: _('Max Frequent Apps'),
+            subtitle: _('0 = unlimited'),
             activatable_widget: maxFrequentAppsSpinButton,
         });
         maxFrequentAppsRow.add_suffix(maxFrequentAppsSpinButton);
         tweaksGroup.add(maxFrequentAppsRow);
 
-        maxFrequentAppsRow.visible = defaultViewRow.selected === 4;
+        maxFrequentAppsRow.visible = defaultViewRow.selected === 4 || defaultViewRow.selected === 2;
 
         const allAppsButtonActionsList = new Gtk.StringList();
         allAppsButtonActionsList.append(_('Categories List'));
@@ -939,7 +940,7 @@ class ArcMenuLayoutTweaksPage extends SubPage {
             title: _('Category Quick Links'),
             description: _('Display a category on the default menu view. Category must be enabled in ArcMenu Settings -> Menu -> Extra Categories section.'),
         });
-        const extraCategoriesLinksBox = new ListOtherPage(this._settings, {
+        const extraCategoriesLinksBox = new ListOtherPage(this._extension, this._settings, {
             preferences_page: false,
             list_type: Constants.MenuSettingsListType.QUICK_LINKS,
         });

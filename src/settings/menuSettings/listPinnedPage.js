@@ -10,7 +10,7 @@ import * as PW from '../../prefsWidgets.js';
 import * as SettingsUtils from '../settingsUtils.js';
 import {SubPage} from './subPage.js';
 
-import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+import {gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 const getGioUnixDesktopAppInfo = async () => {
     try {
@@ -27,11 +27,11 @@ const GioUnixDesktopAppInfo = await getGioUnixDesktopAppInfo();
 
 /**
  *
+ * @param {ExtensionPreferences} extension
  * @param {string} schema
  * @param {string} path
  */
-function getSettings(schema, path) {
-    const extension = ExtensionPreferences.lookupByURL(import.meta.url);
+function getSettings(extension, schema, path) {
     const schemaDir = extension.dir.get_child('schemas');
     let schemaSource;
     if (schemaDir.query_exists(null)) {
@@ -59,8 +59,8 @@ function getSettings(schema, path) {
 
 export const ListPinnedPage = GObject.registerClass(
 class ArcMenuListPinnedPage extends SubPage {
-    _init(settings, params) {
-        super._init(settings, params);
+    _init(extension, settings, params) {
+        super._init(extension, settings, params);
 
         this._settings = settings;
         this.frameRows = [];
@@ -90,7 +90,7 @@ class ArcMenuListPinnedPage extends SubPage {
             const folderSchema = `${this._settings.schema_id}.pinned-apps-folders`;
             const folderPath = `${this._settings.path}pinned-apps-folders/${this.setting_string}/`;
             this.settingString = 'pinned-apps';
-            this._settings = getSettings(folderSchema, folderPath);
+            this._settings = getSettings(this._extension, folderSchema, folderPath);
             this.restoreDefaultsButton.visible = false;
         }
 
@@ -139,7 +139,7 @@ class ArcMenuListPinnedPage extends SubPage {
                 valign: Gtk.Align.CENTER,
             });
             addCustomButton.connect('clicked', () => {
-                const dialog = new AddCustomLinkDialogWindow(this._settings, this, this.list_type);
+                const dialog = new AddCustomLinkDialogWindow(this, this._extension, this._settings, this.list_type);
                 dialog.show();
                 dialog.connect('response', (_w, response) => {
                     if (response === Gtk.ResponseType.APPLY) {
@@ -272,7 +272,7 @@ class ArcMenuListPinnedPage extends SubPage {
         row.connect('drag-drop-done', () => this.saveSettings());
 
         editEntryButton.connect('modify-button-clicked', () => {
-            const dialog = new AddCustomLinkDialogWindow(this._settings, this, this.list_type, row.shortcutData);
+            const dialog = new AddCustomLinkDialogWindow(this, this._extension, this._settings, this.list_type, row.shortcutData);
             dialog.show();
             dialog.connect('response', (_w, response) => {
                 if (response === Gtk.ResponseType.APPLY) {
@@ -301,7 +301,7 @@ class ArcMenuListPinnedPage extends SubPage {
             });
             row.add_suffix(goNextImage);
             row.connect('activated', () => {
-                const folderSubpage = new ListPinnedPage(this._settings, {
+                const folderSubpage = new ListPinnedPage(this._extension, this._settings, {
                     title: shortcutData.name,
                     setting_string: shortcutData.id,
                     list_type: Constants.MenuSettingsListType.FOLDER_PINNED_APPS,
@@ -560,7 +560,7 @@ class ArcMenuAddAppsToPinnedListWindow extends PW.DialogWindow {
 
 const AddCustomLinkDialogWindow = GObject.registerClass(
 class ArcMenuAddCustomLinkDialogWindow extends PW.HeaderBarDialog {
-    _init(settings, parent, dialogType, shortcutData = null) {
+    _init(parent, extension, settings, dialogType, shortcutData = null) {
         let title = _('Add a Custom Shortcut');
 
         const isPinnedApp = dialogType === Constants.MenuSettingsListType.PINNED_APPS ||
@@ -580,6 +580,7 @@ class ArcMenuAddCustomLinkDialogWindow extends PW.HeaderBarDialog {
         super._init(_(title), shortcutData ? _('Apply') : _('Add'), parent);
         this.set_default_size(600, 300);
         this._settings = settings;
+        this._extension = extension;
         this._dialogType = dialogType;
         this.shortcutData = shortcutData;
         this._iconImage = new Gtk.Image();
@@ -681,7 +682,7 @@ class ArcMenuAddCustomLinkDialogWindow extends PW.HeaderBarDialog {
     }
 
     _launchIconChooser() {
-        const dialog = new IconChooserDialog(this._settings, this.get_root());
+        const dialog = new IconChooserDialog(this._extension, this._settings, this.get_root());
         dialog.connect('response', (_self, response) => {
             if (response === Gtk.ResponseType.APPLY) {
                 this._clearIconButton.sensitive = true;

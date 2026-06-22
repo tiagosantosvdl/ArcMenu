@@ -15,8 +15,8 @@ export const LayoutsPage = GObject.registerClass({
     },
 },
 class ArcMenuLayoutsPage extends SubPage {
-    _init(settings, params) {
-        super._init(settings, params);
+    _init(extension, settings, params) {
+        super._init(extension, settings, params);
 
         this.restoreDefaultsButton.visible = false;
 

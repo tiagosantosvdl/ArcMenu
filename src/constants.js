@@ -120,7 +120,7 @@ export const CaretPosition = {
     MIDDLE: 2,
 };
 
-export const CategoryIconType = {
+export const IconStyle = {
     FULL_COLOR: 0,
     SYMBOLIC: 1,
 };
@@ -138,45 +138,25 @@ export const MenuLocation = {
     MONITOR_CENTERED: 9,
 };
 
-export const IconSize = {
-    DEFAULT: 0,
-    EXTRA_SMALL: 1,
-    SMALL: 2,
-    MEDIUM: 3,
-    LARGE: 4,
-    EXTRA_LARGE: 5,
-    HIDDEN: 6,
+export const IconSizes = {
+    DEFAULT: -1,
+    HIDDEN: 0,
+    SMALL: 16,
+    MEDIUM: 24,
+    LARGE: 32,
+    XL: 48,
 };
 
-export const GridIconSize = {
-    DEFAULT: 0,
-    SMALL: 1,
-    MEDIUM: 2,
-    LARGE: 3,
-    SMALL_RECT: 4,
-    MEDIUM_RECT: 5,
-    LARGE_RECT: 6,
-    CUSTOM: 7,
-    EXTRA_LARGE: 8,
+export const GridIconSizes = {
+    DEFAULT:     {width: -1,  height: -1,  size: -1},
+    SMALL:       {width: 80,  height: 80,  size: 32},
+    MEDIUM:      {width: 90,  height: 90,  size: 48},
+    LARGE:       {width: 100, height: 100, size: 48},
+    XL:          {width: 145, height: 145, size: 64},
+    SMALL_RECT:  {width: 85,  height: 70,  size: 32},
+    MEDIUM_RECT: {width: 97,  height: 80,  size: 32},
+    LARGE_RECT:  {width: 109, height: 90,  size: 48},
 };
-
-export const GridIconInfo = [
-    {ENUM: GridIconSize.SMALL, WIDTH: 80, HEIGHT: 80, ICON_SIZE: 36},
-    {ENUM: GridIconSize.MEDIUM, WIDTH: 87, HEIGHT: 87, ICON_SIZE: 42},
-    {ENUM: GridIconSize.LARGE, WIDTH: 95, HEIGHT: 95, ICON_SIZE: 52},
-    {ENUM: GridIconSize.SMALL_RECT, WIDTH: 85, HEIGHT: 70, ICON_SIZE: 28},
-    {ENUM: GridIconSize.MEDIUM_RECT, WIDTH: 92, HEIGHT: 78, ICON_SIZE: 34},
-    {ENUM: GridIconSize.LARGE_RECT, WIDTH: 95, HEIGHT: 85, ICON_SIZE: 42},
-    {ENUM: GridIconSize.EXTRA_LARGE, WIDTH: 148, HEIGHT: 148, ICON_SIZE: 68},
-];
-
-export const ICON_HIDDEN = 0;
-export const EXTRA_SMALL_ICON_SIZE = 16;
-export const SMALL_ICON_SIZE = 20;
-export const MEDIUM_ICON_SIZE = 25;
-export const LARGE_ICON_SIZE = 30;
-export const EXTRA_LARGE_ICON_SIZE = 35;
-export const MISC_ICON_SIZE = 24;
 
 export const SUPER_L = 'Super_L';
 export const SUPER_R = 'Super_R';
