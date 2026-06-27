@@ -923,11 +923,8 @@ export class LeaveButton extends BaseMenuItem {
     }
 
     _setIconStyle() {
-        if (this.has_style_class_name('regular-icons'))
-            this.remove_style_class_name('regular-icons');
-
-        if (this.has_style_class_name('symbolic-icons'))
-            this.remove_style_class_name('symbolic-icons');
+        this.remove_style_class_name('regular-icons');
+        this.remove_style_class_name('symbolic-icons');
 
         const iconStyleSetting = this._isButton ? 'icon-style-buttons' : 'icon-style-shortcuts';
         const iconStyle = ArcMenuManager.settings.get_enum(iconStyleSetting);
@@ -1053,11 +1050,8 @@ export class PowerButton extends ArcMenuButtonItem {
     }
 
     _setIconStyle() {
-        if (this.has_style_class_name('regular-icons'))
-            this.remove_style_class_name('regular-icons');
-
-        if (this.has_style_class_name('symbolic-icons'))
-            this.remove_style_class_name('symbolic-icons');
+        this.remove_style_class_name('regular-icons');
+        this.remove_style_class_name('symbolic-icons');
 
         const iconStyle = ArcMenuManager.settings.get_enum('icon-style-buttons');
         if (iconStyle === Constants.IconStyle.FULL_COLOR)
@@ -1105,11 +1099,8 @@ export class PowerMenuItem extends BaseMenuItem {
     }
 
     _setIconStyle() {
-        if (this.has_style_class_name('regular-icons'))
-            this.remove_style_class_name('regular-icons');
-
-        if (this.has_style_class_name('symbolic-icons'))
-            this.remove_style_class_name('symbolic-icons');
+        this.remove_style_class_name('regular-icons');
+        this.remove_style_class_name('symbolic-icons');
 
         const iconStyle = ArcMenuManager.settings.get_enum('icon-style-shortcuts');
         if (iconStyle === Constants.IconStyle.FULL_COLOR)
@@ -1421,11 +1412,8 @@ export class ShortcutMenuItem extends BaseMenuItem {
     }
 
     _setIconStyle() {
-        if (this.has_style_class_name('regular-icons'))
-            this.remove_style_class_name('regular-icons');
-
-        if (this.has_style_class_name('symbolic-icons'))
-            this.remove_style_class_name('symbolic-icons');
+        this.remove_style_class_name('regular-icons');
+        this.remove_style_class_name('symbolic-icons');
 
         const iconStyleSetting = this._displayType === Constants.DisplayType.BUTTON ? 'icon-style-buttons' : 'icon-style-shortcuts';
         const iconStyle = ArcMenuManager.settings.get_enum(iconStyleSetting);
@@ -3010,11 +2998,8 @@ export class SubCategoryMenuItem extends BaseMenuItem {
     }
 
     _setIconStyle() {
-        if (this.has_style_class_name('regular-icons'))
-            this.remove_style_class_name('regular-icons');
-
-        if (this.has_style_class_name('symbolic-icons'))
-            this.remove_style_class_name('symbolic-icons');
+        this.remove_style_class_name('regular-icons');
+        this.remove_style_class_name('symbolic-icons');
 
         const iconStyle = ArcMenuManager.settings.get_enum('icon-style-categories');
         if (iconStyle === Constants.IconStyle.FULL_COLOR)
@@ -3182,11 +3167,8 @@ export class CategoryMenuItem extends BaseMenuItem {
     }
 
     _setIconStyle() {
-        if (this.has_style_class_name('regular-icons'))
-            this.remove_style_class_name('regular-icons');
-
-        if (this.has_style_class_name('symbolic-icons'))
-            this.remove_style_class_name('symbolic-icons');
+        this.remove_style_class_name('regular-icons');
+        this.remove_style_class_name('symbolic-icons');
 
         const iconStyleSetting = this._displayType === Constants.DisplayType.BUTTON ? 'icon-style-buttons' : 'icon-style-shortcuts';
         const iconStyle = ArcMenuManager.settings.get_enum(iconStyleSetting);
@@ -3463,11 +3445,8 @@ export class PlaceMenuItem extends BaseMenuItem {
     }
 
     _setIconStyle() {
-        if (this.has_style_class_name('regular-icons'))
-            this.remove_style_class_name('regular-icons');
-
-        if (this.has_style_class_name('symbolic-icons'))
-            this.remove_style_class_name('symbolic-icons');
+        this.remove_style_class_name('regular-icons');
+        this.remove_style_class_name('symbolic-icons');
 
         const iconStyleSetting = this._displayType === Constants.DisplayType.BUTTON ? 'icon-style-buttons' : 'icon-style-shortcuts';
         const iconStyle = ArcMenuManager.settings.get_enum(iconStyleSetting);

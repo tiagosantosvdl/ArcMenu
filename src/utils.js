@@ -193,9 +193,7 @@ export function convertToButton(item) {
     item.tooltipLocation = Constants.TooltipLocation.BOTTOM_CENTERED;
     item.remove_child(item.label);
 
-    if (item.has_style_class_name('arcmenu-menu-item'))
-        item.remove_style_class_name('arcmenu-menu-item');
-
+    item.remove_style_class_name('arcmenu-menu-item');
     item.add_style_class_name('arcmenu-button');
 
     item.set({
