@@ -934,11 +934,12 @@ export class BaseMenuLayout extends St.BoxLayout {
                 parent.remove_child(item);
 
             if (groupAllAppsAlphabetically && category === Constants.CategoryType.ALL_PROGRAMS) {
-                const appNameFirstChar = Utils.getAppDisplayName(app).charAt(0).toLowerCase();
-                if (currentCharacter !== appNameFirstChar) {
-                    currentCharacter = appNameFirstChar;
+                const appName = Utils.getAppDisplayName(app);
+                const firstCharUpper = appName.charAt(0).toUpperCase();
+                if (currentCharacter !== firstCharUpper) {
+                    currentCharacter = firstCharUpper;
 
-                    const label = this._createLabelWithSeparator(currentCharacter.toUpperCase());
+                    const label = this._createLabelWithSeparator(currentCharacter);
                     grid.appendItem(label);
                 }
             }

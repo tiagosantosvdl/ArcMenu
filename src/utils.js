@@ -298,8 +298,8 @@ export function getCategoryDetails(iconTheme, currentCategory) {
 
         gicon = categoryIcon;
 
-        const IconStyle = ArcMenuManager.settings.get_enum('icon-style-categories');
-        if (IconStyle === Constants.IconStyle.SYMBOLIC) {
+        const iconStyle = ArcMenuManager.settings.get_enum('icon-style-categories');
+        if (iconStyle === Constants.IconStyle.SYMBOLIC) {
             const icon = iconTheme.lookup_icon(symbolicName, 26, St.IconLookupFlags.FORCE_SYMBOLIC);
             if (icon) {
                 gicon = Gio.Icon.new_for_string(symbolicName);
