@@ -327,13 +327,24 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         if (layout === 'runner' || layout === 'raven' || layout === 'gnome-overview')
             return;
 
-        this.arcMenu.actor.remove_style_class_name('bottomOfScreenMenu');
+        const menuLocation = ArcMenuManager.settings.get_enum('force-menu-location');
 
-        const newMenuLocation = ArcMenuManager.settings.get_enum('force-menu-location');
-        if (this._menuLocation !== newMenuLocation) {
-            this._menuLocation = newMenuLocation;
+        const menuLocationChanged = this._menuLocation !== menuLocation;
+        if (menuLocationChanged) {
+            this._menuLocation = menuLocation;
 
-            if (newMenuLocation === Constants.MenuLocation.OFF) {
+            switch (menuLocation) {
+            case Constants.MenuLocation.BOTTOM_CENTERED:
+            case Constants.MenuLocation.BOTTOM_LEFT:
+            case Constants.MenuLocation.BOTTOM_RIGHT:
+                this.arcMenu.actor.add_style_class_name('arcmenu-menu-location-bottom');
+                break;
+            default:
+                this.arcMenu.actor.remove_style_class_name('arcmenu-menu-location-bottom');
+                break;
+            }
+
+            if (menuLocation === Constants.MenuLocation.OFF) {
                 this.arcMenu.sourceActor = this.arcMenu.focusActor = this;
                 this.arcMenu._boxPointer.setPosition(this, 0.5);
                 this.setMenuPositionAlignment();
@@ -346,7 +357,7 @@ class ArcMenuMenuButton extends PanelMenu.Button {
             this.arcMenu._arrowAlignment = 0.5;
         }
 
-        if (newMenuLocation === Constants.MenuLocation.OFF)
+        if (menuLocation === Constants.MenuLocation.OFF)
             return;
 
         const workArea = Main.layoutManager.getWorkAreaForMonitor(this._monitor.index);
@@ -364,41 +375,55 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         let x, y;
         let side = St.Side.TOP;
 
-        if (newMenuLocation === Constants.MenuLocation.TOP_CENTERED) {
+        switch (menuLocation) {
+        case Constants.MenuLocation.TOP_CENTERED:
             x = xCentered;
             y = yTop;
-        } else if (newMenuLocation === Constants.MenuLocation.TOP_LEFT) {
+            break;
+        case Constants.MenuLocation.TOP_LEFT:
             side = St.Side.LEFT;
             x = xLeft;
             y = yTop;
-        } else if (newMenuLocation === Constants.MenuLocation.TOP_RIGHT) {
+            break;
+        case Constants.MenuLocation.TOP_RIGHT:
             side = St.Side.RIGHT;
             x = xRight;
             y = yTop;
-        } else if (newMenuLocation === Constants.MenuLocation.BOTTOM_CENTERED) {
+            break;
+        case Constants.MenuLocation.BOTTOM_CENTERED:
             x = xCentered;
             y = yBottom;
-            this.arcMenu.actor.add_style_class_name('bottomOfScreenMenu');
-        }  else if (newMenuLocation === Constants.MenuLocation.BOTTOM_LEFT) {
+            break;
+        case Constants.MenuLocation.BOTTOM_LEFT:
             side = St.Side.LEFT;
             x = xLeft;
             y = yBottom;
-            this.arcMenu.actor.add_style_class_name('bottomOfScreenMenu');
-        } else if (newMenuLocation === Constants.MenuLocation.BOTTOM_RIGHT) {
+            break;
+        case Constants.MenuLocation.BOTTOM_RIGHT:
             side = St.Side.RIGHT;
             x = xRight;
             y = yBottom;
-            this.arcMenu.actor.add_style_class_name('bottomOfScreenMenu');
-        } else if (newMenuLocation === Constants.MenuLocation.LEFT_CENTERED) {
+            break;
+        case Constants.MenuLocation.LEFT_CENTERED:
             x = xLeft;
             y = yCentered;
-        } else if (newMenuLocation === Constants.MenuLocation.RIGHT_CENTERED) {
+            break;
+        case Constants.MenuLocation.RIGHT_CENTERED:
             x = xRight;
             y = yCentered;
-        } else if (newMenuLocation === Constants.MenuLocation.MONITOR_CENTERED) {
+            break;
+        case Constants.MenuLocation.MONITOR_CENTERED:
             x = xCentered;
             y = yCentered;
+            break;
+        default:
+            x = xCentered;
+            y = yTop;
+            break;
         }
+
+        if (menuLocationChanged)
+            this.updateArrowSide(side, false);
 
         this._dummyWidget.set_position(Math.round(x), Math.round(y));
     }
@@ -463,14 +488,13 @@ class ArcMenuMenuButton extends PanelMenu.Button {
             this._menuLayout.updateLocation?.();
             this._menuLayout.updateStyle?.();
             this._maybeShowPanel();
+            this.forceMenuLocation();
         }
 
         this.arcMenu.toggle();
 
-        if (this.arcMenu.isOpen) {
+        if (this.arcMenu.isOpen)
             this._menuLayout?.grab_key_focus();
-            this.forceMenuLocation();
-        }
     }
 
     updateHeight() {
