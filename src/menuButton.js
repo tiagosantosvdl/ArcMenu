@@ -124,6 +124,10 @@ class ArcMenuMenuButton extends PanelMenu.Button {
 
         this._intellihideRelease = false;
 
+        // A dummy widget used as the sourceActor of ArcMenu when 'force-menu-location' setting is enabled.
+        this._dummyWidget = new St.Widget({width: 0, height: 0, opacity: 0, name: `ArcMenu_${panelInfo.index}`});
+        Main.uiGroup.add_child(this._dummyWidget);
+
         // Create Main Menus - ArcMenu and ArcMenu's context menu
         this.arcMenu = new ArcMenu(this, 0.5, St.Side.TOP);
         this.arcMenu.connectObject('open-state-changed', this._onOpenStateChanged.bind(this), this);
@@ -336,8 +340,8 @@ class ArcMenuMenuButton extends PanelMenu.Button {
                 return;
             }
 
-            this.arcMenu.sourceActor = this.arcMenu.focusActor = Main.layoutManager.dummyCursor;
-            this.arcMenu._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0.5);
+            this.arcMenu.sourceActor = this.arcMenu.focusActor = this._dummyWidget;
+            this.arcMenu._boxPointer.setPosition(this._dummyWidget, 0.5);
             this.arcMenu._boxPointer.setSourceAlignment(0.5);
             this.arcMenu._arrowAlignment = 0.5;
         }
@@ -396,8 +400,7 @@ class ArcMenuMenuButton extends PanelMenu.Button {
             y = yCentered;
         }
 
-        this.updateArrowSide(side, false);
-        Main.layoutManager.setDummyCursorGeometry(x, y, 0, 0);
+        this._dummyWidget.set_position(Math.round(x), Math.round(y));
     }
 
     vfunc_event(event) {
@@ -533,6 +536,8 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         this.arcMenu = null;
         this.arcMenuContextMenu?.destroy();
         this.arcMenuContextMenu = null;
+        this._dummyWidget.destroy();
+        this._dummyWidget = null;
 
         this.menuManager = null;
         this.contextMenuManager = null;
