@@ -5,6 +5,7 @@ import Graphene from 'gi://Graphene';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import * as PointerWatcher from 'resource:///org/gnome/shell/ui/pointerWatcher.js';
@@ -18,6 +19,8 @@ import * as MW from './menuWidgets.js';
 import * as Utils from './utils.js';
 
 import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
+
+const [ShellVersion] = Config.PACKAGE_VERSION.split('.').map(s => Number(s));
 
 class MenuButtonWidget extends St.BoxLayout {
     static {
@@ -726,7 +729,8 @@ export const ArcMenu = class ArcMenuArcMenu extends PopupMenu.PopupMenu {
         this.actor.add_style_class_name('panel-menu arcmenu-menu');
         this.actor.hide();
 
-        this.actor.connectObject('captured-event', this._onCapturedEvent.bind(this), this);
+        if (ShellVersion < 51)
+            this.actor.connectObject('captured-event', this._onCapturedEvent.bind(this), this);
 
         this._dimEffect = new Clutter.BrightnessContrastEffect({
             enabled: false,
@@ -743,8 +747,14 @@ export const ArcMenu = class ArcMenuArcMenu extends PopupMenu.PopupMenu {
 
     open(animate) {
         if (!this.isOpen) {
-            this._menuButton.arcMenu.actor._muteInput = false;
-            this._menuButton.arcMenu.actor._muteKeys = false;
+            if (ShellVersion < 51) {
+                this._menuButton.arcMenu.actor._muteInput = false;
+                this._menuButton.arcMenu.actor._muteKeys = false;
+            } else {
+                this._menuButton.arcMenu.actor._muteInput.enabled = false;
+                this._menuButton.arcMenu.actor._muteKeys.enabled = false;
+            }
+
             this._menuButton?.setDefaultMenuView();
         }
         super.open(animate);
