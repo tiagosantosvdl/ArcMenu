@@ -145,10 +145,6 @@ export const StandaloneRunner = class ArcMenuStandaloneRunner {
         return this._menuLayout?.activeCategoryType;
     }
 
-    reloadApplications() {
-        this._menuLayout?.reloadApplications();
-    }
-
     displayPinnedApps() {
         this._menuLayout?.displayPinnedApps();
     }

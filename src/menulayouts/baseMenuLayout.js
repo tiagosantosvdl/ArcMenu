@@ -130,8 +130,8 @@ export class BaseMenuLayout extends St.BoxLayout {
     }
 
     _connectAppChangedEvents() {
-        this._tree.connectObject('changed', () => this.reloadApplications(), this);
-        ArcMenuManager.settings.connectObject('changed::recently-installed-apps', () => this.reloadApplications(), this);
+        this._tree.connectObject('changed', () => this._reloadApplications(), this);
+        ArcMenuManager.settings.connectObject('changed::recently-installed-apps', () => this._reloadApplications(), this);
         AppFavorites.getAppFavorites().connectObject('changed', () => {
             if (this.categoryDirectories) {
                 const categoryMenuItem = this.categoryDirectories.get(Constants.CategoryType.FAVORITES);
@@ -239,24 +239,27 @@ export class BaseMenuLayout extends St.BoxLayout {
         });
     }
 
-    _disconnectReloadApps() {
-        if (this._reloadAppsOnMenuClosedID) {
-            this.arcMenu.disconnect(this._reloadAppsOnMenuClosedID);
-            this._reloadAppsOnMenuClosedID = null;
+    _disconnectMenuClosed() {
+        if (this._onMenuClosedID) {
+            this.arcMenu.disconnect(this._onMenuClosedID);
+            this._onMenuClosedID = null;
         }
     }
 
-    reloadApplications() {
+    _reloadApplications() {
         // Only reload applications if the menu is closed.
         if (this.arcMenu.isOpen) {
             this.reloadQueued = true;
-            if (!this._reloadAppsOnMenuClosedID) {
-                this._reloadAppsOnMenuClosedID = this.arcMenu.connect('menu-closed', () => {
-                    this.reloadApplications();
-                    this.reloadQueued = false;
-                    this._disconnectReloadApps();
-                });
-            }
+
+            if (this._onMenuClosedID)
+                return;
+
+            this._onMenuClosedID = this.arcMenu.connect('menu-closed', () => {
+                this._reloadApplications('menu-closed');
+                this.reloadQueued = false;
+                this._disconnectMenuClosed();
+            });
+
             return;
         }
 
@@ -1137,7 +1140,7 @@ export class BaseMenuLayout extends St.BoxLayout {
 
     _onDestroy() {
         ArcMenuManager.settings.disconnectObject(this);
-        this._disconnectReloadApps();
+        this._disconnectMenuClosed();
 
         AppFavorites.getAppFavorites().disconnectObject(this);
 

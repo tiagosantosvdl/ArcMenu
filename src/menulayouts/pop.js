@@ -176,7 +176,7 @@ export class Layout extends BaseMenuLayout {
         this._tree.disconnectObject(this);
     }
 
-    reloadApplications() {
+    _reloadApplications() {
     }
 
     _redisplay() {

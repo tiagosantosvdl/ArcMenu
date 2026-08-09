@@ -593,10 +593,6 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         return this._menuLayout?.activeCategoryType;
     }
 
-    reloadApplications() {
-        this._menuLayout?.reloadApplications();
-    }
-
     displayPinnedApps() {
         this._menuLayout?.displayPinnedApps();
     }
