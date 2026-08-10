@@ -147,7 +147,7 @@ export const AppContextMenu = class ArcMenuAppContextMenu extends AppMenu {
         this._menuLayout = menuLayout;
         this._menuButton = this._menuLayout.menuButton;
 
-        this._isPinnedApp = this.sourceActor.pinnedAppData;
+        this._isPinnedApp = false;
 
         this._enableFavorites = true;
         this._showSingleWindows = true;
@@ -358,8 +358,22 @@ export const AppContextMenu = class ArcMenuAppContextMenu extends AppMenu {
             return;
         }
 
+        let isPinned = false;
+        const isFolder = this.sourceActor.folderSettings ?? false;
+        const sourceSettings = this.sourceActor.folderSettings ?? ArcMenuManager.settings;
+        const pinnedAppsList = sourceSettings.get_value('pinned-apps').deepUnpack();
+        for (let i = 0; i < pinnedAppsList.length; i++) {
+            if (pinnedAppsList[i].id === this._app.get_id()) {
+                isPinned = true;
+                break;
+            }
+        }
+
+        this._isPinnedApp = isPinned;
+
         this._arcMenuPinnedItem.visible = this._menuLayout.hasPinnedApps;
-        this._arcMenuPinnedItem.label.text = this._isPinnedApp ?  _('Unpin from ArcMenu') : _('Pin to ArcMenu');
+        const unpinText = isFolder ?  _('Unpin from Folder') : _('Unpin from ArcMenu');
+        this._arcMenuPinnedItem.label.text = this._isPinnedApp ?  unpinText : _('Pin to ArcMenu');
     }
 
     _updateWindowsSection() {
