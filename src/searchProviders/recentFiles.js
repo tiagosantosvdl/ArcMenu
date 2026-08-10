@@ -20,7 +20,7 @@ export const RecentFilesSearchProvider = class {
     constructor(recentFilesManager) {
         this.id = 'arcmenu.recent-files';
         this.isRemoteProvider = false;
-        this.canLaunchSearch = false;
+        this.canLaunchSearch = true;
         this.recentFilesManager = recentFilesManager;
 
         this._recentFiles = [];
@@ -96,6 +96,16 @@ export const RecentFilesSearchProvider = class {
     }
 
     launchSearch() {
+        const context = global.create_app_launch_context(0, -1);
+        const uri = 'recent:///';
+
+        Gio.AppInfo.launch_default_for_uri_async(uri, context, null, (o, res) => {
+            try {
+                Gio.AppInfo.launch_default_for_uri_finish(res);
+            } catch (e) {
+                Main.notifyError(_('Failed to open Recent Files'), e.message);
+            }
+        });
     }
 
     _getFilteredFileUris(terms, recentFiles) {
