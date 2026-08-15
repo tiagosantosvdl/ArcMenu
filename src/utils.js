@@ -273,12 +273,11 @@ export function getIconSize(iconSizeSetting, defaultIconSize) {
 export function getCategoryDetails(iconTheme, currentCategory) {
     let name = null, gicon = null, fallbackIcon = null;
 
-    for (const entry of Constants.Categories) {
-        if (entry.CATEGORY === currentCategory) {
-            name = entry.NAME;
-            gicon = Gio.Icon.new_for_string(entry.IMAGE);
-            return [name, gicon, fallbackIcon];
-        }
+    const extraCategory = Constants.Categories.find(catData => catData.id === currentCategory);
+    if (extraCategory) {
+        name = extraCategory.name;
+        gicon = Gio.Icon.new_for_string(extraCategory.icon);
+        return [name, gicon, fallbackIcon];
     }
 
     if (currentCategory === Constants.CategoryType.HOME_SCREEN) {

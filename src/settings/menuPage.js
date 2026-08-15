@@ -48,7 +48,7 @@ class ArcMenuMenuPage extends Adw.PreferencesPage {
             if (response === Gtk.ResponseType.APPLY) {
                 const layoutId = this._settings.get_string('menu-layout');
                 const layoutInfo = SettingsUtils.getMenuLayoutInfo(layoutId);
-                this.tweaksRow.title = _('%s Layout Tweaks').format(_(layoutInfo.title));
+                this.tweaksRow.title = _('%s Layout Tweaks').format(_(layoutInfo.name));
             }
         });
         menuLooksGroup.add(this.layoutRow);
@@ -91,7 +91,7 @@ class ArcMenuMenuPage extends Adw.PreferencesPage {
         const layoutId = this._settings.get_string('menu-layout');
         const layoutInfo = SettingsUtils.getMenuLayoutInfo(layoutId);
         this.tweaksRow = new PW.SettingRow({
-            title: _('%s Layout Tweaks').format(_(layoutInfo.title)),
+            title: _('%s Layout Tweaks').format(_(layoutInfo.name)),
             subtitle: _('Settings specific to the current menu layout'),
             icon_name: 'applications-system-symbolic',
         });

@@ -80,11 +80,11 @@ export const SoftwareManagerIDs = ['org.manjaro.pamac.manager.desktop', 'pamac-m
     'org.gnome.Software.desktop', 'tr.org.pardus.software.desktop'];
 
 export const Categories = [
-    {CATEGORY: CategoryType.FAVORITES, NAME: _('Favorites'), IMAGE: 'emote-love-symbolic'},
-    {CATEGORY: CategoryType.FREQUENT_APPS, NAME: _('Frequent Apps'), IMAGE: 'user-bookmarks-symbolic'},
-    {CATEGORY: CategoryType.ALL_PROGRAMS, NAME: _('All Apps'), IMAGE: 'view-app-grid-symbolic'},
-    {CATEGORY: CategoryType.PINNED_APPS, NAME: _('Pinned Apps'), IMAGE: 'view-pin-symbolic'},
-    {CATEGORY: CategoryType.RECENT_FILES, NAME: _('Recent Files'), IMAGE: 'document-open-recent-symbolic'},
+    {id: CategoryType.FAVORITES,     name: _('Favorites'),     icon: 'emote-love-symbolic'},
+    {id: CategoryType.FREQUENT_APPS, name: _('Frequent Apps'), icon: 'user-bookmarks-symbolic'},
+    {id: CategoryType.ALL_PROGRAMS,  name: _('All Apps'),      icon: 'view-app-grid-symbolic'},
+    {id: CategoryType.PINNED_APPS,   name: _('Pinned Apps'),   icon: 'view-pin-symbolic'},
+    {id: CategoryType.RECENT_FILES,  name: _('Recent Files'),  icon: 'document-open-recent-symbolic'},
 ];
 
 export const TooltipLocation = {
@@ -235,48 +235,48 @@ export const PowerDisplayStyle = {
 };
 
 export const PowerOptions = [
-    {TYPE: PowerType.LOGOUT, IMAGE: 'system-log-out-symbolic', NAME: _('Log Out...')},
-    {TYPE: PowerType.LOCK, IMAGE: 'changes-prevent-symbolic', NAME: _('Lock')},
-    {TYPE: PowerType.RESTART, IMAGE: 'system-reboot-symbolic', NAME: _('Restart...')},
-    {TYPE: PowerType.POWER_OFF, IMAGE: 'system-shutdown-symbolic', NAME: _('Power Off...')},
-    {TYPE: PowerType.SUSPEND, IMAGE: 'media-playback-pause-symbolic', NAME: _('Suspend')},
-    {TYPE: PowerType.HYBRID_SLEEP, IMAGE: 'weather-clear-night-symbolic', NAME: _('Hybrid Sleep')},
-    {TYPE: PowerType.HIBERNATE, IMAGE: 'document-save-symbolic', NAME: _('Hibernate')},
-    {TYPE: PowerType.SWITCH_USER, IMAGE: 'system-switch-user-symbolic', NAME: _('Switch User')},
+    {id: PowerType.LOGOUT,       icon: 'system-log-out-symbolic',       name: _('Log Out...')},
+    {id: PowerType.LOCK,         icon: 'changes-prevent-symbolic',      name: _('Lock')},
+    {id: PowerType.RESTART,      icon: 'system-reboot-symbolic',        name: _('Restart...')},
+    {id: PowerType.POWER_OFF,    icon: 'system-shutdown-symbolic',      name: _('Power Off...')},
+    {id: PowerType.SUSPEND,      icon: 'media-playback-pause-symbolic', name: _('Suspend')},
+    {id: PowerType.HYBRID_SLEEP, icon: 'weather-clear-night-symbolic',  name: _('Hybrid Sleep')},
+    {id: PowerType.HIBERNATE,    icon: 'document-save-symbolic',        name: _('Hibernate')},
+    {id: PowerType.SWITCH_USER,  icon: 'system-switch-user-symbolic',   name: _('Switch User')},
 ];
 
 export const LayoutCategoriesInfo = [
-    {id: 'traditional', title: _('Traditional'), image: 'menustyle-traditional-symbolic'},
-    {id: 'modern',      title: _('Modern'),      image: 'menustyle-modern-symbolic'},
-    {id: 'touch',       title: _('Touch'),       image: 'menustyle-touch-symbolic'},
-    {id: 'launcher',    title: _('Launcher'),    image: 'menustyle-launcher-symbolic'},
-    {id: 'alternative', title: _('Alternative'), image: 'menustyle-alternative-symbolic'},
+    {id: 'traditional', name: _('Traditional'), icon: 'menustyle-traditional-symbolic'},
+    {id: 'modern',      name: _('Modern'),      icon: 'menustyle-modern-symbolic'},
+    {id: 'touch',       name: _('Touch'),       icon: 'menustyle-touch-symbolic'},
+    {id: 'launcher',    name: _('Launcher'),    icon: 'menustyle-launcher-symbolic'},
+    {id: 'alternative', name: _('Alternative'), icon: 'menustyle-alternative-symbolic'},
 ];
 
 export const MenuLayoutsInfo = [
-    {id: 'arcmenu',        title: _('ArcMenu'),        category: 'traditional'},
-    {id: 'brisk',          title: _('Brisk'),          category: 'traditional'},
-    {id: 'budgie',         title: _('Budgie'),         category: 'traditional'},
-    {id: 'gnome-menu',     title: _('GNOME Menu'),     category: 'traditional'},
-    {id: 'mint',           title: _('Mint'),           category: 'traditional'},
-    {id: 'whisker',        title: _('Whisker'),        category: 'traditional'},
-    {id: '11',             title: _('11'),             category: 'modern'},
-    {id: 'az',             title: _('a.z.'),           category: 'modern'},
-    {id: 'enterprise',     title: _('Enterprise'),     category: 'modern'},
-    {id: 'insider',        title: _('Insider'),        category: 'modern'},
-    {id: 'plasma',         title: _('Plasma'),         category: 'modern'},
-    {id: 'pop',            title: _('Pop'),            category: 'modern'},
-    {id: 'redmond',        title: _('Redmond'),        category: 'modern'},
-    {id: 'sleek',          title: _('Sleek'),          category: 'modern'},
-    {id: 'tognee',         title: _('tognee'),         category: 'modern'},
-    {id: 'unity',          title: _('Unity'),          category: 'modern'},
-    {id: 'windows',        title: _('Windows'),        category: 'modern'},
-    {id: 'zest',           title: _('Zest'),           category: 'modern'},
-    {id: 'chromebook',     title: _('Chromebook'),     category: 'touch'},
-    {id: 'elementary',     title: _('Elementary'),     category: 'touch'},
-    {id: 'gnome-overview', title: _('GNOME Overview'), category: 'launcher'},
-    {id: 'runner',         title: _('Runner'),         category: 'launcher'},
-    {id: 'raven',          title: _('Raven'),          category: 'alternative'},
+    {id: 'arcmenu',        name: _('ArcMenu'),        category: 'traditional'},
+    {id: 'brisk',          name: _('Brisk'),          category: 'traditional'},
+    {id: 'budgie',         name: _('Budgie'),         category: 'traditional'},
+    {id: 'gnome-menu',     name: _('GNOME Menu'),     category: 'traditional'},
+    {id: 'mint',           name: _('Mint'),           category: 'traditional'},
+    {id: 'whisker',        name: _('Whisker'),        category: 'traditional'},
+    {id: '11',             name: _('11'),             category: 'modern'},
+    {id: 'az',             name: _('a.z.'),           category: 'modern'},
+    {id: 'enterprise',     name: _('Enterprise'),     category: 'modern'},
+    {id: 'insider',        name: _('Insider'),        category: 'modern'},
+    {id: 'plasma',         name: _('Plasma'),         category: 'modern'},
+    {id: 'pop',            name: _('Pop'),            category: 'modern'},
+    {id: 'redmond',        name: _('Redmond'),        category: 'modern'},
+    {id: 'sleek',          name: _('Sleek'),          category: 'modern'},
+    {id: 'tognee',         name: _('tognee'),         category: 'modern'},
+    {id: 'unity',          name: _('Unity'),          category: 'modern'},
+    {id: 'windows',        name: _('Windows'),        category: 'modern'},
+    {id: 'zest',           name: _('Zest'),           category: 'modern'},
+    {id: 'chromebook',     name: _('Chromebook'),     category: 'touch'},
+    {id: 'elementary',     name: _('Elementary'),     category: 'touch'},
+    {id: 'gnome-overview', name: _('GNOME Overview'), category: 'launcher'},
+    {id: 'runner',         name: _('Runner'),         category: 'launcher'},
+    {id: 'raven',          name: _('Raven'),          category: 'alternative'},
 ];
 
 export const ArcMenuLogoSymbolic = 'arcmenu-logo-symbolic';

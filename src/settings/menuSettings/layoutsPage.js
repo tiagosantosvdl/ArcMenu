@@ -25,7 +25,7 @@ class ArcMenuLayoutsPage extends SubPage {
         });
 
         const layoutInfo = getMenuLayoutInfo(this._settings.get_string('menu-layout'));
-        const currentLayoutName = layoutInfo.title;
+        const currentLayoutName = layoutInfo.name;
         const currentLayoutImagePath = `menu-${layoutInfo.id}-symbolic`;
 
         const currentLayoutBoxRow = new CurrentLayoutRow(currentLayoutName, currentLayoutImagePath);
@@ -42,8 +42,8 @@ class ArcMenuLayoutsPage extends SubPage {
             const layoutsInfo = Constants.MenuLayoutsInfo.filter(layout => layout.category === layoutCategory.id);
 
             const tile = new Adw.ExpanderRow({
-                title: _('%s Menu Layouts').format(_(layoutCategory.title)),
-                icon_name: layoutCategory.image,
+                title: _('%s Menu Layouts').format(_(layoutCategory.name)),
+                icon_name: layoutCategory.icon,
             });
 
             menuLayoutGroup.add(tile);
@@ -68,7 +68,7 @@ class ArcMenuLayoutsPage extends SubPage {
                     this.selectedMenuLayout = widget.menuLayout;
 
                     const newLayoutInfo = getMenuLayoutInfo(this.selectedMenuLayout);
-                    currentLayoutBoxRow.label.label = newLayoutInfo.title;
+                    currentLayoutBoxRow.label.label = newLayoutInfo.name;
                     currentLayoutBoxRow.image.gicon = Gio.Icon.new_for_string(`menu-${newLayoutInfo.id}-symbolic`);
 
                     this.expandedRow.expanded = false;
@@ -245,7 +245,7 @@ const MenuLayoutTile = GObject.registerClass(class ArcMenuMenuLayoutTile extends
         });
 
         this._label = new Gtk.Label({
-            label: _(layoutInfo.title),
+            label: _(layoutInfo.name),
             hexpand: true,
             css_classes: ['caption'],
         });

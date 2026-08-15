@@ -1041,8 +1041,8 @@ export class PowerButton extends ArcMenuButtonItem {
     }
 
     constructor(menuLayout, powerType) {
-        super(menuLayout, Constants.PowerOptions[powerType].NAME,
-            Constants.PowerOptions[powerType].IMAGE);
+        super(menuLayout, Constants.PowerOptions[powerType].name,
+            Constants.PowerOptions[powerType].icon);
         this.powerType = powerType;
 
         this._setIconStyle();
@@ -1090,7 +1090,7 @@ export class PowerMenuItem extends BaseMenuItem {
         this._updateIcon();
 
         this.label = new St.Label({
-            text: _(Constants.PowerOptions[this.powerType].NAME),
+            text: _(Constants.PowerOptions[this.powerType].name),
             y_expand: false,
             y_align: Clutter.ActorAlign.CENTER,
         });
@@ -1121,7 +1121,7 @@ export class PowerMenuItem extends BaseMenuItem {
         const iconSize = Utils.getIconSize(iconSizeSetting, this._menuLayout.iconSizeShortcuts);
 
         return new St.Icon({
-            gicon: Gio.Icon.new_for_string(Constants.PowerOptions[this.powerType].IMAGE),
+            gicon: Gio.Icon.new_for_string(Constants.PowerOptions[this.powerType].icon),
             icon_size: iconSize,
         });
     }
@@ -3303,7 +3303,7 @@ export class CategoryMenuItem extends BaseMenuItem {
         const iconSizeSetting = this._displayType === Constants.DisplayType.BUTTON ? 'icon-size-buttons' : 'icon-size-categories';
         ArcMenuManager.settings.connectObject(`changed::${iconSizeSetting}`, () => this._updateIcon(), this);
 
-        const iconStyleSetting = this._displayType === Constants.DisplayType.BUTTON ? 'icon-style-buttons' : 'icon-style-shortcuts';
+        const iconStyleSetting = this._displayType === Constants.DisplayType.BUTTON ? 'icon-style-buttons' : 'icon-style-categories';
         ArcMenuManager.settings.connectObject(`changed::${iconStyleSetting}`, () => {
             this._setIconStyle();
             this._updateIcon();
@@ -3314,7 +3314,7 @@ export class CategoryMenuItem extends BaseMenuItem {
         this.remove_style_class_name('regular-icons');
         this.remove_style_class_name('symbolic-icons');
 
-        const iconStyleSetting = this._displayType === Constants.DisplayType.BUTTON ? 'icon-style-buttons' : 'icon-style-shortcuts';
+        const iconStyleSetting = this._displayType === Constants.DisplayType.BUTTON ? 'icon-style-buttons' : 'icon-style-categories';
         const iconStyle = ArcMenuManager.settings.get_enum(iconStyleSetting);
         if (iconStyle === Constants.IconStyle.FULL_COLOR)
             this.add_style_class_name('regular-icons');
@@ -3356,7 +3356,7 @@ export class CategoryMenuItem extends BaseMenuItem {
 
     isExtraCategory() {
         for (const entry of Constants.Categories) {
-            if (entry.CATEGORY === this._category)
+            if (entry.id === this._categoryData.id)
                 return true;
         }
         return false;

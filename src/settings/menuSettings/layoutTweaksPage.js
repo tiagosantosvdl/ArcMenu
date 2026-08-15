@@ -25,7 +25,7 @@ class ArcMenuLayoutTweaksPage extends SubPage {
 
     setActiveLayout(layoutId) {
         const layoutInfo = getMenuLayoutInfo(layoutId);
-        this.title = _('%s Layout Tweaks').format(_(layoutInfo.title));
+        this.title = _('%s Layout Tweaks').format(_(layoutInfo.name));
 
         for (const child of this.page.children)
             this.page.remove(child);
