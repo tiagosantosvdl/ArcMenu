@@ -10,6 +10,7 @@ import * as AppFavorites from 'resource:///org/gnome/shell/ui/appFavorites.js';
 
 import {ArcMenuManager} from '../arcmenuManager.js';
 import * as Constants from '../constants.js';
+import {AlphabetJumpList} from './alphabetJumpList.js';
 import * as MW from '../menuWidgets.js';
 import * as PlaceDisplay from '../placeDisplay.js';
 import {RecentFilesManager} from '../recentFilesManager.js';
@@ -21,6 +22,7 @@ import {IconGrid} from '../iconGrid.js';
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 const MAX_RECENT_FILES = 25;
+const ALPHABET_SCROLL_PAD = 6;
 
 // This class handles the core functionality of all the menu layouts.
 // Each menu layout extends this class.
@@ -875,6 +877,9 @@ export class BaseMenuLayout extends St.BoxLayout {
     }
 
     _clearActorsFromBox(box) {
+        this._alphabetHeaderMap = new Map();
+        this._alphabetPresentLetters = new Set();
+        this._alphabetJumpList?.close();
         this.blockHoverState = true;
         this.recentFilesManager?.cancelCurrentQueries();
         if (!box) {
@@ -899,6 +904,8 @@ export class BaseMenuLayout extends St.BoxLayout {
 
     _displayAppList(apps, category, grid) {
         this.activeCategoryType = category;
+        this._alphabetHeaderMap = new Map();
+        this._alphabetPresentLetters = new Set();
         if (grid.removeAllItems)
             grid.removeAllItems();
         else
@@ -943,6 +950,7 @@ export class BaseMenuLayout extends St.BoxLayout {
                     currentCharacter = firstCharUpper;
 
                     const label = this._createLabelWithSeparator(currentCharacter);
+                    this._registerAlphabetHeader(label, currentCharacter);
                     grid.appendItem(label);
                 }
             }
@@ -1139,6 +1147,9 @@ export class BaseMenuLayout extends St.BoxLayout {
     }
 
     _onDestroy() {
+        this._alphabetJumpList?.destroy();
+        this._alphabetJumpList = null;
+
         ArcMenuManager.settings.disconnectObject(this);
         this._disconnectMenuClosed();
 
@@ -1256,6 +1267,89 @@ export class BaseMenuLayout extends St.BoxLayout {
         const separator = new MW.ArcMenuSeparator(this, Constants.SeparatorStyle.HEADER_LABEL,
             Constants.SeparatorAlignment.HORIZONTAL, headerLabel);
         return separator;
+    }
+
+    _registerAlphabetHeader(header, letter) {
+        if (!ArcMenuManager.settings.get_boolean('alphabet-jump-list'))
+            return;
+
+        if (letter !== '#' && !/^[A-Z]$/.test(letter))
+            return;
+
+        if (!this._alphabetHeaderMap)
+            this._alphabetHeaderMap = new Map();
+        if (!this._alphabetPresentLetters)
+            this._alphabetPresentLetters = new Set();
+
+        if (!this._alphabetHeaderMap.has(letter)) {
+            this._alphabetHeaderMap.set(letter, header);
+            this._alphabetPresentLetters.add(letter);
+        }
+
+        if (!header._alphabetJumpConnected) {
+            header._alphabetJumpConnected = true;
+            header.connect('button-press-event', (actor, event) => {
+                if (event.get_button() !== Clutter.BUTTON_PRIMARY)
+                    return Clutter.EVENT_PROPAGATE;
+                this._toggleAlphabetPanel();
+                return Clutter.EVENT_STOP;
+            });
+        }
+    }
+
+    _toggleAlphabetPanel() {
+        if (this._alphabetJumpList?.isOpen) {
+            this._alphabetJumpList.close();
+            return;
+        }
+
+        if (!this._alphabetJumpList) {
+            this._alphabetJumpList = new AlphabetJumpList(this);
+            this._alphabetJumpList.connect('destroy', () => {
+                this._alphabetJumpList = null;
+            });
+        }
+
+        this._alphabetJumpList.openAt(this._buildAlphabetLetters());
+    }
+
+    _buildAlphabetLetters() {
+        const present = this._alphabetPresentLetters ?? new Set();
+        const letters = [];
+        for (let i = 0; i < 26; i++) {
+            const ch = String.fromCharCode(65 + i);
+            letters.push({letter: ch, active: present.has(ch)});
+        }
+        letters.push({letter: '#', active: present.has('#')});
+        return letters;
+    }
+
+    _onAlphabetLetterSelected(letter) {
+        const header = this._alphabetHeaderMap?.get(letter);
+        if (header)
+            this._scrollToActor(header);
+    }
+
+    _scrollToActor(actor) {
+        const scrollView = this.applicationsScrollBox;
+        if (!scrollView || !actor)
+            return;
+
+        const grid = this.applicationsGrid;
+        if (grid.height <= 0)
+            return;
+
+        const {vadjustment} = Utils.getScrollViewAdjustments(scrollView);
+        const [, targetY] = actor.get_transformed_position();
+        const [, gridY] = grid.get_transformed_position();
+        const [, transformedHeight] = grid.get_transformed_size();
+        const scale = transformedHeight / grid.height;
+        if (scale <= 0)
+            return;
+
+        const offset = (targetY - gridY) / scale;
+        const max = Math.max(0, vadjustment.upper - vadjustment.page_size);
+        vadjustment.set_value(Math.max(0, Math.min(offset - ALPHABET_SCROLL_PAD, max)));
     }
 
     createLabelRow(title) {

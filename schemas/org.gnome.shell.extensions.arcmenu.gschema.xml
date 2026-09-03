@@ -371,6 +371,10 @@
       <default>false</default>
       <summary>Group Apps Alphabetically. For "All Apps" sections on grid layouts</summary>
     </key>
+    <key type="b" name="alphabet-jump-list">
+      <default>true</default>
+      <summary>Enable the alphabet jump list. Click a letter group header in "All Apps" sections to open an A-Z selection panel for quick navigation</summary>
+    </key>
     <key type="b" name="multi-lined-labels">
       <default>true</default>
       <summary>Multi-lined labels for large icon application grid layouts</summary>
