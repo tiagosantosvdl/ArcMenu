@@ -35,10 +35,6 @@ class ArcMenuFineTunePage extends SubPage {
         const genericNamesRow = createSwitchRow('apps-show-generic-names', _('Show Generic Application Names'));
         miscGroup.add(genericNamesRow);
 
-        const alphabetJumpListRow = createSwitchRow('alphabet-jump-list',
-            _('Enable Alphabet Jump List'), _('Click a letter group header in "All Apps" to open an A-Z selection panel'));
-        miscGroup.add(alphabetJumpListRow);
-
         const hiddenFilesRow = createSwitchRow('show-hidden-recent-files', _('Show Hidden Recent Files'));
         miscGroup.add(hiddenFilesRow);
 

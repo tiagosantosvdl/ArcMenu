@@ -561,6 +561,13 @@ export class ArcMenuSeparator extends PopupMenu.PopupBaseMenuItem {
         this.connect('destroy', () => this._onDestroy());
     }
 
+    enableClickGesture() {
+        if (this._clickGesture)
+            this._clickGesture.enabled = true;
+        if (this._clickAction)
+            this._clickAction.enabled = true;
+    }
+
     _onDestroy() {
         ArcMenuManager.settings.disconnectObject(this);
         this.label.destroy();
@@ -2768,22 +2775,21 @@ export class ApplicationMenuItem extends BaseMenuItem {
     }
 }
 
-export class FolderDialog extends PopupMenu.PopupMenu {
-    constructor(sourceActor, menuLayout) {
+export class BaseDialog extends PopupMenu.PopupMenu {
+    constructor(menuLayout) {
         const dummyCursor = new St.Widget({width: 0, height: 0, opacity: 0});
         super(dummyCursor, 0.5, St.Side.TOP);
 
         this.dummyCursor = dummyCursor;
         Main.uiGroup.add_child(this.dummyCursor);
 
-        this._sourceActor = sourceActor;
         this._menuLayout = menuLayout;
         this._menuButton = this._menuLayout.menuButton;
         this._arcMenu = this._menuLayout.arcMenu;
 
         this.actor.add_style_class_name('popup-menu arcmenu-menu');
         this.box.add_style_class_name('arcmenu-folder-dialog');
-        this._openStateId = this.connect('open-state-changed', this._subMenuOpenStateChanged.bind(this));
+        this.connectObject('open-state-changed', this._openStateChanged.bind(this), this);
         this._menuLayout.subMenuManager.addMenu(this);
         Main.uiGroup.add_child(this.actor);
         this.actor.hide();
@@ -2793,63 +2799,31 @@ export class FolderDialog extends PopupMenu.PopupMenu {
                 this.close();
         }, this);
 
-        const hasColumnSpacing = this._menuLayout.columnSpacing !== 0;
-        const hasRowSpacing = this._menuLayout.rowSpacing !== 0;
-        this._grid = new IconGrid({
-            columns: 3,
-            halign: Clutter.ActorAlign.CENTER,
-            column_spacing: hasColumnSpacing ? this._menuLayout.columnSpacing : 4,
-            row_spacing: hasRowSpacing ? this._menuLayout.rowSpacing : 4,
-        });
-
-        this._scrollView = Utils.createPanActionScrollView(this._menuButton, {
-            style: 'padding-bottom: 18px;',
-            x_expand: true,
-            y_expand: true,
-            x_align: Clutter.ActorAlign.START,
-            y_align: Clutter.ActorAlign.START,
-            style_class: this._menuLayout._disableFadeEffect ? '' : 'small-vfade',
-        });
-        this._box = new St.BoxLayout({
-            y_align: Clutter.ActorAlign.START,
-        });
-        this._box.add_child(this._grid);
-        Utils.addChildToParent(this._scrollView, this._box);
-
-        this.box.add_child(this._scrollView);
         this.box.set({
             pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
             x_expand: true,
             x_align: Clutter.ActorAlign.FILL,
             y_align: Clutter.ActorAlign.START,
-            style: 'border-radius: 20px; padding: 0px;',
         });
     }
 
     destroy() {
-        if (this._openStateId)
-            this.disconnect(this._openStateId);
-        this._arcMenu._dimEffect.enabled = false;
-        this.close();
+        if (this._destroyed)
+            return;
         this._destroyed = true;
-        if (this.appList) {
-            this.appList.forEach(item => {
-                if (item instanceof BaseMenuItem)
-                    item.destroy();
-            });
-            this.appList = null;
-        }
+        if (this._arcMenu)
+            this._arcMenu._dimEffect.enabled = false;
+        this.close();
         this.dummyCursor.destroy();
         this.dummyCursor = null;
 
         this._menuLayout = null;
         this._menuButton = null;
         this._arcMenu = null;
-        this._sourceActor = null;
         super.destroy();
     }
 
-    _subMenuOpenStateChanged(menu, isOpen) {
+    _openStateChanged(menu, isOpen) {
         const [sourceX, sourceY] =
         this._arcMenu.actor.get_transformed_position();
 
@@ -2873,7 +2847,6 @@ export class FolderDialog extends PopupMenu.PopupMenu {
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
 
-            this._sourceActor.add_style_pseudo_class('active');
             this._menuButton.clearTooltipShowingId();
             this._menuButton.hideTooltip();
         } else {
@@ -2884,17 +2857,19 @@ export class FolderDialog extends PopupMenu.PopupMenu {
                 duration: 150,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
-            this._sourceActor.remove_style_pseudo_class('active');
-            this._sourceActor.active = false;
-            this._sourceActor.sync_hover();
         }
+
+        this._updateSourceActor(isOpen);
+    }
+
+    _updateSourceActor(_isOpen) {
     }
 
     _setDimmed(dim) {
         if (this._destroyed)
             return;
         const DIM_BRIGHTNESS = -0.4;
-        const POPUP_ANIMATION_TIME = 400;
+        const ANIMATION_TIME = 150;
 
         const val = 127 * (1 + (dim ? 1 : 0) * DIM_BRIGHTNESS);
         const colorValues = {
@@ -2907,10 +2882,69 @@ export class FolderDialog extends PopupMenu.PopupMenu {
 
         this._arcMenu._boxPointer.ease_property('@effects.dim.brightness', color, {
             mode: Clutter.AnimationMode.LINEAR,
-            duration: POPUP_ANIMATION_TIME,
-            onStopped: () => (this._arcMenu._dimEffect.enabled = dim),
+            duration: ANIMATION_TIME,
+            onStopped: () => {
+                if (this._arcMenu && !this._destroyed)
+                    this._arcMenu._dimEffect.enabled = dim;
+            },
         });
         this._arcMenu._dimEffect.enabled = true;
+    }
+}
+
+export class FolderDialog extends BaseDialog {
+    constructor(sourceActor, menuLayout) {
+        super(menuLayout);
+
+        this._sourceActor = sourceActor;
+
+        const hasColumnSpacing = this._menuLayout.columnSpacing !== 0;
+        const hasRowSpacing = this._menuLayout.rowSpacing !== 0;
+        this._grid = new IconGrid({
+            columns: 3,
+            halign: Clutter.ActorAlign.CENTER,
+            column_spacing: hasColumnSpacing ? this._menuLayout.columnSpacing : 4,
+            row_spacing: hasRowSpacing ? this._menuLayout.rowSpacing : 4,
+        });
+
+        this._scrollView = Utils.createPanActionScrollView(this._menuButton, {
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.START,
+            style_class: this._menuLayout._disableFadeEffect ? '' : 'small-vfade',
+        });
+        this._box = new St.BoxLayout({
+            y_align: Clutter.ActorAlign.START,
+        });
+        this._box.add_child(this._grid);
+        Utils.addChildToParent(this._scrollView, this._box);
+
+        this.box.add_child(this._scrollView);
+        this.box.set({
+            style: 'border-radius: 20px; padding: 0px;',
+        });
+    }
+
+    destroy() {
+        if (this.appList) {
+            this.appList.forEach(item => {
+                if (item instanceof BaseMenuItem)
+                    item.destroy();
+            });
+            this.appList = null;
+        }
+        super.destroy();
+    }
+
+    _updateSourceActor(isOpen) {
+        if (isOpen) {
+            this._sourceActor.add_style_pseudo_class('active');
+        } else {
+            this._sourceActor.remove_style_pseudo_class('active');
+            this._sourceActor.active = false;
+            this._sourceActor.sync_hover();
+        }
     }
 
     populateMenu(appList) {
@@ -2937,7 +2971,117 @@ export class FolderDialog extends PopupMenu.PopupMenu {
         const width = (childWidth * 3) + (columnSpacing * 2) + hPadding;
         const height = (childHeight * 3) + (rowSpacing * 2);
 
-        this._scrollView.style = `width: ${width}px; height: ${height}px; padding-bottom: 18px;`;
+        this._scrollView.style = `width: ${width}px; height: ${height}px;`;
+    }
+}
+
+export class BucketJumpListDialog extends BaseDialog {
+    constructor(menuLayout) {
+        super(menuLayout);
+
+        const layout = new Clutter.GridLayout({
+            row_homogeneous: true,
+            column_homogeneous: true,
+            column_spacing: 6,
+            row_spacing: 6,
+        });
+
+        this._grid = new St.Widget({
+            layout_manager: layout,
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        this.box.add_child(this._grid);
+        this.box.set({
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+            style: 'padding: 12px;',
+        });
+
+        this._bucketChars = new Map();
+    }
+
+    destroy() {
+        this._bucketChars?.clear();
+        this._bucketChars = null;
+        super.destroy();
+    }
+
+    clearAll() {
+        this._bucketChars?.clear();
+    }
+
+    addBucketChar(char, item) {
+        this._bucketChars?.set(char, item);
+    }
+
+    populateMenu() {
+        if (!this._bucketChars)
+            return;
+
+        this._grid.destroy_all_children();
+
+        let row = 0;
+        let column = 0;
+        const itemCount = this._bucketChars.size;
+        const maxColumns = Math.min(8, Math.max(2, Math.ceil(Math.sqrt(itemCount))));
+
+        for (const [char, item] of this._bucketChars) {
+            const button = new St.Button({
+                label: char,
+                style_class: 'button arcmenu-alphabet-button',
+                x_expand: false,
+            });
+
+            button.connectObject('clicked', () => {
+                this.toggle();
+                this._scrollToItem(item);
+            }, this);
+
+            item.connectObject('activate', () => this.toggle(), this);
+
+            this._grid.layout_manager.attach(button, column, row, 1, 1);
+
+            column++;
+            if (column >= maxColumns) {
+                column = 0;
+                row++;
+            }
+        }
+    }
+
+    _scrollToItem(item) {
+        let box = item.get_allocation_box();
+        let y = box.y1;
+
+        let parent = item.get_parent();
+
+        while (!(parent instanceof St.ScrollView)) {
+            if (!parent)
+                return;
+
+            box = parent.get_allocation_box();
+            y += box.y1;
+            parent = parent.get_parent();
+        }
+
+        const {vadjustment} = Utils.getScrollViewAdjustments(parent);
+        const [, lower, upper, , , pageSize] = vadjustment.get_values();
+
+        const fade = parent.get_effect('fade');
+        const offset = fade ? fade.fade_margins.top : 0;
+
+        const newValue = Math.max(lower, Math.min(upper - pageSize, y - offset));
+
+        vadjustment.ease(newValue, {
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: 100,
+        });
     }
 }
 
