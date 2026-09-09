@@ -76,6 +76,8 @@ In 2017, ArcMenu _started_ as a fork of the Zorin menu extension by Zorin OS. As
 
 **@[RunasSudo](https://gitlab.com/RunasSudo) !271** | **@[innovisus](https://gitlab.com/innovisus) !273** | **@[morgan9e](https://gitlab.com/morgan9e) !274**
 
+**@[ymt200120](https://gitlab.com/ymt200120) !284**
+
 -----
 
 ### Translators
