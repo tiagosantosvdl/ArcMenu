@@ -95,6 +95,17 @@
     min-height: auto;
 }
 
+.arcmenu-alphabet-button{
+    width: 36px;
+    height: 36px;
+    min-height: 0px;
+    padding: 0px;
+    margin: 0px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+}
+
 .arcmenu-avatar-round{
     background-size: contain;
     border-radius: 999px;
