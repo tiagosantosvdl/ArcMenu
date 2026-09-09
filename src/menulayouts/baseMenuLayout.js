@@ -106,6 +106,8 @@ export class BaseMenuLayout extends St.BoxLayout {
         this.searchResults = new SearchResults(this);
         this.searchEntry = new MW.SearchEntry(this);
 
+        this._bucketJumpListDialog = new MW.BucketJumpListDialog(this);
+
         this.applicationsGrid = new IconGrid({
             halign: this.display_type === Constants.DisplayType.LIST ? Clutter.ActorAlign.FILL
                 : Clutter.ActorAlign.CENTER,
@@ -875,6 +877,7 @@ export class BaseMenuLayout extends St.BoxLayout {
     }
 
     _clearActorsFromBox(box) {
+        this._bucketJumpListDialog?.close();
         this.blockHoverState = true;
         this.recentFilesManager?.cancelCurrentQueries();
         if (!box) {
@@ -912,7 +915,11 @@ export class BaseMenuLayout extends St.BoxLayout {
         const isGrid = this.display_type === Constants.DisplayType.GRID;
         const isList = this.display_type === Constants.DisplayType.LIST;
 
-        const groupAllAppsAlphabetically = (groupAllAppsListView && isList) || (groupAllAppsGridView && isGrid);
+        const groupAllAppsAlphabetically = ((groupAllAppsListView && isList) || (groupAllAppsGridView && isGrid)) &&
+            category === Constants.CategoryType.ALL_PROGRAMS;
+
+        if (groupAllAppsAlphabetically)
+            this._bucketJumpListDialog.clearAll();
 
         this._setGridColumns(grid);
 
@@ -936,13 +943,15 @@ export class BaseMenuLayout extends St.BoxLayout {
             if (parent)
                 parent.remove_child(item);
 
-            if (groupAllAppsAlphabetically && category === Constants.CategoryType.ALL_PROGRAMS) {
+            if (groupAllAppsAlphabetically) {
                 const appName = Utils.getAppDisplayName(app);
                 const firstCharUpper = appName.charAt(0).toUpperCase();
                 if (currentCharacter !== firstCharUpper) {
                     currentCharacter = firstCharUpper;
 
                     const label = this._createLabelWithSeparator(currentCharacter);
+                    label.enableClickGesture();
+                    this._bucketJumpListDialog.addBucketChar(currentCharacter, label);
                     grid.appendItem(label);
                 }
             }
@@ -952,6 +961,9 @@ export class BaseMenuLayout extends St.BoxLayout {
             if (!this.activeMenuItem && grid === this.applicationsGrid)
                 this.activeMenuItem = item;
         }
+
+        if (groupAllAppsAlphabetically)
+            this._bucketJumpListDialog.populateMenu();
 
         if (this.applicationsBox && grid === this.applicationsGrid && !this.applicationsBox.contains(this.applicationsGrid))
             this.applicationsBox.add_child(this.applicationsGrid);
@@ -1141,6 +1153,9 @@ export class BaseMenuLayout extends St.BoxLayout {
     _onDestroy() {
         ArcMenuManager.settings.disconnectObject(this);
         this._disconnectMenuClosed();
+
+        this._bucketJumpListDialog?.destroy();
+        this._bucketJumpListDialog = null;
 
         AppFavorites.getAppFavorites().disconnectObject(this);
 
