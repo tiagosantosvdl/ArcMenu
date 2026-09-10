@@ -8,7 +8,6 @@ import St from 'gi://St';
 import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
-import * as PointerWatcher from 'resource:///org/gnome/shell/ui/pointerWatcher.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
 
@@ -21,6 +20,15 @@ import * as Utils from './utils.js';
 import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 const [ShellVersion] = Config.PACKAGE_VERSION.split('.').map(s => Number(s));
+
+async function getPointerWatcher() {
+    if (ShellVersion < 51) {
+        const PointerWatcher = await import('resource:///org/gnome/shell/ui/pointerWatcher.js');
+        return PointerWatcher;
+    }
+    return null;
+};
+const PointerWatcher = await getPointerWatcher();
 
 class MenuButtonWidget extends St.BoxLayout {
     static {
@@ -701,22 +709,41 @@ class ArcMenuMenuButton extends PanelMenu.Button {
     }
 
     _startTrackingMouse(callback) {
-        if (this._pointerWatch)
+        if (this._cursorTrackerId)
             return;
 
-        this._pointerWatch = PointerWatcher.getPointerWatcher().addWatch(500, (pX, pY) => {
+        const onPointerWatch = (x, y) => {
             const panelChildHasGrab = this._panelChildHasGrab();
-            if (!this._panelHasMousePointer(pX, pY) && !panelChildHasGrab) {
+            if (!this._panelHasMousePointer(x, y) && !panelChildHasGrab) {
                 callback();
                 this._stopTrackingMouse();
             }
-        });
+        };
+
+        if (ShellVersion >= 51) {
+            const cursorTracker = global.backend.get_cursor_tracker();
+            this._cursorTrackerId = cursorTracker.connect('position-invalidated', () => {
+                const [x, y] = cursorTracker.get_pointer();
+                onPointerWatch(x, y);
+            });
+        } else {
+            this._cursorTrackerId = PointerWatcher.getPointerWatcher().addWatch(500, (x, y) => {
+                onPointerWatch(x, y);
+            });
+        }
     }
 
     _stopTrackingMouse() {
-        if (this._pointerWatch) {
-            PointerWatcher.getPointerWatcher()._removeWatch(this._pointerWatch);
-            this._pointerWatch = null;
+        if (!this._cursorTrackerId)
+            return;
+
+        if (ShellVersion >= 51) {
+            const cursorTracker = global.backend.get_cursor_tracker();
+            cursorTracker.disconnect(this._cursorTrackerId);
+            this._cursorTrackerId = null;
+        } else {
+            PointerWatcher.getPointerWatcher()._removeWatch(this._cursorTrackerId);
+            this._cursorTrackerId = null;
         }
     }
 });
