@@ -3356,7 +3356,7 @@ export class CategoryMenuItem extends BaseMenuItem {
 
     isExtraCategory() {
         for (const entry of Constants.Categories) {
-            if (entry.id === this._categoryData.id)
+            if (entry.id === this._category)
                 return true;
         }
         return false;
