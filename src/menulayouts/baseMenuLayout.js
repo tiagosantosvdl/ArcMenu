@@ -7,6 +7,7 @@ import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import * as AppFavorites from 'resource:///org/gnome/shell/ui/appFavorites.js';
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
 import {ArcMenuManager} from '../arcmenuManager.js';
 import * as Constants from '../constants.js';
@@ -15,8 +16,9 @@ import * as PlaceDisplay from '../placeDisplay.js';
 import {RecentFilesManager} from '../recentFilesManager.js';
 import {SearchResults} from '../search.js';
 import * as Utils from '../utils.js';
-
 import {IconGrid} from '../iconGrid.js';
+
+const [ShellVersion] = Config.PACKAGE_VERSION.split('.').map(s => Number(s));
 
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
@@ -127,7 +129,6 @@ export class BaseMenuLayout extends St.BoxLayout {
         this.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
         this.connect('destroy', () => this._onDestroy());
         this.searchEntry.connectObject('search-changed', this._onSearchEntryChanged.bind(this), this);
-        this.searchEntry.connectObject('entry-key-press', this._onSearchEntryKeyPress.bind(this), this);
         ArcMenuManager.settings.connectObject('changed::search-hidden', () => this._onSearchHiddenChanged(), this);
     }
 
@@ -1034,118 +1035,42 @@ export class BaseMenuLayout extends St.BoxLayout {
         }
     }
 
-    _onSearchEntryKeyPress(searchEntry, event) {
-        const symbol = event.get_key_symbol();
-        switch (symbol) {
-        case Clutter.KEY_Up:
-        case Clutter.KEY_Down:
-        case Clutter.KEY_Left:
-        case Clutter.KEY_Right: {
-            let direction;
-            if (symbol === Clutter.KEY_Down || symbol === Clutter.KEY_Up)
-                return Clutter.EVENT_PROPAGATE;
-            if (symbol === Clutter.KEY_Right)
-                direction = St.DirectionType.RIGHT;
-            if (symbol === Clutter.KEY_Left)
-                direction = St.DirectionType.LEFT;
-
-            let cursorPosition = this.searchEntry.clutter_text.get_cursor_position();
-
-            if (cursorPosition === Constants.CaretPosition.END && symbol === Clutter.KEY_Right)
-                cursorPosition = Constants.CaretPosition.END;
-            else if (cursorPosition === Constants.CaretPosition.START && symbol === Clutter.KEY_Left)
-                cursorPosition = Constants.CaretPosition.START;
-            else
-                cursorPosition = Constants.CaretPosition.MIDDLE;
-
-            if (cursorPosition === Constants.CaretPosition.END || cursorPosition === Constants.CaretPosition.START) {
-                let navigateActor = this.activeMenuItem;
-                if (this.searchResults.hasActiveResult()) {
-                    navigateActor = this.searchResults.getTopResult();
-                    if (navigateActor.has_style_pseudo_class('active')) {
-                        navigateActor.grab_key_focus();
-                        navigateActor.remove_style_pseudo_class('active');
-                        return this.navigate_focus(navigateActor, direction, false);
-                    }
-                    navigateActor.grab_key_focus();
-                    return Clutter.EVENT_STOP;
-                }
-                if (!navigateActor)
-                    return Clutter.EVENT_PROPAGATE;
-                return this.navigate_focus(navigateActor, direction, false);
-            }
-            return Clutter.EVENT_PROPAGATE;
-        }
-        default:
-            return Clutter.EVENT_PROPAGATE;
-        }
-    }
-
     _onMainBoxKeyPress(actor, event) {
         // Prevent a mouse hover event from setting a new active menu item, until next mouse move event.
         this.blockHoverState = true;
-
-        // Prevent Category Mouse Hover activation while search results are active.
-        this._setCategoriesBoxInactive(true);
 
         const symbol = event.get_key_symbol();
         const unicode = Clutter.keysym_to_unicode(symbol);
 
         switch (symbol) {
-        case Clutter.KEY_BackSpace:
-            if (this.searchEntry && !this.searchEntry.hasKeyFocus() && !this.searchEntry.isEmpty()) {
-                this.searchEntry.grab_key_focus();
-                const newText = this.searchEntry.getText().slice(0, -1);
-                this.searchEntry.setText(newText);
-            }
-            return Clutter.EVENT_PROPAGATE;
-        case Clutter.KEY_Tab:
-        case Clutter.KEY_ISO_Left_Tab:
+        case Clutter.KEY_Tab: case Clutter.KEY_ISO_Left_Tab:
         case Clutter.KEY_Up: case Clutter.KEY_KP_Up:
         case Clutter.KEY_Down: case Clutter.KEY_KP_Down:
         case Clutter.KEY_Left: case Clutter.KEY_KP_Left:
         case Clutter.KEY_Right: case Clutter.KEY_KP_Right: {
-            let direction;
-            if (symbol === Clutter.KEY_Down || symbol === Clutter.KEY_KP_Down)
-                direction = St.DirectionType.DOWN;
-            else if (symbol === Clutter.KEY_Right || symbol === Clutter.KEY_KP_Right)
-                direction = St.DirectionType.RIGHT;
-            else if (symbol === Clutter.KEY_Up || symbol === Clutter.KEY_KP_Up)
-                direction = St.DirectionType.UP;
-            else if (symbol === Clutter.KEY_Left || symbol === Clutter.KEY_KP_Left)
-                direction = St.DirectionType.LEFT;
-            else if (symbol === Clutter.KEY_Tab)
-                direction = St.DirectionType.TAB_FORWARD;
-            else if (symbol === Clutter.KEY_ISO_Left_Tab)
-                direction = St.DirectionType.TAB_BACKWARD;
-
-            if (this.searchEntry.hasKeyFocus() &&
-                this.searchResults.hasActiveResult() && this.searchResults.get_parent()) {
-                const topSearchResult = this.searchResults.getTopResult();
-                if (topSearchResult.has_style_pseudo_class('active')) {
-                    topSearchResult.grab_key_focus();
-                    topSearchResult.remove_style_pseudo_class('active');
-                    return actor.navigate_focus(global.stage.key_focus, direction, false);
-                }
-                topSearchResult.grab_key_focus();
-                return Clutter.EVENT_STOP;
-            } else if (global.stage.key_focus === this && symbol === Clutter.KEY_Up) {
-                return actor.navigate_focus(global.stage.key_focus, direction, true);
-            } else if (global.stage.key_focus === this) {
+            if (this.activeMenuItem && global.stage.get_key_focus() !== this.activeMenuItem) {
                 this.activeMenuItem.grab_key_focus();
                 return Clutter.EVENT_STOP;
             }
-            return actor.navigate_focus(global.stage.key_focus, direction, false);
+            break;
         }
-        case Clutter.KEY_KP_Enter:
-        case Clutter.KEY_Return:
-        case Clutter.KEY_Escape:
-            return Clutter.EVENT_PROPAGATE;
-        default:
-            if (unicode !== 0 && this.searchEntry) {
-                global.stage.set_key_focus(this.searchEntry.clutter_text);
-                this.searchEntry.clutter_text.event(event, false);
+        default: {
+            if (ShellVersion >= 51)
+                return Clutter.EVENT_PROPAGATE;
+
+            const forwardToEntry = symbol === Clutter.KEY_BackSpace || unicode !== 0;
+
+            if (forwardToEntry && this.searchEntry) {
+                if (event) {
+                    if (global.stage.get_key_focus() !== this.searchEntry.clutter_text)
+                        this.searchEntry.grab_key_focus();
+
+                    return this.searchEntry.clutter_text.event(event, false)
+                        ? Clutter.EVENT_STOP
+                        : Clutter.EVENT_PROPAGATE;
+                }
             }
+        }
         }
         return Clutter.EVENT_PROPAGATE;
     }

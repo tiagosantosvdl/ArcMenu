@@ -443,7 +443,7 @@ export class BaseMenuItem extends St.BoxLayout {
             }
         }
 
-        if (global.focus_manager.navigate_from_event(Clutter.get_current_event()))
+        if (ShellVersion < 51 && global.focus_manager.navigate_from_event(Clutter.get_current_event()))
             return Clutter.EVENT_STOP;
 
         if (!this._activatable)
@@ -3695,8 +3695,6 @@ export class PlaceMenuItem extends BaseMenuItem {
 export class SearchEntry extends St.Entry {
     static [GObject.signals] = {
         'search-changed': {param_types: [GObject.TYPE_STRING]},
-        'entry-key-focus-in': { },
-        'entry-key-press': {param_types: [Clutter.Event.$gtype]},
     };
 
     static {
@@ -3752,6 +3750,9 @@ export class SearchEntry extends St.Entry {
         this._text.connectObject('key-focus-in', this._onKeyFocusIn.bind(this), this);
         this._text.connectObject('key-focus-out', this._onKeyFocusOut.bind(this), this);
 
+        if (ShellVersion >= 51)
+            this._text.set_input_interceptor(this._menuLayout);
+
         this.connect('popup-menu', () => {
             const searchResult = this.searchResults.getTopResult();
             const hasSearchResult = !this.isEmpty() && searchResult;
@@ -3792,11 +3793,18 @@ export class SearchEntry extends St.Entry {
         return this.get_text().length === 0;
     }
 
+    _onKeyFocusIn() {
+        this.add_style_pseudo_class('focus');
+        this.searchResults.highlightDefault(true);
+        return Clutter.EVENT_PROPAGATE;
+    }
+
     _onKeyFocusOut() {
         if (!this.isEmpty()) {
             this.add_style_pseudo_class('focus');
             return Clutter.EVENT_STOP;
         }
+        this.searchResults.highlightDefault(false);
         return Clutter.EVENT_PROPAGATE;
     }
 
@@ -3809,8 +3817,6 @@ export class SearchEntry extends St.Entry {
             }
             if (!this.hasKeyFocus())
                 this.grab_key_focus();
-            if (!this.searchResults.getTopResult()?.has_style_pseudo_class('active'))
-                this.searchResults.getTopResult()?.add_style_pseudo_class('active');
             this.add_style_pseudo_class('focus');
         } else {
             if (this._iconClickedId > 0) {
@@ -3830,27 +3836,33 @@ export class SearchEntry extends St.Entry {
         const symbol = event.get_key_symbol();
         const searchResult = this.searchResults.getTopResult();
 
-        if (symbol === Clutter.KEY_Down) {
-            if (searchResult?.has_style_pseudo_class('active'))
-                searchResult.remove_style_pseudo_class('active');
+        let arrowNext, nextDirection;
+        if (this.get_text_direction() === Clutter.TextDirection.RTL) {
+            arrowNext = Clutter.KEY_Left;
+            nextDirection = St.DirectionType.LEFT;
+        } else {
+            arrowNext = Clutter.KEY_Right;
+            nextDirection = St.DirectionType.RIGHT;
+        }
 
-            const navigateActor = searchResult ?? this._menuLayout.activeMenuItem;
+        const navigateActor = searchResult ?? this._menuLayout.activeMenuItem;
+        if (symbol === Clutter.KEY_Tab) {
+            this._menuLayout.navigate_focus(navigateActor, St.DirectionType.TAB_FORWARD, false);
+            return Clutter.EVENT_STOP;
+        } else if (symbol === Clutter.KEY_ISO_Left_Tab) {
+            this._menuLayout.navigate_focus(navigateActor, St.DirectionType.TAB_BACKWARD, false);
+            return Clutter.EVENT_STOP;
+        } else if (symbol === Clutter.KEY_Down) {
             this._menuLayout.navigate_focus(navigateActor, St.DirectionType.DOWN, false);
             return Clutter.EVENT_STOP;
+        } else if (symbol === Clutter.KEY_Up) {
+            this._menuLayout.navigate_focus(navigateActor, St.DirectionType.UP, false);
+            return Clutter.EVENT_STOP;
+        } else if (symbol === arrowNext && this._text.cursor_position === -1) {
+            this._menuLayout.navigate_focus(navigateActor, nextDirection, false);
+            return Clutter.EVENT_STOP;
         }
-        if (!this.isEmpty() && searchResult) {
-            if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter) {
-                searchResult.activate();
-                return Clutter.EVENT_STOP;
-            }
-        }
-        this.emit('entry-key-press', event);
-        return Clutter.EVENT_PROPAGATE;
-    }
 
-    _onKeyFocusIn() {
-        this.add_style_pseudo_class('focus');
-        this.emit('entry-key-focus-in');
         return Clutter.EVENT_PROPAGATE;
     }
 
