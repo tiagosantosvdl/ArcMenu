@@ -3745,8 +3745,18 @@ export class SearchEntry extends St.Entry {
         this.set_primary_icon(this._findIcon);
 
         this._text = this.get_clutter_text();
+
+        if (ShellVersion >= 51) {
+            this._keyController = new Clutter.KeyController();
+            this._keyController.connectObject('key-press', () => this._onKeyPress(), this);
+            this.add_action_full(
+                'search-key-selection', Clutter.EventPhase.CAPTURE,
+                this._keyController);
+        } else {
+            this._text.connectObject('key-press-event', this._onKeyPress.bind(this), this);
+        }
+
         this._text.connectObject('text-changed', this._onTextChanged.bind(this), this);
-        this._text.connectObject('key-press-event', this._onKeyPress.bind(this), this);
         this._text.connectObject('key-focus-in', this._onKeyFocusIn.bind(this), this);
         this._text.connectObject('key-focus-out', this._onKeyFocusOut.bind(this), this);
 
@@ -3833,7 +3843,7 @@ export class SearchEntry extends St.Entry {
     }
 
     _onKeyPress(actor, event) {
-        const symbol = event.get_key_symbol();
+        const symbol = this._keyController ? this._keyController.get_key()[1] : event.get_key_symbol();
         const searchResult = this.searchResults.getTopResult();
 
         let arrowNext, nextDirection;
@@ -3861,6 +3871,11 @@ export class SearchEntry extends St.Entry {
         } else if (symbol === arrowNext && this._text.cursor_position === -1) {
             this._menuLayout.navigate_focus(navigateActor, nextDirection, false);
             return Clutter.EVENT_STOP;
+        } else if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter) {
+            if (!this.isEmpty() && searchResult) {
+                searchResult.activate();
+                return Clutter.EVENT_STOP;
+            }
         }
 
         return Clutter.EVENT_PROPAGATE;
