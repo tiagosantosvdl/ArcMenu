@@ -103,7 +103,7 @@ export const RecentFilesSearchProvider = class {
             try {
                 Gio.AppInfo.launch_default_for_uri_finish(res);
             } catch (e) {
-                Main.notifyError(_('Failed to open Recent Files'), e.message);
+                Main.notifyError(_('Failed to open “%s”').format(_('Recent Files')), e.message);
             }
         });
     }

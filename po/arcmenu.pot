@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ArcMenu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-20 09:52-0400\n"
+"POT-Creation-Date: 2026-09-14 09:34-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,23 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/appMenu.js:62 src/appMenu.js:279
+#: src/appMenu.js:170 src/appMenu.js:376
 msgid "Pin to ArcMenu"
 msgstr ""
 
-#: src/appMenu.js:86 src/appMenu.js:233
+#: src/appMenu.js:173 src/appMenu.js:342
 msgid "Create Desktop Shortcut"
 msgstr ""
 
-#: src/appMenu.js:232
+#: src/appMenu.js:341
 msgid "Delete Desktop Shortcut"
 msgstr ""
 
-#: src/appMenu.js:242 src/appMenu.js:279
+#: src/appMenu.js:351 src/appMenu.js:375
 msgid "Unpin from ArcMenu"
 msgstr ""
 
-#: src/appMenu.js:318
+#: src/appMenu.js:375
+msgid "Unpin from Folder"
+msgstr ""
+
+#: src/appMenu.js:415
 msgid "Open Folder Location"
 msgstr ""
 
@@ -49,7 +53,7 @@ msgstr ""
 msgid "Frequent Apps"
 msgstr ""
 
-#: src/constants.js:85 src/menuWidgets.js:1283 src/menulayouts/az.js:68
+#: src/constants.js:85 src/menuWidgets.js:1281 src/menulayouts/az.js:68
 #: src/menulayouts/az.js:77 src/menulayouts/eleven.js:55
 #: src/menulayouts/eleven.js:64 src/menulayouts/redmond.js:78
 #: src/menulayouts/redmond.js:81 src/menulayouts/redmond.js:85
@@ -68,31 +72,31 @@ msgstr ""
 
 #: src/constants.js:87 src/menulayouts/raven.js:296
 #: src/menulayouts/unity.js:364 src/searchProviders/recentFiles.js:29
-#: src/searchProviders/recentFiles.js:30
+#: src/searchProviders/recentFiles.js:30 src/searchProviders/recentFiles.js:106
 msgid "Recent Files"
 msgstr ""
 
-#: src/constants.js:238 src/menuButton.js:849
+#: src/constants.js:238 src/menuButton.js:911
 #: src/settings/menuSettings/listPinnedPage.js:396
 msgid "Log Out..."
 msgstr ""
 
-#: src/constants.js:239 src/menuButton.js:848
+#: src/constants.js:239 src/menuButton.js:910
 #: src/settings/menuSettings/listPinnedPage.js:395
 msgid "Lock"
 msgstr ""
 
-#: src/constants.js:240 src/menuButton.js:843
+#: src/constants.js:240 src/menuButton.js:905
 #: src/settings/menuSettings/listPinnedPage.js:398
 msgid "Restart..."
 msgstr ""
 
-#: src/constants.js:241 src/menuButton.js:844
+#: src/constants.js:241 src/menuButton.js:906
 #: src/settings/menuSettings/listPinnedPage.js:397
 msgid "Power Off..."
 msgstr ""
 
-#: src/constants.js:242 src/menuButton.js:840
+#: src/constants.js:242 src/menuButton.js:902
 #: src/settings/menuSettings/listPinnedPage.js:399
 msgid "Suspend"
 msgstr ""
@@ -105,7 +109,7 @@ msgstr ""
 msgid "Hibernate"
 msgstr ""
 
-#: src/constants.js:245 src/menuButton.js:850
+#: src/constants.js:245 src/menuButton.js:912
 #: src/settings/menuSettings/listPinnedPage.js:403
 msgid "Switch User"
 msgstr ""
@@ -240,13 +244,13 @@ msgstr ""
 msgid "Tweaks"
 msgstr ""
 
-#: src/constants.js:285 src/menuButton.js:793 src/menuWidgets.js:593
+#: src/constants.js:285 src/menuButton.js:855 src/menuWidgets.js:600
 #: src/settings/menuSettings/listPinnedPage.js:363
 #: src/settings/menuSettings/listPinnedPage.js:385
 msgid "Activities Overview"
 msgstr ""
 
-#: src/constants.js:285 src/menuButton.js:779
+#: src/constants.js:285 src/menuButton.js:841
 #: src/settings/menuSettings/listPinnedPage.js:349
 #: src/settings/menuSettings/listPinnedPage.js:360
 #: src/settings/menuSettings/listPinnedPage.js:372
@@ -257,55 +261,55 @@ msgstr ""
 msgid "Files"
 msgstr ""
 
-#: src/menuButton.js:38 src/menulayouts/plasma.js:125
+#: src/menuButton.js:49 src/menulayouts/plasma.js:125
 #: src/menulayouts/plasma.js:573
 msgid "Apps"
 msgstr ""
 
-#: src/menuButton.js:228
+#: src/menuButton.js:243
 msgid "Loading Menu Layout..."
 msgstr ""
 
-#: src/menuButton.js:824 src/settings/menuSettings/listPinnedPage.js:388
+#: src/menuButton.js:886 src/settings/menuSettings/listPinnedPage.js:388
 msgid "Show Desktop"
 msgstr ""
 
-#: src/menuButton.js:838 src/menuWidgets.js:894 src/menuWidgets.js:911
+#: src/menuButton.js:900 src/menuWidgets.js:901 src/menuWidgets.js:918
 msgid "Power Off"
 msgstr ""
 
-#: src/menuButton.js:879
+#: src/menuButton.js:941
 msgid "Dash to Panel Settings"
 msgstr ""
 
-#: src/menuButton.js:883
+#: src/menuButton.js:945
 msgid "App Icons Taskbar Settings"
 msgstr ""
 
-#: src/menuWidgets.js:972 src/menulayouts/plasma.js:325
+#: src/menuWidgets.js:976 src/menulayouts/plasma.js:325
 msgid "Session"
 msgstr ""
 
-#: src/menuWidgets.js:976 src/menulayouts/plasma.js:329
+#: src/menuWidgets.js:980 src/menulayouts/plasma.js:329
 #: src/settings/iconChooserDialog.js:192
 msgid "System"
 msgstr ""
 
-#: src/menuWidgets.js:1206 src/menuWidgets.js:1227 src/menulayouts/az.js:69
+#: src/menuWidgets.js:1204 src/menuWidgets.js:1225 src/menulayouts/az.js:69
 #: src/menulayouts/eleven.js:56 src/menulayouts/redmond.js:79
 #: src/menulayouts/redmond.js:84 src/menulayouts/sleek.js:72
 msgid "Back"
 msgstr ""
 
-#: src/menuWidgets.js:2554 src/menulayouts/pop.js:363
+#: src/menuWidgets.js:2549 src/menulayouts/pop.js:363
 msgid "Unnamed Folder"
 msgstr ""
 
-#: src/menuWidgets.js:2653 src/menulayouts/pop.js:1089
+#: src/menuWidgets.js:2648 src/menulayouts/pop.js:1089
 msgid "New"
 msgstr ""
 
-#: src/menuWidgets.js:3257 src/menulayouts/az.js:76 src/menulayouts/az.js:230
+#: src/menuWidgets.js:3383 src/menulayouts/az.js:76 src/menulayouts/az.js:230
 #: src/menulayouts/eleven.js:63 src/menulayouts/insider.js:187
 #: src/menulayouts/plasma.js:120 src/menulayouts/raven.js:62
 #: src/menulayouts/raven.js:233 src/menulayouts/raven.js:274
@@ -316,19 +320,19 @@ msgstr ""
 msgid "Pinned"
 msgstr ""
 
-#: src/menuWidgets.js:3427
+#: src/menuWidgets.js:3553
 msgid "Unmount Drive"
 msgstr ""
 
-#: src/menuWidgets.js:3429
+#: src/menuWidgets.js:3555
 msgid "Eject Drive"
 msgstr ""
 
-#: src/menuWidgets.js:3505
+#: src/menuWidgets.js:3628
 msgid "Remove from Recent"
 msgstr ""
 
-#: src/menuWidgets.js:3585
+#: src/menuWidgets.js:3706
 msgid "Search…"
 msgstr ""
 
@@ -336,7 +340,7 @@ msgstr ""
 msgid "Frequent"
 msgstr ""
 
-#: src/menulayouts/baseMenuLayout.js:507
+#: src/menulayouts/baseMenuLayout.js:513
 msgid "More Recent Files..."
 msgstr ""
 
@@ -461,7 +465,7 @@ msgstr ""
 #: src/placeDisplay.js:119 src/placeDisplay.js:340
 #: src/settings/menuSettings/layoutTweaksPage.js:598
 #: src/settings/menuSettings/layoutTweaksPage.js:625
-#: src/settings/menuSettings/listPinnedPage.js:411 src/utils.js:287
+#: src/settings/menuSettings/listPinnedPage.js:411 src/utils.js:284
 msgid "Home"
 msgstr ""
 
@@ -516,7 +520,7 @@ msgstr ""
 msgid "'%s' on Workspace %d"
 msgstr ""
 
-#: src/searchProviders/recentFiles.js:90
+#: src/searchProviders/recentFiles.js:90 src/searchProviders/recentFiles.js:106
 #, javascript-format
 msgid "Failed to open “%s”"
 msgstr ""
