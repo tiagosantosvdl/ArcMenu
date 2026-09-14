@@ -723,8 +723,8 @@ class ArcMenuMenuButton extends PanelMenu.Button {
         if (ShellVersion >= 51) {
             const cursorTracker = global.backend.get_cursor_tracker();
             this._cursorTrackerId = cursorTracker.connect('position-invalidated', () => {
-                const [x, y] = cursorTracker.get_pointer();
-                onPointerWatch(x, y);
+                const [coords] = cursorTracker.get_pointer();
+                onPointerWatch(coords.x, coords.y);
             });
         } else {
             this._cursorTrackerId = PointerWatcher.getPointerWatcher().addWatch(500, (x, y) => {
