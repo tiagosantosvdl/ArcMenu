@@ -1,5 +1,6 @@
 import Gio from 'gi://Gio';
 
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
@@ -11,6 +12,8 @@ import {CustomStylesheet} from './theming.js';
 
 import * as Utils from './utils.js';
 import {UpdateNotification} from './updateNotifier.js';
+
+export const [ShellVersion] = Config.PACKAGE_VERSION.split('.').map(s => Number(s));
 
 export default class ArcMenu extends Extension {
     enable() {
@@ -33,6 +36,9 @@ export default class ArcMenu extends Extension {
             Main.sessionMode.hasOverview = false;
             Main.layoutManager.connectObject('startup-complete', () => {
                 Main.sessionMode.hasOverview = hadOverview;
+
+                if (ShellVersion >= 50)
+                    Main.overview.hide();
             }, this);
         }
 
