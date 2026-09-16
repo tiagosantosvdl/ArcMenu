@@ -1043,6 +1043,13 @@ export class BaseMenuLayout extends St.BoxLayout {
         const unicode = Clutter.keysym_to_unicode(symbol);
 
         switch (symbol) {
+        case Clutter.KEY_BackSpace:
+            if (this.searchEntry && !this.searchEntry.hasKeyFocus() && !this.searchEntry.isEmpty()) {
+                this.searchEntry.grab_key_focus();
+                const newText = this.searchEntry.getText().slice(0, -1);
+                this.searchEntry.setText(newText);
+            }
+            return Clutter.EVENT_PROPAGATE;
         case Clutter.KEY_Tab: case Clutter.KEY_ISO_Left_Tab:
         case Clutter.KEY_Up: case Clutter.KEY_KP_Up:
         case Clutter.KEY_Down: case Clutter.KEY_KP_Down:
@@ -1058,7 +1065,7 @@ export class BaseMenuLayout extends St.BoxLayout {
             if (ShellVersion >= 51)
                 return Clutter.EVENT_PROPAGATE;
 
-            const forwardToEntry = symbol === Clutter.KEY_BackSpace || unicode !== 0;
+            const forwardToEntry = unicode !== 0;
 
             if (forwardToEntry && this.searchEntry) {
                 if (event) {
