@@ -3820,6 +3820,7 @@ export class SearchEntry extends St.Entry {
             return Clutter.EVENT_STOP;
         }
         this.searchResults.highlightDefault(false);
+        this._text.set_selection_bound(-1);
         return Clutter.EVENT_PROPAGATE;
     }
 
