@@ -3558,10 +3558,15 @@ export class PlaceMenuItem extends BaseMenuItem {
         if (info.isRemovable()) {
             this._ejectIcon = new St.Icon({
                 icon_name: 'media-eject-symbolic',
+                icon_size: Constants.IconSizes.SMALL,
             });
             this._ejectButton = new St.Button({
                 child: this._ejectIcon,
                 style_class: 'button arcmenu-small-button',
+                x_expand: true,
+                y_expand: false,
+                x_align: Clutter.ActorAlign.END,
+                y_align: Clutter.ActorAlign.CENTER,
             });
             this._ejectButton.connect('clicked', info.eject.bind(info));
             this.add_child(this._ejectButton);
