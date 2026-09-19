@@ -1138,7 +1138,6 @@ export class BaseMenuLayout extends St.BoxLayout {
         }
 
         if (this.searchResults) {
-            this.searchResults.setTerms([]);
             this.searchResults.destroy();
             this.searchResults = null;
         }
