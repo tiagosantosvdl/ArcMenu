@@ -3815,12 +3815,14 @@ export class SearchEntry extends St.Entry {
     }
 
     _onKeyFocusOut() {
+        this._text.set_selection(-1, -1);
+
         if (!this.isEmpty()) {
             this.add_style_pseudo_class('focus');
             return Clutter.EVENT_STOP;
         }
+
         this.searchResults.highlightDefault(false);
-        this._text.set_selection_bound(-1);
         return Clutter.EVENT_PROPAGATE;
     }
 
