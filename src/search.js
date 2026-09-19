@@ -627,23 +627,25 @@ export class SearchResults extends St.BoxLayout {
     async _doProviderSearch(provider, previousResults) {
         provider.searchInProgress = true;
 
-        let results = [];
         const terms = this._terms;
+        const cancellable = this._cancellable;
+        let results = [];
+
         try {
-            if (this._isSubSearch && previousResults) {
-                results = await provider.getSubsearchResultSet(
-                    previousResults,
-                    terms,
-                    this._cancellable);
-            } else {
-                results = await provider.getInitialResultSet(
-                    terms,
-                    this._cancellable);
-            }
-        } finally {
-            this._results[provider.id] = results;
-            await this._updateResults(provider, terms, results);
+            if (this._isSubSearch && previousResults)
+                results = await provider.getSubsearchResultSet(previousResults, terms, cancellable);
+            else
+                results = await provider.getInitialResultSet(terms, cancellable);
+        } catch (e) {
+            if (!cancellable.is_cancelled())
+                console.log(e);
         }
+
+        if (cancellable.is_cancelled())
+            return;
+
+        this._results[provider.id] = results;
+        await this._updateResults(provider, terms, results);
     }
 
     _reset() {
