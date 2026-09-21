@@ -518,6 +518,7 @@ class IconGrid extends St.Widget {
         const sourceData = source.pinnedAppData;
 
         source.cancelActions();
+        source.dragDropAccepted = true;
 
         // remove app from folder pinned app list
         const parent = source.get_parent();

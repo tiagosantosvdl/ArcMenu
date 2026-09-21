@@ -2322,6 +2322,7 @@ export class PinnedAppsFolderMenuItem extends DraggableMenuItem {
 
         const sourceData = source.pinnedAppData;
 
+        source.dragDropAccepted = true;
         source.cancelActions();
 
         const parent = this.get_parent();
@@ -2502,6 +2503,9 @@ export class PinnedAppsMenuItem extends DraggableMenuItem {
     _onDragEnd() {
         super._onDragEnd();
 
+        if (this.dragDropAccepted)
+            return;
+
         const parent = this.get_parent();
         if (!parent)
             return;
@@ -2511,8 +2515,8 @@ export class PinnedAppsMenuItem extends DraggableMenuItem {
         this.emit('pinned-apps-changed', pinnedAppsArray);
     }
 
-    acceptDrop(source, _actor, x, y) {
-        const acceptDrop = super.acceptDrop(source, _actor, x, y);
+    acceptDrop(source, actor, x, y) {
+        const acceptDrop = super.acceptDrop(source, actor, x, y);
         if (!acceptDrop)
             return false;
 
@@ -2533,6 +2537,9 @@ export class PinnedAppsMenuItem extends DraggableMenuItem {
         const layoutManager = parent.layout_manager;
 
         source.cancelActions();
+
+        source.dragDropAccepted = true;
+        actor.dragDropAccepted = true;
 
         const pinnedAppsList = ArcMenuManager.settings.get_value('pinned-apps').deepUnpack();
 
