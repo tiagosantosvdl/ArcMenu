@@ -2921,9 +2921,6 @@ export class FolderDialog extends BaseDialog {
         Utils.addChildToParent(this._scrollView, this._box);
 
         this.box.add_child(this._scrollView);
-        this.box.set({
-            style: 'border-radius: 20px; padding: 0px;',
-        });
     }
 
     destroy() {
