@@ -440,7 +440,6 @@ export const PlacesManager = class ArcMenuPlacesManager extends EventEmitter {
         for (let i = 0; i < networkMounts.length; i++)
             this._addMount('network', networkMounts[i]);
 
-
         this.emit('devices-updated');
         this.emit('network-updated');
     }

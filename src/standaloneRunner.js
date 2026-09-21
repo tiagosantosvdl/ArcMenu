@@ -161,7 +161,7 @@ export const StandaloneRunner = class ArcMenuStandaloneRunner {
         if (open) {
             if (Main.panel.menuManager && Main.panel.menuManager.activeMenu)
                 Main.panel.menuManager.activeMenu.toggle();
-        } else  if (!this.arcMenu.isOpen) {
+        } else if (!this.arcMenu.isOpen) {
             this.clearTooltipShowingId();
             this.hideTooltip(true);
         }

@@ -169,6 +169,8 @@ export default [
             'no-label-var': 'error',
             'no-lonely-if': 'error',
             'no-loop-func': 'error',
+            'no-multi-spaces': ['error'],
+            'no-multiple-empty-lines': ['error', {max: 1}],
             'no-nested-ternary': 'error',
             'no-new-object': 'error',
             'no-new-wrappers': 'error',

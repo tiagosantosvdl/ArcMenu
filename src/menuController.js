@@ -373,7 +373,7 @@ export const MenuController = class {
     _setButtonIconPadding() {
         const padding = ArcMenuManager.settings.get_int('menu-button-padding');
         if (padding > -1)
-            this._menuButton.style = `-natural-hpadding: ${padding  * 2}px; -minimum-hpadding: ${padding}px;`;
+            this._menuButton.style = `-natural-hpadding: ${padding * 2}px; -minimum-hpadding: ${padding}px;`;
         else
             this._menuButton.style = null;
 

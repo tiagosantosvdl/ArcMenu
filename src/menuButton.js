@@ -929,7 +929,6 @@ const ArcMenuContextMenu = class ArcMenuArcMenuContextMenu extends PopupMenu.Pop
         if (!title)
             title = app.get_name();
 
-
         super.addSettingsAction(title, desktopFile);
     }
 

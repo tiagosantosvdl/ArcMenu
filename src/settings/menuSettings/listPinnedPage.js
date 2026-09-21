@@ -344,7 +344,7 @@ class ArcMenuAddAppsToPinnedListWindow extends PW.DialogWindow {
 
         this._createShortcutsArray();
 
-        if (this._dialogType === Constants.MenuSettingsListType.PINNED_APPS  ||
+        if (this._dialogType === Constants.MenuSettingsListType.PINNED_APPS ||
             this._dialogType === Constants.MenuSettingsListType.FOLDER_PINNED_APPS) {
             const extraItem = [[_('ArcMenu Settings'), Constants.ArcMenuLogoSymbolic,
                 Constants.ShortcutCommands.ARCMENU_SETTINGS]];

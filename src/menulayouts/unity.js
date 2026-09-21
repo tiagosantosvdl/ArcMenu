@@ -249,7 +249,7 @@ export class Layout extends BaseMenuLayout {
         this._addChildToParent(this.categoriesScrollBox, this.categoriesBox);
 
         const scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        const height =  Math.round(350 / scaleFactor);
+        const height = Math.round(350 / scaleFactor);
 
         categoriesPopupBox.style = `max-height: ${height}px`;
 

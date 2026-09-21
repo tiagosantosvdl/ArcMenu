@@ -90,7 +90,7 @@ const LayoutCategoryBox = GObject.registerClass({
     Signals: {
         'menu-selected': {param_types: [GObject.TYPE_INT]},
     },
-},  class ArcMenuLayoutCategoryBox extends Gtk.FlowBox {
+}, class ArcMenuLayoutCategoryBox extends Gtk.FlowBox {
     _init(settings, layoutsInfo) {
         super._init({
             max_children_per_line: 15,

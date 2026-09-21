@@ -207,7 +207,7 @@ export const AppContextMenu = class ArcMenuAppContextMenu extends AppMenu {
         for (let i = 0; i < pinnedAppsList.length; i++) {
             if (pinnedAppsList[i].id === this._id) {
                 pinnedAppsList.splice(i, 1);
-                sourceSettings.set_value('pinned-apps',  new GLib.Variant('aa{ss}', pinnedAppsList));
+                sourceSettings.set_value('pinned-apps', new GLib.Variant('aa{ss}', pinnedAppsList));
                 break;
             }
         }
@@ -223,7 +223,7 @@ export const AppContextMenu = class ArcMenuAppContextMenu extends AppMenu {
             for (let i = 0; i < pinnedAppsList.length; i++) {
                 if (pinnedAppsList[i].id === this._app.get_id()) {
                     pinnedAppsList.splice(i, 1);
-                    sourceSettings.set_value('pinned-apps',  new GLib.Variant('aa{ss}', pinnedAppsList));
+                    sourceSettings.set_value('pinned-apps', new GLib.Variant('aa{ss}', pinnedAppsList));
                     break;
                 }
             }
@@ -233,7 +233,7 @@ export const AppContextMenu = class ArcMenuAppContextMenu extends AppMenu {
                 id: this._app.get_id(),
             };
             pinnedAppsList.push(newPinnedAppData);
-            ArcMenuManager.settings.set_value('pinned-apps',  new GLib.Variant('aa{ss}', pinnedAppsList));
+            ArcMenuManager.settings.set_value('pinned-apps', new GLib.Variant('aa{ss}', pinnedAppsList));
         }
     }
 
@@ -338,7 +338,7 @@ export const AppContextMenu = class ArcMenuAppContextMenu extends AppMenu {
         const appInfo = this._app.get_app_info();
         const {exists} = this._desktopTarget.getDesktopShortcutInfo(appInfo);
 
-        this._desktopShortcutItem.label.text = exists ?  _('Delete Desktop Shortcut')
+        this._desktopShortcutItem.label.text = exists ? _('Delete Desktop Shortcut')
             : _('Create Desktop Shortcut');
         this._desktopShortcutItem.visible = this._desktopTarget.hasDesktop;
     }
@@ -372,8 +372,8 @@ export const AppContextMenu = class ArcMenuAppContextMenu extends AppMenu {
         this._isPinnedApp = isPinned;
 
         this._arcMenuPinnedItem.visible = this._menuLayout.hasPinnedApps;
-        const unpinText = isFolder ?  _('Unpin from Folder') : _('Unpin from ArcMenu');
-        this._arcMenuPinnedItem.label.text = this._isPinnedApp ?  unpinText : _('Pin to ArcMenu');
+        const unpinText = isFolder ? _('Unpin from Folder') : _('Unpin from ArcMenu');
+        this._arcMenuPinnedItem.label.text = this._isPinnedApp ? unpinText : _('Pin to ArcMenu');
     }
 
     _updateWindowsSection() {

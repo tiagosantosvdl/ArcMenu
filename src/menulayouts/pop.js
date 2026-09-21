@@ -930,7 +930,7 @@ class GroupFolderItem extends BaseFolderItem {
             this.contextMenu.connect('open-state-changed', (menu, isOpen) => {
                 if (isOpen)
                     this.add_style_pseudo_class('active');
-                else  if (!this.isActiveCategory)
+                else if (!this.isActiveCategory)
                     this.remove_style_pseudo_class('active');
             });
             this.contextMenu.actor.add_style_class_name('arcmenu-menu app-menu');

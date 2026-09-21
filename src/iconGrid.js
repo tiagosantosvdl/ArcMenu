@@ -71,7 +71,7 @@ export const IconGridLayout = GObject.registerClass({
             Clutter.ActorAlign.START),
 
     },
-}, class IconGridLayout extends Clutter.LayoutManager {
+}, class ArcMenuIconGridLayout extends Clutter.LayoutManager {
     _init(params = {}) {
         super._init(params);
 
@@ -106,7 +106,7 @@ export const IconGridLayout = GObject.registerClass({
         if (this.halign !== Clutter.ActorAlign.CENTER)
             return 0;
 
-        let columns = 0;
+        let columns;
         if (this.firstRowAlign === Clutter.ActorAlign.CENTER) {
             const visibleChildren = this._visibleChildren;
             // if the amount of visiblechildren is less than the amount of columns
@@ -232,8 +232,8 @@ export const IconGridLayout = GObject.registerClass({
         let y = 0;
         let column = 0;
         let rtlColumn;
-        let naturalWidth = 0;
-        let naturalHeight = 0;
+        let naturalWidth;
+        let naturalHeight;
 
         for (let i = 0; i < children.length; i += 1) {
             const child = children[i];
@@ -456,7 +456,7 @@ export const IconGridLayout = GObject.registerClass({
 });
 
 export const IconGrid = GObject.registerClass(
-class IconGrid extends St.Widget {
+class ArcMenuIconGrid extends St.Widget {
     _init(layoutParams = {}) {
         const acceptDrop = layoutParams.accept_drop;
         delete layoutParams.accept_drop;

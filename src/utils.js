@@ -61,7 +61,7 @@ export const DBusService = class {
         this._dbusExportedObject = null;
         this._exported = null;
         this.ToggleArcMenu = null;
-        this.ToggleStandaloneRunner  = null;
+        this.ToggleStandaloneRunner = null;
     }
 };
 
@@ -271,7 +271,7 @@ export function getIconSize(iconSizeSetting, defaultIconSize) {
 }
 
 export function getCategoryDetails(iconTheme, currentCategory) {
-    let name = null, gicon = null, fallbackIcon = null;
+    let name, gicon = null, fallbackIcon = null;
 
     const extraCategory = Constants.Categories.find(catData => catData.id === currentCategory);
     if (extraCategory) {

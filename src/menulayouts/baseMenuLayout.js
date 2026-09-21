@@ -45,7 +45,7 @@ export class BaseMenuLayout extends St.BoxLayout {
             GObject.ParamFlags.READWRITE, 0, GLib.MAXINT32, 0),
         'search-results-spacing': GObject.ParamSpec.uint(
             'search-results-spacing', 'search-results-spacing',
-            'search-results-spacing',  GObject.ParamFlags.READWRITE,
+            'search-results-spacing', GObject.ParamFlags.READWRITE,
             0, GLib.MAXINT32, 0),
         'is_dual_panel': GObject.ParamSpec.boolean(
             'is_dual_panel', 'is_dual_panel', 'is_dual_panel',
@@ -548,7 +548,7 @@ export class BaseMenuLayout extends St.BoxLayout {
 
                 if (!this.activeMenuItem)
                     this.activeMenuItem = placeMenuItem;
-            }).catch(error =>  console.warn(error));
+            }).catch(error => console.warn(error));
         }
     }
 
@@ -1124,7 +1124,6 @@ export class BaseMenuLayout extends St.BoxLayout {
                     const children = this._placesSections[id].get_children();
                     children.forEach(child => {
                         child.destroy();
-                        child = null;
                     });
                 }
             }

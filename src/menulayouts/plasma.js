@@ -433,10 +433,8 @@ export class Layout extends BaseMenuLayout {
         for (const obj of this._destroyableObjects)
             obj.destroy();
 
-
         for (const item of this.applicationShortcuts)
             item.destroy();
-
 
         super._onDestroy();
     }

@@ -150,7 +150,7 @@ export class BaseMenuItem extends St.BoxLayout {
             true),
     };
 
-    static [GObject.signals] =  {
+    static [GObject.signals] = {
         'activate': {param_types: [Clutter.Event.$gtype]},
     };
 
@@ -712,7 +712,7 @@ export class Tooltip extends St.Label {
 
         const [stageX, stageY] = this.sourceActor.get_transformed_position();
 
-        const itemWidth  = this.sourceActor.allocation.x2 - this.sourceActor.allocation.x1;
+        const itemWidth = this.sourceActor.allocation.x2 - this.sourceActor.allocation.x1;
         const itemHeight = this.sourceActor.allocation.y2 - this.sourceActor.allocation.y1;
 
         const labelWidth = this.get_width();
@@ -1768,12 +1768,10 @@ export class DraggableMenuItem extends BaseMenuItem {
         const sourceIndex = layoutManager.getItemPosition(source);
         let [targetIndex, dragLocation] = layoutManager.getDropTarget(x, y);
 
-        let reflowDirection = Clutter.ActorAlign.END;
-
+        let reflowDirection;
         if (sourceIndex === targetIndex)
             reflowDirection = -1;
-
-        if (targetIndex > sourceIndex)
+        else if (targetIndex > sourceIndex)
             reflowDirection = Clutter.ActorAlign.START;
         else
             reflowDirection = Clutter.ActorAlign.END;
@@ -2196,7 +2194,7 @@ export class PinnedAppsFolderMenuItem extends DraggableMenuItem {
             for (let i = 0; i < mainPinnedAppsList.length; i++) {
                 if (mainPinnedAppsList[i].id === this._command) {
                     mainPinnedAppsList.splice(i, 1);
-                    ArcMenuManager.settings.set_value('pinned-apps',  new GLib.Variant('aa{ss}', mainPinnedAppsList));
+                    ArcMenuManager.settings.set_value('pinned-apps', new GLib.Variant('aa{ss}', mainPinnedAppsList));
                     break;
                 }
             }
@@ -3303,7 +3301,6 @@ export class CategoryMenuItem extends BaseMenuItem {
         this.connect('enter-event', this._onEnterEvent.bind(this));
         this.connect('leave-event', this._onLeaveEvent.bind(this));
 
-
         const iconSizeSetting = this._displayType === Constants.DisplayType.BUTTON ? 'icon-size-buttons' : 'icon-size-categories';
         ArcMenuManager.settings.connectObject(`changed::${iconSizeSetting}`, () => this._updateIcon(), this);
 
@@ -3673,7 +3670,7 @@ export class PlaceMenuItem extends BaseMenuItem {
             defaultIconSize = this._menuLayout.iconSizeApps;
         } else {
             iconSizeSetting = ArcMenuManager.settings.get_int('icon-size-shortcuts');
-            defaultIconSize =  this._menuLayout.iconSizeShortcuts;
+            defaultIconSize = this._menuLayout.iconSizeShortcuts;
         }
 
         const iconSize = Utils.getIconSize(iconSizeSetting, defaultIconSize);

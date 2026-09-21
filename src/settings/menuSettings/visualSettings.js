@@ -146,13 +146,13 @@ class ArcMenuVisualSettingsPage extends SubPage {
         this.add(iconsSizeFrame);
 
         const sizeEntries = [
-            [_('Small'),       Constants.GridIconSizes.SMALL],
-            [_('Medium'),      Constants.GridIconSizes.MEDIUM],
-            [_('Large'),       Constants.GridIconSizes.LARGE],
+            [_('Small'), Constants.GridIconSizes.SMALL],
+            [_('Medium'), Constants.GridIconSizes.MEDIUM],
+            [_('Large'), Constants.GridIconSizes.LARGE],
             [_('Extra Large'), Constants.GridIconSizes.XL],
-            [_('Small Wide'),  Constants.GridIconSizes.SMALL_RECT],
+            [_('Small Wide'), Constants.GridIconSizes.SMALL_RECT],
             [_('Medium Wide'), Constants.GridIconSizes.MEDIUM_RECT],
-            [_('Large Wide'),  Constants.GridIconSizes.LARGE_RECT],
+            [_('Large Wide'), Constants.GridIconSizes.LARGE_RECT],
         ];
 
         let isUpdating = false;
@@ -315,9 +315,9 @@ class ArcMenuVisualSettingsPage extends SubPage {
 
     createIconSizeRow(rowDetails) {
         const sizeEntries = [
-            [_('Small'),       Constants.IconSizes.SMALL],
-            [_('Medium'),      Constants.IconSizes.MEDIUM],
-            [_('Large'),       Constants.IconSizes.LARGE],
+            [_('Small'), Constants.IconSizes.SMALL],
+            [_('Medium'), Constants.IconSizes.MEDIUM],
+            [_('Large'), Constants.IconSizes.LARGE],
             [_('Extra Large'), Constants.IconSizes.XL],
         ];
 

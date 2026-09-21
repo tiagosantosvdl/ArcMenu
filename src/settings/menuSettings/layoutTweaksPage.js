@@ -603,7 +603,7 @@ class ArcMenuLayoutTweaksPage extends SubPage {
             selected: this._settings.get_boolean('enable-unity-homescreen') ? 0 : 1,
         });
         defaultViewRow.connect('notify::selected', widget => {
-            const enable =  widget.selected === 0;
+            const enable = widget.selected === 0;
             this._settings.set_boolean('enable-unity-homescreen', enable);
         });
         tweaksGroup.add(defaultViewRow);
@@ -630,7 +630,7 @@ class ArcMenuLayoutTweaksPage extends SubPage {
             selected: this._settings.get_boolean('enable-unity-homescreen') ? 0 : 1,
         });
         defaultViewRow.connect('notify::selected', widget => {
-            const enable =  widget.selected === 0;
+            const enable = widget.selected === 0;
             this._settings.set_boolean('enable-unity-homescreen', enable);
         });
         tweaksGroup.add(defaultViewRow);
