@@ -219,13 +219,14 @@ export class Layout extends BaseMenuLayout {
         this.categoriesMenu.actor.add_style_class_name('popup-menu arcmenu-menu');
         this.categoriesMenu.blockSourceEvents = true;
         this.categoriesMenu.connect('open-state-changed', (menu, open) => {
+            this.categoriesButton.keepActiveStyle = open;
+            this.categoriesButton.active = open;
             if (open) {
                 this.categoriesButton.add_style_pseudo_class('active');
                 this._menuButton.clearTooltipShowingId();
                 this._menuButton.hideTooltip();
             } else {
                 this.categoriesButton.remove_style_pseudo_class('active');
-                this.categoriesButton.active = false;
                 this.categoriesButton.sync_hover();
                 this.categoriesButton.hovered = this.categoriesButton.hover;
             }

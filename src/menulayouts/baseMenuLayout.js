@@ -855,7 +855,7 @@ export class BaseMenuLayout extends St.BoxLayout {
 
     setActiveCategory(categoryItem, setActive = true) {
         if (this.activeCategoryItem) {
-            this.activeCategoryItem.isActiveCategory = false;
+            this.activeCategoryItem.keepActiveStyle = false;
             this.activeCategoryItem.remove_style_pseudo_class('active');
             this.activeCategoryItem = null;
         }
@@ -864,7 +864,7 @@ export class BaseMenuLayout extends St.BoxLayout {
             return;
 
         this.activeCategoryItem = categoryItem;
-        this.activeCategoryItem.isActiveCategory = true;
+        this.activeCategoryItem.keepActiveStyle = true;
         this.activeCategoryItem.add_style_pseudo_class('active');
     }
 

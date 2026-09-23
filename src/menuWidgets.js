@@ -189,6 +189,9 @@ export class BaseMenuItem extends St.BoxLayout {
         this._activatable = params.reactive && params.activate;
         this._sensitive = true;
 
+        // Prevent the 'active' style pseudo class from being automatically removed.
+        this.keepActiveStyle = false;
+
         if (!this._activatable)
             this.add_style_class_name('popup-inactive-menu-item');
 
@@ -286,7 +289,7 @@ export class BaseMenuItem extends St.BoxLayout {
     _onPressed() {
         if (this._clickAction.pressed)
             this.add_style_pseudo_class('active');
-        else if (!this.isActiveCategory)
+        else if (!this.keepActiveStyle)
             this.remove_style_pseudo_class('active');
     }
 
@@ -354,7 +357,7 @@ export class BaseMenuItem extends St.BoxLayout {
                     this.grab_key_focus();
             } else {
                 this._removeSelectedStyle();
-                if (!this.isActiveCategory)
+                if (!this.keepActiveStyle)
                     this.remove_style_pseudo_class('active');
             }
             this.notify('active');
@@ -2915,12 +2918,14 @@ export class FolderDialog extends BaseDialog {
     }
 
     _updateSourceActor(isOpen) {
+        this._sourceActor.keepActiveStyle = isOpen;
+        this._sourceActor.active = isOpen;
         if (isOpen) {
             this._sourceActor.add_style_pseudo_class('active');
         } else {
             this._sourceActor.remove_style_pseudo_class('active');
-            this._sourceActor.active = false;
             this._sourceActor.sync_hover();
+            this._sourceActor.hovered = this._sourceActor.hover;
         }
     }
 
