@@ -1,4 +1,5 @@
 import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Graphene from 'gi://Graphene';
@@ -759,10 +760,10 @@ export const ArcMenu = class ArcMenuArcMenu extends PopupMenu.PopupMenu {
         if (ShellVersion < 51)
             this.actor.connectObject('captured-event', this._onCapturedEvent.bind(this), this);
 
-        this._dimEffect = new Clutter.BrightnessContrastEffect({
+        this.dimEffect = new Clutter.BrightnessContrastEffect({
             enabled: false,
         });
-        this._boxPointer.add_effect_with_name('dim', this._dimEffect);
+        this._boxPointer.add_effect_with_name('dim', this.dimEffect);
     }
 
     _onCapturedEvent(actor, event) {
@@ -770,6 +771,29 @@ export const ArcMenu = class ArcMenuArcMenu extends PopupMenu.PopupMenu {
             return Clutter.EVENT_STOP;
 
         return Clutter.EVENT_PROPAGATE;
+    }
+
+    setDimmed(dim) {
+        const DIM_BRIGHTNESS = -0.4;
+        const ANIMATION_TIME = 150;
+
+        const val = 127 * (1 + (dim ? 1 : 0) * DIM_BRIGHTNESS);
+        const colorValues = {
+            red: val,
+            green: val,
+            blue: val,
+            alpha: 255,
+        };
+        const color = Clutter.Color ? new Clutter.Color(colorValues) : new Cogl.Color(colorValues);
+
+        this._boxPointer.ease_property('@effects.dim.brightness', color, {
+            mode: Clutter.AnimationMode.LINEAR,
+            duration: ANIMATION_TIME,
+            onStopped: () => {
+                this.dimEffect.enabled = dim;
+            },
+        });
+        this.dimEffect.enabled = true;
     }
 
     open(animate) {
@@ -796,7 +820,7 @@ export const ArcMenu = class ArcMenuArcMenu extends PopupMenu.PopupMenu {
     destroy() {
         this._boxPointer.remove_effect_by_name('dim');
         super.destroy();
-        this._dimEffect = null;
+        this.dimEffect = null;
         this._menuButton = null;
     }
 };

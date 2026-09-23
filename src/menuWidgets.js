@@ -1,7 +1,6 @@
 import AccountsService from 'gi://AccountsService';
 import Atk from 'gi://Atk';
 import Clutter from 'gi://Clutter';
-import Cogl from 'gi://Cogl';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GMenu from 'gi://GMenu';
@@ -2794,15 +2793,10 @@ export class BaseDialog extends PopupMenu.PopupMenu {
 
         this.actor.add_style_class_name('popup-menu arcmenu-menu');
         this.box.add_style_class_name('arcmenu-folder-dialog');
-        this.connectObject('open-state-changed', this._openStateChanged.bind(this), this);
+
         this._menuLayout.subMenuManager.addMenu(this);
         Main.uiGroup.add_child(this.actor);
         this.actor.hide();
-
-        this.connectObject('notify::mapped', () => {
-            if (!this.mapped)
-                this.close();
-        }, this);
 
         this.box.set({
             pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
@@ -2812,12 +2806,30 @@ export class BaseDialog extends PopupMenu.PopupMenu {
         });
     }
 
+    open(params) {
+        this._arcMenu.setDimmed(true);
+
+        const [sourceX, sourceY] = this._arcMenu.actor.get_transformed_position();
+        const positionX = sourceX + (this._arcMenu.actor.width / 2);
+        const positionY = sourceY + (this._arcMenu.actor.height / 2) - ((this.actor.height / 2));
+        this.dummyCursor.set_position(Math.round(positionX), Math.round(positionY));
+
+        this._animateOpenState(true);
+        super.open(params);
+        this._updateSourceActor(true);
+    }
+
+    close(params) {
+        this._arcMenu?.setDimmed(false);
+        this._animateOpenState(false);
+        super.close(params);
+        this._updateSourceActor(false);
+    }
+
     destroy() {
-        if (this._destroyed)
-            return;
-        this._destroyed = true;
         if (this._arcMenu)
-            this._arcMenu._dimEffect.enabled = false;
+            this._arcMenu.dimEffect.enabled = false;
+
         this.close();
         this.dummyCursor.destroy();
         this.dummyCursor = null;
@@ -2828,16 +2840,7 @@ export class BaseDialog extends PopupMenu.PopupMenu {
         super.destroy();
     }
 
-    _openStateChanged(menu, isOpen) {
-        const [sourceX, sourceY] =
-        this._arcMenu.actor.get_transformed_position();
-
-        const positionX = sourceX + (this._arcMenu.actor.width / 2);
-        const positionY = sourceY + (this._arcMenu.actor.height / 2) - ((this.actor.height / 2));
-
-        this.dummyCursor.set_position(Math.round(positionX), Math.round(positionY));
-
-        this._setDimmed(isOpen);
+    _animateOpenState(isOpen) {
         if (isOpen) {
             this.box.set({
                 scale_x: .3,
@@ -2863,37 +2866,9 @@ export class BaseDialog extends PopupMenu.PopupMenu {
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
-
-        this._updateSourceActor(isOpen);
     }
 
     _updateSourceActor(_isOpen) {
-    }
-
-    _setDimmed(dim) {
-        if (this._destroyed)
-            return;
-        const DIM_BRIGHTNESS = -0.4;
-        const ANIMATION_TIME = 150;
-
-        const val = 127 * (1 + (dim ? 1 : 0) * DIM_BRIGHTNESS);
-        const colorValues = {
-            red: val,
-            green: val,
-            blue: val,
-            alpha: 255,
-        };
-        const color = Clutter.Color ? new Clutter.Color(colorValues) : new Cogl.Color(colorValues);
-
-        this._arcMenu._boxPointer.ease_property('@effects.dim.brightness', color, {
-            mode: Clutter.AnimationMode.LINEAR,
-            duration: ANIMATION_TIME,
-            onStopped: () => {
-                if (this._arcMenu && !this._destroyed)
-                    this._arcMenu._dimEffect.enabled = dim;
-            },
-        });
-        this._arcMenu._dimEffect.enabled = true;
     }
 }
 
