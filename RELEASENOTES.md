@@ -1,44 +1,12 @@
-<b><span size="large">v69.3</span></b>
+<b><span size="large">v70.0</span></b>
 
 - Add GNOME 51 support.
 - Standardize menu item icon sizes and support integer-based custom sizing.
     - Use standard icon sizes (16px, 24px, 32px, etc.) as defaults.
     - Allow custom integer values for menu item icon size settings.
 - Add an Icon Style option for button icons.
-- ArcMenu Layout: Show the Max Frequent Apps option for the Frequent Apps default view.
+- Add Bucket Jump List for grouped All Apps views.
+- ArcMenu Layout: Add "Max Frequent Apps" option for the "Frequent Apps" default view.
 - Improve the behavior of Max Frequent Apps filtering.
-- Fix a rendering issue affecting two bundled menu icons.
+- Settings: Fix a rendering issue affecting a few bundled menu icons.
 - Settings: Fix a bug that caused the icon chooser dialog to fail to open.
-
-<b><span size="large">v69.2</span></b>
-
-- Fix bug causing issues opening ArcMenu Settings.
-
-<b><span size="large">v69.1</span></b>
-
-- Add option to keep ArcMenu open when activating an item with Ctrl pressed.
-- Pop layout: center align folder grid.
-- Add Shift+F10 keyboard shortcut to open menu item context menus.
-- Fix malformed icon path in update notifier.
-- Fix keyboard navigation bug causing search entry popup menu to incorrectly open.
-- Fix keyboard navigation bug when search results displayed.
-- Fix key focus issues after activating an item when menu remains open.
-
-<b><span size="large">v69.0</span></b>
-
-- Add GNOME 50 support.
-- Zest Layout
-    - Move power buttons to the left panel.
-    - Move searchbar to bottom by default.
-    - Add tweak to change searchbar location.
-- Runner Layout: Add option to show pinned apps.
-- Search
-    - Use more async functions, handle errors and fix cancellable handling.
-    - Show spinner while searching.
-- Ensure hotkeys and DBus methods are registered only once.
-- Add option to show generic application names.
-- Fix search bar growing on long input.
-- Add new applications-accessories-symbolic icon.
-- IconGrid: remove first-row-align property.
-    - All rows are now strictly left-aligned.
-- Search Entry: add context menu.
