@@ -1043,7 +1043,7 @@ export class PowerButton extends ArcMenuButtonItem {
     }
 
     constructor(menuLayout, powerType) {
-        super(menuLayout, Constants.PowerOptions[powerType].name,
+        super(menuLayout, _(Constants.PowerOptions[powerType].name),
             Constants.PowerOptions[powerType].icon);
         this.powerType = powerType;
 

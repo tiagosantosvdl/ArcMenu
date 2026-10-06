@@ -1,9 +1,11 @@
-import {domain} from 'gettext';
-const {gettext: _} = domain('arcmenu');
-
 export const DASH_TO_PANEL_UUID = 'dash-to-panel@jderose9.github.com';
 export const AZTASKBAR_UUID = 'aztaskbar@aztaskbar.gitlab.com';
 export const RESOURCE_PATH = 'resource:///org/gnome/shell/extensions/arcmenu/icons/scalable';
+
+// No-op marker so xgettext extracts strings into the .pot file. The text domain isn't bound
+// yet at import time, so nothing is translated here. Translate with the real
+// gettext where the string is displayed.
+const _ = s => s;
 
 export const ClutterAction = {
     CLICK: 0,
@@ -281,8 +283,11 @@ export const MenuLayoutsInfo = [
 
 export const ArcMenuLogoSymbolic = 'arcmenu-logo-symbolic';
 
-export const TranslatableSettingsStrings = [_('Software'), _('Settings'), _('Tweaks'), _('Terminal'),
-    _('Activities Overview'), _('ArcMenu Settings'), _('Files')];
+const TranslatableStrings_ = [
+    _('Home'), _('Documents'), _('Music'), _('Pictures'), _('Videos'), _('Downloads'),
+    _('Computer'), _('Network'), _('Recent'), _('Software'), _('Settings'), _('Tweaks'), _('Terminal'),
+    _('Activities Overview'), _('ArcMenu Settings'), _('Files'),
+];
 
 export const ShortcutCommands = {
     SUSPEND: 'ArcMenu_Suspend',
