@@ -819,9 +819,9 @@ export const ArcMenu = class ArcMenuArcMenu extends PopupMenu.PopupMenu {
 
     destroy() {
         this._boxPointer.remove_effect_by_name('dim');
-        super.destroy();
         this.dimEffect = null;
         this._menuButton = null;
+        super.destroy();
     }
 };
 

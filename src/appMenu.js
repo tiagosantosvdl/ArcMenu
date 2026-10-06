@@ -274,14 +274,14 @@ export const AppContextMenu = class ArcMenuAppContextMenu extends AppMenu {
         this._desktopTarget.destroy();
         this._disconnectSignals();
 
-        super.destroy();
-
         this._desktopTarget = null;
         this._desktopShortcutItem = null;
         this._arcMenuPinnedItem = null;
         this._menuButton = null;
         this._isPinnedApp = null;
         this._menuLayout = null;
+
+        super.destroy();
     }
 
     closeMenus() {
