@@ -187,11 +187,11 @@ class ArcMenuAboutPage extends Adw.PreferencesPage {
         // -----------------------------------------------------------------------
 
         // Links -----------------------------------------------------------------
-        /* TRANSLATORS: 'PROJECT_NAME' on GitLab*/
-        const gitlabRow = this._createLinkRow(_('%s on GitLab').format(PROJECT_NAME), `${metadata.url}`);
-        infoGroup.add(gitlabRow);
+        /* TRANSLATORS: 'PROJECT_NAME' on GitHub*/
+        const githubRow = this._createLinkRow(_('%s on GitHub').format(PROJECT_NAME), `${metadata.url}`);
+        infoGroup.add(githubRow);
 
-        const reportIssueRow = this._createLinkRow(_('Report an Issue'), `${metadata.url}/-/issues`);
+        const reportIssueRow = this._createLinkRow(_('Report an Issue'), `${metadata.url}/issues`);
         infoGroup.add(reportIssueRow);
         // -----------------------------------------------------------------------
 

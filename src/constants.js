@@ -1,4 +1,4 @@
-export const DASH_TO_PANEL_UUID = 'dash-to-panel@jderose9.github.com';
+export const DASH_TO_PANEL_UUID = 'dash-to-panel@tiagosantosvdl.github.com';
 export const AZTASKBAR_UUID = 'aztaskbar@aztaskbar.gitlab.com';
 export const RESOURCE_PATH = 'resource:///org/gnome/shell/extensions/arcmenu/icons/scalable';
 
@@ -308,7 +308,7 @@ export const ShortcutCommands = {
     MUSIC: 'ArcMenu_Music',
     PICTURES: 'ArcMenu_Pictures',
     VIDEOS: 'ArcMenu_Videos',
-    ARCMENU_SETTINGS: 'gnome-extensions prefs arcmenu@arcmenu.com',
+    ARCMENU_SETTINGS: 'gnome-extensions prefs arcmenu@tiagosantosvdl.github.com',
     FOLDER: 'ArcMenu_Folder',
     OVERVIEW: 'ArcMenu_ActivitiesOverview',
     SHOW_APPS: 'ArcMenu_ShowAllApplications',

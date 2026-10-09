@@ -1,5 +1,5 @@
 {
-  "uuid": "arcmenu@arcmenu.com",
+  "uuid": "arcmenu@tiagosantosvdl.github.com",
   "settings-schema": "org.gnome.shell.extensions.arcmenu",
   "gettext-domain": "arcmenu",
   "name": "ArcMenu",
@@ -7,7 +7,7 @@
   "version": 74,
   "version-name": "70.0",
   "shell-version": [ "45", "46", "47", "48", "49", "50", "51" ],
-  "url": "https://gitlab.com/arcmenu/ArcMenu",
+  "url": "https://github.com/tiagosantosvdl/ArcMenu",
   "donations": {
     "paypal": "azaech",
     "buymeacoffee": "azaech"

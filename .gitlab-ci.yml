@@ -11,7 +11,7 @@ stages:
 
 variables:
   NAME: "ArcMenu"
-  UUID: "arcmenu@arcmenu.com"
+  UUID: "arcmenu@tiagosantosvdl.github.com"
   VERSION: "${CI_COMMIT_TAG}"
 
 .run_on_tag:

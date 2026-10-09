@@ -36,6 +36,29 @@ Thank you for using ArcMenu! If you enjoy it and would like to help support its 
 
 -----
 
+### Fork releases
+
+This is [@tiagosantosvdl's ArcMenu fork](https://github.com/tiagosantosvdl/ArcMenu), using UUID `arcmenu@tiagosantosvdl.github.com` and integrating with `dash-to-panel@tiagosantosvdl.github.com`. The GNOME Extensions listing above installs upstream ArcMenu.
+
+Build this fork's installable packages without changing the running session:
+
+```sh
+sudo apt install gettext libglib2.0-bin libglib2.0-dev-bin libxml2-utils make python3 dpkg-dev
+make release
+```
+
+For the current `version-name` of `70.0`, the build creates:
+
+- `dist/arcmenu@tiagosantosvdl.github.com-70.0.zip`, for per-user installation with `gnome-extensions install --force`.
+- `dist/gnome-shell-extension-arcmenu-tiagosantosvdl_70.0_all.deb`, for system-wide installation with `sudo apt install ./dist/gnome-shell-extension-arcmenu-tiagosantosvdl_70.0_all.deb`.
+- `dist/SHA256SUMS`, for verification with `cd dist && sha256sum -c SHA256SUMS`.
+
+The Debian package requires GNOME Shell 45–51 and the ArcMenu menu libraries. It installs under `/usr/share/gnome-shell/extensions/arcmenu@tiagosantosvdl.github.com/` and keeps the upstream settings schema so saved preferences remain available. Disable upstream ArcMenu before enabling this fork, and log out and back in after a first system-wide installation.
+
+The GitHub release workflow builds and publishes these files when a matching version tag is pushed or a GitHub Release is published. Set `version-name` in `metadata.json` before tagging; the tag must match, such as `v70.0`. Keep `version` as an integer (currently `74`). Prerelease tags such as `v70.0-rc.1` use `version-name` `70.0 rc.1` and Debian version `70.0~rc.1`.
+
+**Run workflow** accepts a Git ref and produces downloadable artifacts only; it skips the publish job. To publish packages for an existing tag, create and publish a GitHub Release for that tag.
+
 ### Credits
 
 **@[AndrewZaech](https://gitlab.com/AndrewZaech)** (2019 - current) Project Maintainer and Developer

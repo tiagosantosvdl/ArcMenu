@@ -5,3 +5,7 @@ gschemas.compiled
 *.mo
 node_modules/
 resources.gresource
+_build/
+_po/
+dist/
+__pycache__/
