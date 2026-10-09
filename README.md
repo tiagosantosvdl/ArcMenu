@@ -47,15 +47,17 @@ sudo apt install gettext libglib2.0-bin libglib2.0-dev-bin libxml2-utils make py
 make release
 ```
 
-For the current `version-name` of `70.0`, the build creates:
+For the current `version-name` of `70.0.1`, the build creates:
 
-- `dist/arcmenu@tiagosantosvdl.github.com-70.0.zip`, for per-user installation with `gnome-extensions install --force`.
-- `dist/gnome-shell-extension-arcmenu-tiagosantosvdl_70.0_all.deb`, for system-wide installation with `sudo apt install ./dist/gnome-shell-extension-arcmenu-tiagosantosvdl_70.0_all.deb`.
+Release filenames follow the same convention across these extensions: `<uuid>-<version>.zip`, `gnome-shell-extension-<name>-tiagosantosvdl_<debian-version>_all.deb`, and `SHA256SUMS`. Debian prerelease versions use `~rc.1` where ZIP versions use `-rc.1`.
+
+- `dist/arcmenu@tiagosantosvdl.github.com-70.0.1.zip`, for per-user installation with `gnome-extensions install --force`.
+- `dist/gnome-shell-extension-arcmenu-tiagosantosvdl_70.0.1_all.deb`, for system-wide installation with `sudo apt install ./dist/gnome-shell-extension-arcmenu-tiagosantosvdl_70.0.1_all.deb`.
 - `dist/SHA256SUMS`, for verification with `cd dist && sha256sum -c SHA256SUMS`.
 
 The Debian package requires GNOME Shell 45–51 and the ArcMenu menu libraries. It installs under `/usr/share/gnome-shell/extensions/arcmenu@tiagosantosvdl.github.com/` and keeps the upstream settings schema so saved preferences remain available. Disable upstream ArcMenu before enabling this fork, and log out and back in after a first system-wide installation.
 
-The GitHub release workflow builds and publishes these files when a matching version tag is pushed or a GitHub Release is published. Set `version-name` in `metadata.json` before tagging; the tag must match, such as `v70.0`. Keep `version` as an integer (currently `74`). Prerelease tags such as `v70.0-rc.1` use `version-name` `70.0 rc.1` and Debian version `70.0~rc.1`.
+The GitHub release workflow builds and publishes these files when a matching version tag is pushed or a GitHub Release is published. Set `version-name` in `metadata.json` before tagging; the tag must match, such as `v70.0.1`. Keep `version` as an integer (currently `74`). Prerelease tags such as `v70.0.1-rc.1` use `version-name` `70.0.1 rc.1` and Debian version `70.0.1~rc.1`.
 
 **Run workflow** accepts a Git ref and produces downloadable artifacts only; it skips the publish job. To publish packages for an existing tag, create and publish a GitHub Release for that tag.
 

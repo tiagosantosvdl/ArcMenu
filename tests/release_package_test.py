@@ -45,7 +45,12 @@ class ReleasePackageTest(unittest.TestCase):
         unpacked = self.root / "unpacked"
         subprocess.run(["dpkg-deb", "--extract", str(deb), str(unpacked)], check=True)
         installed = unpacked / "usr/share/gnome-shell/extensions" / self.metadata["uuid"]
-        with ZipFile(next(self.output.glob("*.zip"))) as archive:
+        zip_path = self.output / f"{self.metadata['uuid']}-70.0.zip"
+        self.assertEqual(
+            {path.name for path in self.output.iterdir()},
+            {zip_path.name, deb.name, "SHA256SUMS"},
+        )
+        with ZipFile(zip_path) as archive:
             self.assertIn("extension.js", archive.namelist())
             self.assertIn("schemas/gschemas.compiled", archive.namelist())
             self.assertIn("data/resources.gresource", archive.namelist())
@@ -69,6 +74,7 @@ class ReleasePackageTest(unittest.TestCase):
         PACKAGER.package(self.build, self.output, "70.0-rc.1")
         deb = self.output / "gnome-shell-extension-arcmenu-tiagosantosvdl_70.0~rc.1_all.deb"
         self.assertTrue(deb.is_file())
+        self.assertTrue((self.output / f"{self.metadata['uuid']}-70.0-rc.1.zip").is_file())
         subprocess.run(["dpkg", "--compare-versions", "70.0~rc.1", "lt", "70.0"], check=True)
 
     def test_invalid_version_does_not_create_artifacts(self):
