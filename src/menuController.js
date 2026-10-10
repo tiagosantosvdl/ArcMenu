@@ -20,10 +20,23 @@ export const MenuController = class {
         this.panel = panelInfo.panel;
         this.isFirstPanel = panelInfo.isFirstPanel;
         this._debouncer = new Utils.Debouncer();
+    }
+
+    initialize() {
+        this._menuButton = new MenuButton(this._monitor, this.panelInfo);
+
+        this._setButtonAppearance();
+        this._setButtonText();
+        this._setButtonIcon();
+        this._setButtonIconSize();
+        this._setButtonIconPadding();
+        this._configureActivitiesButton();
+        this.enableButton();
 
         // Allow other extensions and DBus command to open/close ArcMenu and Standalone Runner
         if (!global.toggleArcMenu && this.isFirstPanel) {
-            global.toggleArcMenu = () => this._toggleArcMenu();
+            this._toggleArcMenuHandler = () => this._toggleArcMenu();
+            global.toggleArcMenu = this._toggleArcMenuHandler;
             this._service = new Utils.DBusService();
             this._service.ToggleArcMenu = () => {
                 this._toggleArcMenu();
@@ -34,8 +47,6 @@ export const MenuController = class {
             };
         }
 
-        this._menuButton = new MenuButton(monitor, panelInfo);
-
         if (this.isFirstPanel) {
             this._keybinder = new Keybinder(ArcMenuManager.settings);
             this._keybinder.toggleArcMenu = () => this._toggleArcMenu();
@@ -45,13 +56,6 @@ export const MenuController = class {
             this._initRecentAppsTracker();
             this._inputSourceManagerOverride();
         }
-
-        this._setButtonAppearance();
-        this._setButtonText();
-        this._setButtonIcon();
-        this._setButtonIconSize();
-        this._setButtonIconPadding();
-        this._configureActivitiesButton();
     }
 
     get menuButton() {
@@ -440,7 +444,7 @@ export const MenuController = class {
     }
 
     _isButtonEnabled() {
-        return this.panel && this.panel.statusArea['ArcMenu'] !== null;
+        return this._menuButton && this.panel?.statusArea.ArcMenu === this._menuButton;
     }
 
     destroy() {
@@ -451,8 +455,9 @@ export const MenuController = class {
             this._service = null;
         }
 
-        if (global.toggleArcMenu)
+        if (this._toggleArcMenuHandler && global.toggleArcMenu === this._toggleArcMenuHandler)
             delete global.toggleArcMenu;
+        this._toggleArcMenuHandler = null;
 
         if (this._inputSourceManagerProto) {
             this._inputSourceManagerProto._getCurrentWindow = this._origGetCurrentWindow;
@@ -481,10 +486,13 @@ export const MenuController = class {
 
         if (this._isButtonEnabled())
             this._disableButton();
-        else
-            this._menuButton.destroy();
+        else {
+            if (this.panel?.statusArea.activities)
+                this.panel.statusArea.activities.visible = true;
+            this._menuButton?.destroy();
+        }
 
-        if (this.isFirstPanel) {
+        if (this._keybinder) {
             this._keybinder.disconnectObject(this);
             this._keybinder.destroy();
             this._keybinder = null;

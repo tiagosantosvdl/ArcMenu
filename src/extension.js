@@ -47,8 +47,6 @@ export default class ArcMenu extends Extension {
         this.settings.connectObject('changed::multi-monitor', () => this._reload(), this);
         this.settings.connectObject('changed::dash-to-panel-standalone', () => this._reload(), this);
 
-        this._enableButtons();
-
         Main.extensionManager.connectObject('extension-state-changed', (data, extension) => {
             const isDtp = extension.uuid === Constants.DASH_TO_PANEL_UUID;
             const isAzTaskbar = extension.uuid === Constants.AZTASKBAR_UUID;
@@ -70,6 +68,7 @@ export default class ArcMenu extends Extension {
         }, this);
 
         this._connectExtensionSignals();
+        this._enableButtons();
 
         global.connectObject('shutdown', () => this._customStylesheet.destroy(), this);
     }
@@ -160,8 +159,8 @@ export default class ArcMenu extends Extension {
         const multiMonitor = this.settings.get_boolean('multi-monitor');
         const panelExtensionEnabled = this._dtpActive || this._azTaskbarActive;
 
-        // Finds available panels from Dash to Panel or App Icons Taskbar extension.
-        // If none found, use Main.panel.
+        // An active panel extension may still be creating its panels. Wait for
+        // panels-created instead of treating Main.panel as an extension wrapper.
 
         const getExtensionPanels = () => {
             if (this._dtpActive)
@@ -170,7 +169,9 @@ export default class ArcMenu extends Extension {
                 return global.azTaskbar?.panels;
             return null;
         };
-        const panels = getExtensionPanels()?.filter(p => p) ?? [Main.panel];
+        const panels = panelExtensionEnabled
+            ? getExtensionPanels()?.filter(p => p?.panel?.statusArea) ?? []
+            : [Main.panel];
 
         // Register hotkeys, DBus methods, and certain settings changed events only once,
         // on the first panel processed in the loop (independent of primary monitor status).
@@ -204,12 +205,15 @@ export default class ArcMenu extends Extension {
                 isFirstPanel = false;
 
             const menuController = new MenuController(monitor, panelInfo);
-
-            panel.connectObject('destroy', () => this._disableButton(menuController, panel), this);
-
-            menuController.enableButton();
-            menuController.connectSettingsEvents();
             this.menuControllers.push(menuController);
+            try {
+                menuController.initialize();
+                panel.connectObject('destroy', () => this._disableButton(menuController, panel), this);
+                menuController.connectSettingsEvents();
+            } catch (error) {
+                this._disableButtons();
+                throw error;
+            }
         }
     }
 

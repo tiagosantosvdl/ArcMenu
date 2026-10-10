@@ -1,3 +1,9 @@
+<b><span size="large">v70.0.2</span></b>
+
+- Fix startup failure while Dash to Panel is still creating its panels.
+- Clean up controllers and hotkeys when menu initialization fails.
+- Guard menu toggling until the menu layout is ready.
+
 <b><span size="large">v70.0</span></b>
 
 - Add GNOME 51 support.

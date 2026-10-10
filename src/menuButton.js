@@ -496,6 +496,9 @@ class ArcMenuMenuButton extends PanelMenu.Button {
             return;
         }
 
+        if (!this._menuLayout)
+            return;
+
         if (!this.arcMenu.isOpen) {
             this._menuLayout.updateLocation?.();
             this._menuLayout.updateStyle?.();
