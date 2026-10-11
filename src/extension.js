@@ -11,7 +11,6 @@ import {SearchProviderEmitter} from './searchProviders/searchProviderEmitter.js'
 import {CustomStylesheet} from './theming.js';
 
 import * as Utils from './utils.js';
-import {UpdateNotification} from './updateNotifier.js';
 
 export const [ShellVersion] = Config.PACKAGE_VERSION.split('.').map(s => Number(s));
 
@@ -27,7 +26,6 @@ export default class ArcMenu extends Extension {
         this.menuControllers = [];
         this._azTaskbarActive = false;
         this._dtpActive = false;
-        this._updateNotification = new UpdateNotification(this);
         this._customStylesheet = new CustomStylesheet(this.settings);
 
         const hideOverviewOnStartup = this.settings.get_boolean('hide-overview-on-startup');
@@ -79,9 +77,6 @@ export default class ArcMenu extends Extension {
         Main.extensionManager.disconnectObject(this);
         global.disconnectObject(this);
         this.settings.disconnectObject(this);
-
-        this._updateNotification.destroy();
-        this._updateNotification = null;
 
         this._customStylesheet.destroy();
         this._customStylesheet = null;

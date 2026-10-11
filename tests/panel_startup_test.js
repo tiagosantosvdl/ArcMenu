@@ -79,7 +79,6 @@ function setup({active = true, multiMonitor = true, standalone = false} = {}) {
             },
         },
         SearchProviderEmitter: class {destroy() {}},
-        UpdateNotification: class {destroy() {}},
         CustomStylesheet: class {destroy() {}},
     });
     const Manager = load('arcmenuManager', context, 'ArcMenuManager');

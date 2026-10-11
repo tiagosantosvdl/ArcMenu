@@ -1,3 +1,8 @@
+<b><span size="large">v70.0.3</span></b>
+
+- Remove thank-you, donation, and update notifications.
+- Remove the update notification toggle from Preferences.
+
 <b><span size="large">v70.0.2</span></b>
 
 - Fix startup failure while Dash to Panel is still creating its panels.
