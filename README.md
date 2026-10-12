@@ -1,107 +1,133 @@
-![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/ArcMenu_WideBanner.png)
+# ArcMenu
 
------
+This is [@tiagosantosvdl's fork](https://github.com/tiagosantosvdl/ArcMenu) of [upstream ArcMenu](https://gitlab.com/arcmenu/ArcMenu), a GNOME Shell application menu. This fork is maintained by Codex and provides its own extension packages, with integration for the [Dash to Panel fork](https://github.com/tiagosantosvdl/dash-to-panel).
 
-![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/ArcMenu_Banner.png)
+ArcMenu offers multiple menu layouts, application search, pinned applications, system shortcuts, and multi-monitor support. This fork handles delayed Dash to Panel initialization and does not display thank-you, donation, or release notifications.
 
------
+- Extension UUID: `arcmenu@tiagosantosvdl.github.com`
+- Dash to Panel integration UUID: `dash-to-panel@tiagosantosvdl.github.com`
+- Supported GNOME Shell versions: **45–51**, as declared in [metadata.json](metadata.json).
+- Settings schema: `org.gnome.shell.extensions.arcmenu`, preserving existing preferences.
 
-### Introduction
+## Installation
 
-ArcMenu is an application menu for GNOME Shell, designed to provide a more familiar user experience and workflow. This extension has many features, including various menu layout styles, GNOME search, quick access to system shortcuts, and much more!
+Download the packages from this repository's [GitHub Releases](https://github.com/tiagosantosvdl/ArcMenu/releases). Each release includes an extension ZIP, a Debian package, and `SHA256SUMS`.
 
-**For ArcMenu to work properly, you may need [these dependencies](https://gitlab.com/arcmenu/ArcMenu/-/wikis/ArcMenu-Dependencies).**
+Disable any other ArcMenu extension before enabling this fork. Choose one installation method: a per-user extension takes precedence over a system-wide extension with the same UUID.
 
------
+### Debian / Ubuntu package
 
-### Help Support This Project
-
-Thank you for using ArcMenu! If you enjoy it and would like to help support its continued development, please consider making a donation. Your support, no matter the amount, makes a big difference.
-
-[![Donate via Paypal](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/paypal-badge.svg){width=170}](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=53CWA7NR743WC&item_name=Support+ArcMenu&currency_code=USD&source=url) [![Buy My a Coffee](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/bmc-badge.svg){width=170}](https://buymeacoffee.com/azaech)
-
-
------
-
-### Installation
-
-#### Visit the [GNOME Extensions](https://extensions.gnome.org/extension/3628/arcmenu/) website to install the most recent release of ArcMenu.
-
-- **To install ArcMenu from source**: Please see the [Install From Source wiki Guide](https://gitlab.com/arcmenu/ArcMenu/-/wikis/Install-From-Source-Guide).
-
-<p align="left">
-       <a href="https://extensions.gnome.org/extension/3628/arcmenu/" >
-    <img src="https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/get-it-ego.png" width="240" style="margin-left: 4px"/>
-    </a>
-
------
-
-### Fork releases
-
-This is [@tiagosantosvdl's ArcMenu fork](https://github.com/tiagosantosvdl/ArcMenu), using UUID `arcmenu@tiagosantosvdl.github.com` and integrating with `dash-to-panel@tiagosantosvdl.github.com`. The GNOME Extensions listing above installs upstream ArcMenu.
-
-Build this fork's installable packages without changing the running session:
+For release `70.0.3`, install the downloaded package:
 
 ```sh
-sudo apt install gettext libglib2.0-bin libglib2.0-dev-bin libxml2-utils make python3 dpkg-dev
-make release
+sudo apt install ./gnome-shell-extension-arcmenu-tiagosantosvdl_70.0.3_all.deb
 ```
 
-For the current `version-name` of `70.0.3`, the build creates:
+The package declares dependencies on GNOME Shell 45–51, `gir1.2-adw-1`, `gir1.2-gmenu-3.0`, and `libgnome-menu-3-0`. It installs under `/usr/share/gnome-shell/extensions/arcmenu@tiagosantosvdl.github.com/`.
 
-Release filenames follow the same convention across these extensions: `<uuid>-<version>.zip`, `gnome-shell-extension-<name>-tiagosantosvdl_<debian-version>_all.deb`, and `SHA256SUMS`. Debian prerelease versions use `~rc.1` where ZIP versions use `-rc.1`.
+Log out and back in after installation or an upgrade to load the installed code. Enable the extension with:
 
-- `dist/arcmenu@tiagosantosvdl.github.com-70.0.3.zip`, for per-user installation with `gnome-extensions install --force`.
-- `dist/gnome-shell-extension-arcmenu-tiagosantosvdl_70.0.3_all.deb`, for system-wide installation with `sudo apt install ./dist/gnome-shell-extension-arcmenu-tiagosantosvdl_70.0.3_all.deb`.
-- `dist/SHA256SUMS`, for verification with `cd dist && sha256sum -c SHA256SUMS`.
+```sh
+gnome-extensions enable arcmenu@tiagosantosvdl.github.com
+```
 
-The Debian package requires GNOME Shell 45–51 and the ArcMenu menu libraries. It installs under `/usr/share/gnome-shell/extensions/arcmenu@tiagosantosvdl.github.com/` and keeps the upstream settings schema so saved preferences remain available. Disable upstream ArcMenu before enabling this fork, and log out and back in after a first system-wide installation.
+### Per-user ZIP
 
-The GitHub release workflow builds and publishes these files when a matching version tag is pushed or a GitHub Release is published. Set `version-name` in `metadata.json` before tagging; the tag must match, such as `v70.0.3`. Keep `version` as an integer (currently `76`). Prerelease tags such as `v70.0.3-rc.1` use `version-name` `70.0.3 rc.1` and Debian version `70.0.3~rc.1`.
+Install the downloaded ZIP:
 
-**Run workflow** accepts a Git ref and produces downloadable artifacts only; it skips the publish job. To publish packages for an existing tag, create and publish a GitHub Release for that tag.
+```sh
+gnome-extensions install --force ./arcmenu@tiagosantosvdl.github.com-70.0.3.zip
+```
 
-### Credits
+Install the runtime libraries listed above using your distribution's package manager. Log out and back in, then enable the extension using the same command as for the Debian package.
 
-**@[AndrewZaech](https://gitlab.com/AndrewZaech)** (2019 - current) Project Maintainer and Developer
+### Verify downloads
 
-**@[AndyC](https://gitlab.com/LinxGem33)** (2017 - 2020) ArcMenu Founder, Former Maintainer, Digital Art Designer
+Place `SHA256SUMS` and both release packages in the same directory, then run:
 
-**@[Alexander Rüedlinger](https://github.com/lexruee)** (2017) - Former Developer
+```sh
+sha256sum -c SHA256SUMS
+```
 
-**Additional Credits**:
-* The 'ArcMenu' layout design is insipired by the Zorin OS menu extension.
-* ArcMenu utilizes various code from GNOME Shell and the GNOME Shell extensions package.
-* ArcMenu Logo and other ArcMenu icon assets created by [AndyC](https://gitlab.com/LinxGem33). Licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-* Fallback Category Icons
-    * [Ubuntu Yaru Icons](https://github.com/ubuntu/yaru) licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-    * [MoreWaita](https://github.com/somepaulo/MoreWaita) [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html)
+## Build from source
 
------
+On Debian / Ubuntu, install the build tools and clone this repository:
 
-### History
+```sh
+sudo apt install git gettext libglib2.0-bin libglib2.0-dev-bin libxml2-utils make python3 dpkg-dev
+git clone https://github.com/tiagosantosvdl/ArcMenu.git
+cd ArcMenu
+make release VERSION=70.0.3
+```
 
-ArcMenu was first released in 2017 by [AndyC](https://gitlab.com/LinxGem33). The original ArcMenu project can be found [here](https://gitlab.com/LinxGem33/Arc-Menu).
+Use the `version-name` in `metadata.json` when setting `VERSION`. Building packages does not install or activate the extension.
 
-In 2017, ArcMenu _started_ as a fork of the Zorin menu extension by Zorin OS. As it's own separate project, ArcMenu rapidly began developing innovative features and quickly diverged away from Zorin menu thanks to the works of [AndyC](https://gitlab.com/LinxGem33) (2017 - 2020), [AndrewZaech](https://gitlab.com/AndrewZaech) (2019 - current), [Alexander Rüedlinger](https://github.com/lexruee) (2017), and other contributors. ArcMenu has been rewritten from the ground up since it's inception and has it's own separate, original, and unique code base, unrelated to that of Zorin menu.
+For version `70.0.3`, the output is:
 
------
+- `dist/arcmenu@tiagosantosvdl.github.com-70.0.3.zip`
+- `dist/gnome-shell-extension-arcmenu-tiagosantosvdl_70.0.3_all.deb`
+- `dist/SHA256SUMS`
+
+To install the local Debian build:
+
+```sh
+sudo apt install ./dist/gnome-shell-extension-arcmenu-tiagosantosvdl_70.0.3_all.deb
+```
+
+## Development and verification
+
+Source files live in `src/`, menu layouts in `src/menulayouts/`, preferences in `src/settings/`, and tests in `tests/`. Packaging is handled by the [Makefile](Makefile) and [scripts/package-release.py](scripts/package-release.py). Agent guidance is in [AGENTS.md](AGENTS.md).
+
+Run the checks relevant to your change:
+
+```sh
+node tests/panel_startup_test.js
+python3 -m unittest discover -s tests -p '*test.py'
+glib-compile-schemas --strict --dry-run schemas
+git diff --check
+```
+
+Use `node --check <file>` for changed JavaScript files. If npm is available, install development dependencies with `npm ci` and run `npm run lint:ci`; `npm run lint` applies automatic fixes.
+
+Startup tests use mocked Shell dependencies. Validate desktop behavior separately, including delayed panel creation, both extension enable orders, multiple monitors, and opening the menu with Super.
+
+## Releases
+
+Update `version-name` and increment the integer `version` in `metadata.json`, update version examples in this README, and add notes to [RELEASENOTES.md](RELEASENOTES.md). Release tags must match `version-name`, such as `v70.0.3`.
+
+The [release workflow](.github/workflows/release.yml) validates the source, builds packages, and publishes them when a matching version tag is pushed or a GitHub Release is published. The manual **Run workflow** option builds downloadable artifacts without publishing a release.
+
+Prerelease tags such as `v70.0.3-rc.1` use `version-name` `70.0.3 rc.1`, ZIP version `70.0.3-rc.1`, and Debian version `70.0.3~rc.1`.
+
+## Issues and contributions
+
+Report bugs and request features in this repository's [issue tracker](https://github.com/tiagosantosvdl/ArcMenu/issues). Include your distribution, GNOME Shell version, ArcMenu version, relevant panel extensions and their versions, reproduction steps, and any Shell error logs.
+
+Submit changes through [pull requests](https://github.com/tiagosantosvdl/ArcMenu/pulls), with a description of the behavior changed and verification performed.
+
+## Credits and licensing
+
+This fork builds on ArcMenu by Andrew Zaech, AndyC, Alexander Rüedlinger, and the contributors and translators credited below. AndyC founded ArcMenu in 2017 and created its logo and other icon assets. The ArcMenu layout was inspired by the Zorin OS menu extension, and the code incorporates work from GNOME Shell and GNOME Shell extensions.
+
+- Extension code: GPL-2.0; see [LICENSE](LICENSE).
+- ArcMenu logo and icon assets by AndyC: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+- Fallback category icons include [Ubuntu Yaru](https://github.com/ubuntu/yaru), licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), and [MoreWaita](https://github.com/somepaulo/MoreWaita), licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 ### Contributors
 
-**@[Thomas Ingvarsson](https://gitlab.com/tingvarsson)** | **@[fishears](https://github.com/fishears)** | **@[JasonLG1979](https://github.com/JasonLG1979)** | **@[itmitica](https://github.com/itmitica)** | **@[vikaig](https://gitlab.com/vikaig)** | **@[MagneFire](https://gitlab.com/MagneFire)**
+**@Thomas Ingvarsson** | **@[fishears](https://github.com/fishears)** | **@[JasonLG1979](https://github.com/JasonLG1979)** | **@[itmitica](https://github.com/itmitica)** | **@vikaig** | **@MagneFire**
 
-**@[tognee](https://gitlab.com/tognee)** | **@[hlechner](https://gitlab.com/hlechner)** | **@[vanillajonathan](https://gitlab.com/vanillajonathan)** | **@[epskampie](https://gitlab.com/epskampie)** | **@[GnomeBook](https://gitlab.com/GnomeBook)** 
+**@tognee** | **@hlechner** | **@vanillajonathan** | **@epskampie** | **@GnomeBook**
 
-**@[charlesg99](https://github.com/charlesg99)** | **@[harshadgavali](https://gitlab.com/harshadgavali)** | **@[O. Giesmann ](https://gitlab.com/Etamuk)** | **@[aleayr ](https://gitlab.com/aleayr)**
+**@[charlesg99](https://github.com/charlesg99)** | **@harshadgavali** | **@O. Giesmann ** | **@aleayr **
 
-**@[JasonLG1979](https://github.com/JasonLG1979)**  | **@[lexruee](https://github.com/lexruee)** | **@[aleayr](https://gitlab.com/aleayr)** | **@[osmancoskun](https://gitlab.com/osmancoskun) !184**
+**@[JasonLG1979](https://github.com/JasonLG1979)**  | **@[lexruee](https://github.com/lexruee)** | **@aleayr** | **@osmancoskun**
 
-**@[Balló György](https://gitlab.com/City-busz) !189, !215, !226, !241, !242**
+**@Balló György**
 
-**@[RunasSudo](https://gitlab.com/RunasSudo) !271** | **@[innovisus](https://gitlab.com/innovisus) !273** | **@[morgan9e](https://gitlab.com/morgan9e) !274**
+**@RunasSudo** | **@innovisus** | **@morgan9e**
 
-**@[ymt200120](https://gitlab.com/ymt200120) !284**
+**@ymt200120**
 
 -----
 
@@ -109,45 +135,39 @@ In 2017, ArcMenu _started_ as a fork of the Zorin menu extension by Zorin OS. As
 
 | Language | Translators |
 | ------ | ------ |
-| **Belarusian** | **@[Latgardi](https://gitlab.com/Latgardi)** |
-| **Brazilian Portuguese** | **@[frnogueira](https://gitlab.com/frnogueira), @[Z Bed](https://gitlab.com/zbed), @[perry.werneck](https://gitlab.com/perry.werneck)** |
-| **Catalan** | **@[jordim](https://gitlab.com/jordim)** |
-| **Chinese (Taiwan)** | **@[plesry](https://gitlab.com/plesry)** |
-| **Czech** | **@[jiri.doubravsky](https://gitlab.com/jiri.doubravsky), @[panmourovaty](https://gitlab.com/panmourovaty), @[Amerey ](https://gitlab.com/Amerey.eu)** |
-| **Danish** | **@[cbsvitzer](https://gitlab.com/cbsvitzer)** |
-| **Dutch** | **@[Vistaus](https://gitlab.com/Vistaus), @[vinno97](https://gitlab.com/vinno97)** |
-| **Estonian** | **@[rimasx](https://gitlab.com/rimasx)** |
-| **Finnish** | **@[artnay](https://gitlab.com/artnay)** |
-| **French** | **@[Nilvus](https://gitlab.com/Nilvus), @[steve.kossouho](https://gitlab.com/steve.kossouho), @[D_PETER](https://gitlab.com/D_PETER)** |
-| **Georgian** | **@[papava.e](https://gitlab.com/papava.e)**|
-| **German** | **@[Etamuk](https://gitlab.com/Etamuk), @[daPhipz](https://gitlab.com/daPhipz), @[RaceTheMaSe](https://gitlab.com/RaceTheMaSe)**|
-| **Hebrew** | **@[omeritzics](https://gitlab.com/omeritzics)** |
-| **Hungarian** | **@[stevendobay](https://gitlab.com/stevendobay), @[Balázs Meskó](https://gitlab.com/meskobalazs)** |
-| **Italian** | **@[Vombato](https://gitlab.com/Vombato), @[matguidi](https://gitlab.com/matguidi), @[Nicola C.](https://gitlab.com/nico9889)** |
-| **Japanese** | **@[Hayao0819](https://gitlab.com/Hayao0819), @[Umoxfo](https://gitlab.com/Umoxfo)** |
-| **Korean** | **@[HyeonWol](https://gitlab.com/hyeonwol123)** |
-| **Norwegian** | **@[sigbjokj](https://gitlab.com/sigbjokj), @[sssandum](https://gitlab.com/sssandum)** |
-| **Occitan** | **@[Mejans](https://gitlab.com/Mejans), @[Quentin](https://gitlab.com/quenty_occitania)** |
-| **Polish** | **@[alex4401](https://gitlab.com/alex4401), @[Karpfly](https://gitlab.com/MacKarp), @[Piotr Strebski](https://gitlab.com/strebski), @[Adam Lewicki](https://gitlab.com/a.lewicki95)** |
-| **Russian** | **@[Ivan](https://gitlab.com/vantu5z), @[Ser82-png](https://gitlab.com/Ser82-png), @[innovisus](https://gitlab.com/innovisus)** |
-| **Silesian** | **@[gkkulik](https://gitlab.com/gkkulik)** |
-| **Simplified Chinese** | **@[skygmin](https://gitlab.com/skygmin), @[doufu3344](https://gitlab.com/doufu3344), @[wxtewx](https://gitlab.com/wxtewx), @[Anduin2017](https://gitlab.com/Anduin2017)** |
-| **Sinhalese** | **@[sayuri](https://gitlab.com/sayuri-), @[helabasa](https://gitlab.com/helabasa)** |
-| **Slovak** | **@[prescott66](https://gitlab.com/prescott66)** |
-| **Spanish** | **@[juanlucer](https://gitlab.com/juanlucer), @[pjunyent](https://gitlab.com/pjunyent), @[Sergio](https://gitlab.com/IngrownMink4), @[Luis Zurro](https://gitlab.com/nyaran)** |
-| **Swedish** | **@[MorganAntonsson](https://gitlab.com/MorganAntonsson)** |
-| **Turkish** | **@[aylinux](https://gitlab.com/aylinux), @[Sabri Ünal](https://gitlab.com/sabriunal)** |
-| **Ukrainian** | **@[vikaig](https://gitlab.com/vikaig), @[Denys Nykula](https://gitlab.com/nykula)** |
+| **Belarusian** | **@Latgardi** |
+| **Brazilian Portuguese** | **@frnogueira, @Z Bed, @perry.werneck** |
+| **Catalan** | **@jordim** |
+| **Chinese (Taiwan)** | **@plesry** |
+| **Czech** | **@jiri.doubravsky, @panmourovaty, @Amerey ** |
+| **Danish** | **@cbsvitzer** |
+| **Dutch** | **@Vistaus, @vinno97** |
+| **Estonian** | **@rimasx** |
+| **Finnish** | **@artnay** |
+| **French** | **@Nilvus, @steve.kossouho, @D_PETER** |
+| **Georgian** | **@papava.e**|
+| **German** | **@Etamuk, @daPhipz, @RaceTheMaSe**|
+| **Hebrew** | **@omeritzics** |
+| **Hungarian** | **@stevendobay, @Balázs Meskó** |
+| **Italian** | **@Vombato, @matguidi, @Nicola C.** |
+| **Japanese** | **@Hayao0819, @Umoxfo** |
+| **Korean** | **@HyeonWol** |
+| **Norwegian** | **@sigbjokj, @sssandum** |
+| **Occitan** | **@Mejans, @Quentin** |
+| **Polish** | **@alex4401, @Karpfly, @Piotr Strebski, @Adam Lewicki** |
+| **Russian** | **@Ivan, @Ser82-png, @innovisus** |
+| **Silesian** | **@gkkulik** |
+| **Simplified Chinese** | **@skygmin, @doufu3344, @wxtewx, @Anduin2017** |
+| **Sinhalese** | **@sayuri, @helabasa** |
+| **Slovak** | **@prescott66** |
+| **Spanish** | **@juanlucer, @pjunyent, @Sergio, @Luis Zurro** |
+| **Swedish** | **@MorganAntonsson** |
+| **Turkish** | **@aylinux, @Sabri Ünal** |
+| **Ukrainian** | **@vikaig, @Denys Nykula** |
 
 -----
 
-### License & Terms
-
-ArcMenu is available under the terms of the GPL-2.0 license See [`COPYING`](https://gitlab.com/arcmenu/ArcMenu/blob/master/COPYING) for details.
-
------
-
-#### Distro Icons
+### Distribution icons and trademarks
 
 Legal disclaimer for brand icons and trademarks:
 
@@ -156,39 +176,38 @@ Legal disclaimer for brand icons and trademarks:
 <details>
 <summary><b>Read More...</b></summary>
 
-<p>
 
-* **UBUNTU ![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg)** - Ubuntu name and Ubuntu logo is a trademark of Canonical ![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg) Ltd.
+* **UBUNTU ©** - Ubuntu name and Ubuntu logo is a trademark of Canonical © Ltd.
 
-* **FEDORA ![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg)** - Fedora and the Infinity design logo are trademarks of Red Hat, Inc.
+* **FEDORA ©** - Fedora and the Infinity design logo are trademarks of Red Hat, Inc.
 
-* **DEBIAN ![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg)** - is a registered trademark owned by Software in the Public Interest, Inc. Debian trademark is a registered United States trademark of Software in the Public Interest, Inc., managed by the Debian project.
+* **DEBIAN ©** - is a registered trademark owned by Software in the Public Interest, Inc. Debian trademark is a registered United States trademark of Software in the Public Interest, Inc., managed by the Debian project.
 
-* **MANJARO ![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg)** - (logo) and name is a trademark of Manjaro GmbH & Co. KG
+* **MANJARO ©** - (logo) and name is a trademark of Manjaro GmbH & Co. KG
 
-* **POP_OS! ![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg)** - Name and (logo) is a trademark of system 76 ![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg) Inc.
+* **POP_OS! ©** - Name and (logo) is a trademark of system 76 © Inc.
 
-* **ARCH LINUX ![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg)** - The stylized Arch Linux logo are recognised trademarks of Arch Linux, copyright 2002-2017 Judd Vinet and Aaron Griffin
+* **ARCH LINUX ©** - The stylized Arch Linux logo are recognised trademarks of Arch Linux, copyright 2002-2017 Judd Vinet and Aaron Griffin
 
-* **SOLUS** - name and logo is Copyright ![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg) 2014-2018 by Solus Project
+* **SOLUS** - name and logo is Copyright © 2014-2018 by Solus Project
 
-* **KALI LINUX** - logo and name is part of ![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg) OffSec Services Limited 2020
+* **KALI LINUX** - logo and name is part of © OffSec Services Limited 2020
 
 * **PUREOS** - name and logo is developed by members of the Purism community
 
-* **RASPBERRY PI** ![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg) - Logo and name is part of Raspberry Pi Foundation
+* **RASPBERRY PI** © - Logo and name is part of Raspberry Pi Foundation
 UK Registered Charity 1129409
 
-* **Gentoo Authors![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg)** 2001–2020
+* **Gentoo Authors©** 2001–2020
 Gentoo is a trademark of the Gentoo Foundation, Inc.
 
-* **Voyager ![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg) Linux**
+* **Voyager © Linux**
 (name) and (logo)
 
-* **MXLinux![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg)** 2020 -
+* **MXLinux©** 2020 -
 Linux - is the registered trademark of Linus Torvalds in the U.S. and other countries.
 
-* **Red Hat, Inc.![](https://gitlab.com/arcmenu/arcmenu-assets/raw/master/images/copyright2.svg)** Copyright 2020 
+* **Red Hat, Inc.©** Copyright 2020
 (name) and (logo)
 
 * **ZORIN OS** - The "Z" logomark is a registered trademark of Zorin Technology Group Ltd. Copyright © 2019 - 2021 Zorin Technology Group Ltd
@@ -198,7 +217,6 @@ Linux - is the registered trademark of Linus Torvalds in the U.S. and other coun
 * **NixOS** - The logo is made available under a <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY license</a>. Logo designed by Tim Cuthbertson.
 
 
-</p>
 </details>
 
 -----
